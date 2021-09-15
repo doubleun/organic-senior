@@ -1,0 +1,31 @@
+// Custom overrides
+//* Fonts
+@import url("https://fonts.googleapis.com/css2?family=Changa+One&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
+
+$font-changa-one: "Changa One", cursive;
+$font-open-sans: "Open Sans", sans-serif;
+
+//* Colors
+$custom-primary: #4a8a30;
+$custom-secondary: #025acd;
+$custom-colors: (
+  "primary": $custom-primary,
+  "secondary": $custom-secondary,
+);
+
+//* Global
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $font-open-sans;
+}
+
+#__next {
+  height: 100%;
+}
+
+// Bootstrap and its default variables
+@import "../../node_modules/bootstrap/scss/bootstrap";

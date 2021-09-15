@@ -1,0 +1,215 @@
+@use '../config';
+
+//* Main
+.mainLandingPage {
+  height: 100%;
+
+  &-overflowLock {
+    height: 100%;
+    overflow-y: hidden;
+  }
+}
+
+//* Top landing page (login section)
+.landingTopSection {
+  min-height: 100%;
+  background-image: url("../public/images/wallpaper2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-start;
+  background-position: 50% 50%;
+  position: relative;
+
+  @include config.media-breakpoint-up(xl) {
+    background-position: 0 30%;
+  }
+  .landingLoginBox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: min(28rem, 50%);
+    color: white;
+    margin-inline: auto;
+    margin-block: auto;
+    padding-block: 1rem;
+    padding-inline: 2rem;
+    min-width: 18rem;
+
+    @include config.media-breakpoint-up(md) {
+      margin-inline-start: max(12rem, 14%);
+      padding-block: 4rem;
+      padding-inline: 4rem;
+    }
+
+    &:before {
+      background-color: config.$custom-primary;
+      opacity: 0.65;
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    .loginBoxContent {
+      position: relative;
+      z-index: 2;
+      inset: 0;
+      h4 {
+        font-size: clamp(16px, 2.5vw, 24px);
+        font-weight: 100;
+        margin: 0;
+        letter-spacing: 2px;
+      }
+      h2 {
+        font-family: config.$font-changa-one;
+        font-size: clamp(34px, 6vw, 50px);
+        margin: 0;
+        letter-spacing: 4px;
+        font-weight: 200;
+        margin-bottom: 2rem;
+      }
+      p {
+        font-size: clamp(14px, 2vw, 18px);
+        font-style: italic;
+        margin-block-start: 1rem;
+        text-align: center;
+        span {
+          margin-inline-start: 4px;
+          text-decoration: underline;
+          font-weight: bolder;
+          cursor: pointer;
+        }
+      }
+      button {
+        width: 100%;
+        font-size: 15px;
+        font-weight: bolder;
+        margin-block-start: 1rem;
+        margin-inline-end: 1rem;
+        position: relative;
+        text-align: start;
+        padding-inline-start: 35px;
+
+        @include config.media-breakpoint-up(xl) {
+          font-size: 20px;
+          text-align: start;
+          padding-inline-start: 60px;
+        }
+        &.landingLoginButton {
+          border: 2px solid #208b59;
+          margin-block-start: 2rem;
+          text-align: center;
+          padding-inline: 0;
+        }
+        img {
+          position: absolute;
+          left: 10px;
+          width: 20px;
+          @include config.media-breakpoint-up(xl) {
+            left: 20px;
+            width: 30px;
+          }
+        }
+      }
+      h5 {
+        line-height: 1;
+        margin-block-start: 1rem;
+        text-align: center;
+        font-size: clamp(20px, 2vw, 26px);
+      }
+    }
+  }
+}
+
+//* Top landing footer (login section footer)
+.topFooterSection {
+  background: linear-gradient(
+    #34773a,
+    8px,
+    lighten(config.$custom-primary, 10%)
+  );
+
+  .landingTopFooter {
+    display: flex;
+    padding-block: 4rem;
+    flex-wrap: wrap;
+
+    .topFooterContent {
+      @include config.media-breakpoint-up(md) {
+        flex: 1;
+      }
+      display: flex;
+      flex-direction: column;
+      color: white;
+      letter-spacing: 1px;
+
+      h2 {
+        font-size: 40px;
+        font-family: config.$font-changa-one;
+        font-weight: 100;
+      }
+      span {
+        display: block;
+        border: 1px solid white;
+        width: 60%;
+      }
+      h5 {
+        font-size: 20px;
+        font-weight: 300;
+        font-style: italic;
+      }
+      p {
+        letter-spacing: 0;
+      }
+    }
+  }
+}
+
+//* SignUp popup
+.signUpContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  h1 {
+    font-size: clamp(22px, 5vw, 40px);
+    margin-block-end: max(10px, 5%);
+  }
+
+  .signUpBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    background-color: white;
+    border-radius: 10px;
+    height: min(80%, 50rem);
+    width: max(50%, 18rem);
+    inset: 0;
+    margin-inline: auto;
+    margin-block: auto;
+    padding-inline: 1rem;
+    padding-block: 1rem;
+    @include config.media-breakpoint-up(lg) {
+      padding-inline: 2.5rem;
+    }
+
+    .inputSameLine {
+      display: flex;
+      margin-block-end: 1rem;
+      justify-content: space-between;
+      div {
+        width: 48%;
+      }
+    }
+    button {
+      width: max(100px, 20%);
+      @include config.media-breakpoint-up(lg) {
+        margin-top: 1.25rem;
+      }
+    }
+  }
+}
