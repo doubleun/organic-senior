@@ -8,7 +8,7 @@ import SignUpModal from "../components/SignUpModal";
 export default function Landing() {
   const [showSignUp, setShowSignUp] = useState();
   const callbackRedirect = {
-    callbackUrl: "http://localhost:3000/mock-auth",
+    callbackUrl: "http://localhost:3000/home/catalogue",
   };
 
   return (

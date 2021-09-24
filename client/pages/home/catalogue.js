@@ -1,6 +1,7 @@
 //React imports
 import { useState } from "react";
-import Layout from "../../components/Layout";
+// import Layout from "../../components/Layout";
+import Layout from "../layout/_layout";
 import CatalogueCarousel from "../../components/Carousel/CatalogueCarousel";
 import FeaturedProductCard from "../../components/Catalogue/FeaturedProductCard";
 
@@ -14,7 +15,9 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-export default function Catalogue({ listFeatured, products }) {
+import { getSession } from "next-auth/react";
+
+export default function Catalogue({ products, listFeatured, user }) {
   const [activeFeatured, setActiveFeatured] = useState(0);
 
   return (
@@ -130,38 +133,69 @@ export default function Catalogue({ listFeatured, products }) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const user = session?.user;
+
+  // redirect
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+
+  console.log(user);
+
   const listFeatured = ["All", "Oranges", "Melons", "Berries", "Vegetables"];
   const products = [
     {
       id: 1,
       name: "Crab Pool Security",
+      category: "Oranges",
       image: "https://technext.github.io/ogani/img/featured/feature-1.jpg",
     },
     {
       id: 2,
       name: "Crab Pool Security",
+      category: "Melons",
       image: "https://technext.github.io/ogani/img/featured/feature-2.jpg",
     },
     {
       id: 3,
       name: "Crab Pool Security",
+      category: "Berries",
       image: "https://technext.github.io/ogani/img/featured/feature-3.jpg",
     },
     {
       id: 4,
       name: "Crab Pool Security",
+      category: "Oranges",
       image: "https://technext.github.io/ogani/img/featured/feature-4.jpg",
     },
     {
       id: 5,
       name: "Crab Pool Security",
+      category: "Berries",
+      image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
+    },
+    {
+      id: 6,
+      name: "Crab Pool Security",
+      category: "Vegetables",
+      image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
+    },
+    {
+      id: 7,
+      name: "Crab Pool Security",
+      category: "Oranges",
       image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
     },
   ];
 
   return {
-    props: { listFeatured, products },
+    props: { listFeatured, products, user },
   };
 }
 

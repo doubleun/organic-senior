@@ -10,6 +10,8 @@
     "sass": "npx sass --watch .\\scss\\main.scss .\\styles\\main.css"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^0.5.2-next.15",
+    "@prisma/client": "^3.1.1",
     "bootstrap": "^5.1.0",
     "next": "11.1.2",
     "next-auth": "^4.0.0-beta.2",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
+    "prisma": "^3.1.1",
     "sass": "^1.41.0"
   }
 }

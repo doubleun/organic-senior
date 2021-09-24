@@ -1,12 +1,13 @@
-import { signOut, getSession } from "next-auth/react";
+import { signOut, getSession, useSession } from "next-auth/react";
 
-export default function MockAuth({ session, user }) {
-  console.log(user);
+export default function MockAuth() {
+  const { data: session } = useSession();
+  console.log(session);
 
   return (
     <div>
-      <img src={user.image} alt="" />
-      <h1>Welcome {user?.name}</h1>
+      <img src={session.user.image} alt="" />
+      <h1>Welcome {session.user?.name}</h1>
       <button onClick={() => signOut()}>Logout</button>
     </div>
   );

@@ -7,7 +7,16 @@ import Container from "react-bootstrap/Container";
 import { HiHeart } from "react-icons/hi";
 import { HiShoppingBag } from "react-icons/hi";
 
+import { getSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+
 const MainNavbar = () => {
+  const [session, setSession] = useState();
+  useEffect(async () => {
+    const data = await getSession();
+    setSession(data);
+  }, []);
+
   return (
     <Navbar
       collapseOnSelect
@@ -43,8 +52,14 @@ const MainNavbar = () => {
               <HiShoppingBag />
             </Nav.Link>
             <p>logged in as: </p>
-            <NavDropdown as="h6" title="Tester" className="loginStatus">
-              <NavDropdown.Item as="button">Logout</NavDropdown.Item>
+            <NavDropdown
+              as="h6"
+              title={session ? session.user.name : "...."}
+              className="loginStatus"
+            >
+              <NavDropdown.Item as="button" onClick={() => signOut()}>
+                Logout
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
