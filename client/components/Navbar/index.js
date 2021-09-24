@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 
 import { HiHeart } from "react-icons/hi";
@@ -41,9 +42,10 @@ const MainNavbar = () => {
             <Nav.Link href="#memes">
               <HiShoppingBag />
             </Nav.Link>
-            <p>
-              logged in as: <span>...</span>
-            </p>
+            <p>logged in as: </p>
+            <NavDropdown as="h6" title="Tester" className="loginStatus">
+              <NavDropdown.Item as="button">Logout</NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>
