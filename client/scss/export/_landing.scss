@@ -1,18 +1,13 @@
-@use '../config';
+@use "../config";
 
 //* Main
 .mainLandingPage {
   height: 100%;
-
-  &-overflowLock {
-    height: 100%;
-    overflow-y: hidden;
-  }
 }
 
 //* Top landing page (login section)
 .landingTopSection {
-  min-height: 100%;
+  height: 100%;
   background-image: url("../public/images/wallpaper2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -168,7 +163,7 @@
 
 //* SignUp popup
 .signUpContainer {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   z-index: 10;

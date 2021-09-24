@@ -1,0 +1,179 @@
+@use "../config";
+
+//* Top part of the catalogue(Carousel)
+.catalogueTopContainer {
+  display: flex;
+  margin-block-start: 1rem;
+
+  &-Left {
+    width: 25%;
+    margin-inline-end: 3rem;
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+
+    .list-group-item:nth-child(n + 2) {
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem 1rem 0.5rem 2rem;
+      &:hover {
+        background-color: rgb(238, 238, 238);
+      }
+    }
+    li {
+      box-sizing: border-box;
+      width: auto;
+
+      &:first-child {
+        background-color: config.$custom-primary;
+        font-weight: bolder;
+        font-size: 1.25rem;
+        color: white;
+        svg {
+          margin-inline-end: 1rem;
+        }
+      }
+    }
+  }
+  &-Right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 75%;
+
+    .searchBar {
+      input {
+        flex: none;
+        width: 50%;
+      }
+      .searchButton {
+        border: none;
+        border-radius: 0;
+        font-weight: bolder;
+        background-color: config.$custom-primary;
+        padding-inline: 2rem;
+        padding-block: 0.8rem;
+        margin-inline-end: 1rem;
+      }
+      svg {
+        font-size: 30px;
+        color: config.$custom-primary;
+        margin-block: auto;
+      }
+      .topBarContact {
+        display: flex;
+        flex-direction: column;
+        margin-block: auto;
+        padding-inline-start: 1rem;
+        text-align: center;
+        h5 {
+          margin: 0;
+          line-height: 1;
+          font-weight: bolder;
+          font-size: 18px;
+        }
+        p {
+          font-size: 13px;
+          margin: 0;
+          color: config.$gray-600;
+        }
+      }
+    }
+    .catalogueCarouselContainer {
+      width: 84%;
+      height: 350px;
+      overflow: hidden;
+      margin-block: auto;
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+//* Featured product section (section 2)
+.featuredProductSection {
+  margin-block-start: 3rem;
+
+  // Catalogue Banners
+  .catalogueBanners {
+    img {
+      box-sizing: border-box;
+      padding-inline: 1rem;
+      width: 100%;
+      @include config.media-breakpoint-up(lg) {
+        width: auto;
+      }
+    }
+  }
+
+  // Product cards container
+  .productCardsContainer {
+    margin-block-start: 2rem;
+
+    h3 {
+      text-align: center;
+      position: relative;
+      font-weight: bolder;
+      font-size: 2rem;
+      &::after {
+        position: absolute;
+        left: 0;
+        bottom: -15px;
+        right: 0;
+        height: 4px;
+        width: 80px;
+        background: #7fad39;
+        content: "";
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .productButtons {
+    margin-block-start: 3rem;
+    text-align: center;
+    li {
+      @include config.media-breakpoint-up(lg) {
+        display: inline;
+      }
+      list-style: none;
+      margin-inline: 0.8rem;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      font-family: config.$font-cairo;
+      color: #1c1c1c;
+
+      &.active-featured {
+        &::after {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0px;
+          width: auto;
+          height: 2px;
+          background: #7fad39;
+          content: "";
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+  .productCardsGrid {
+    @include config.media-breakpoint-up(xl) {
+      margin-inline: 4rem;
+    }
+    .productCard {
+      font-family: config.$font-cairo;
+      width: 18rem;
+      text-align: center;
+      border: none;
+      img {
+        width: 95%;
+      }
+      .productPrice {
+        font-weight: bolder;
+      }
+    }
+  }
+}

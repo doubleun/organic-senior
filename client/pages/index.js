@@ -3,25 +3,19 @@ import { signIn } from "next-auth/react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import SignUp from "../components/SignUp";
+import SignUpModal from "../components/SignUpModal";
 
 export default function Landing() {
   const [showSignUp, setShowSignUp] = useState();
   const callbackRedirect = {
-    callbackUrl: "http://localhost:3000/catalogue",
+    callbackUrl: "http://localhost:3000/mock-auth",
   };
 
   return (
-    <main className={"mainLandingPage" + (showSignUp ? "-overflowLock" : "")}>
+    <main className="mainLandingPage">
       <section className="landingTopSection">
-        <div
-          className={showSignUp && "signUpContainer"}
-          onClick={(e) =>
-            e.target.className === "signUpContainer" && setShowSignUp(false)
-          }
-        >
-          <SignUp showSignUp={showSignUp} />
-        </div>
+        {/* SignUp Modal */}
+        <SignUpModal showSignUp={showSignUp} setShowSignUp={setShowSignUp} />
         <div className="landingLoginBox">
           <div className="loginBoxContent">
             <h4>ORGANIC PLATFORM</h4>
@@ -41,7 +35,10 @@ export default function Landing() {
               Login
             </Button>
             <h5>Or</h5>
-            <Button variant="primary">
+            <Button
+              variant="primary"
+              onClick={() => signIn("facebook", callbackRedirect)}
+            >
               <img src="svgs/facebook_ico.svg" alt="" />
               Continue with Facebook
             </Button>

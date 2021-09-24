@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sass": "npx sass --watch .\\scss\\main.scss .\\styles\\main.css"
   },
   "dependencies": {
     "bootstrap": "^5.1.0",
@@ -14,7 +15,8 @@
     "next-auth": "^4.0.0-beta.2",
     "react": "17.0.2",
     "react-bootstrap": "^2.0.0-beta.6",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",

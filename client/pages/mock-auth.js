@@ -1,6 +1,6 @@
 import { signOut, getSession } from "next-auth/react";
 
-export default function Catalogue({ session, user }) {
+export default function MockAuth({ session, user }) {
   console.log(user);
 
   return (
