@@ -19,7 +19,7 @@ export default function Landing() {
         <div className="landingLoginBox">
           <div className="loginBoxContent">
             <h4>ORGANIC PLATFORM</h4>
-            <h2>Local Made</h2>
+            <h2>OGANI</h2>
             <Form>
               <Form.Group className="mb-3" controlId="formEmail">
                 {/* <Form.Label>Email Address</Form.Label> */}

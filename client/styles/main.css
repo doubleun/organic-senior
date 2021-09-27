@@ -11495,6 +11495,9 @@ textarea.form-control-lg {
   font-weight: bolder;
 }
 
+.mainNavbar {
+  border-bottom: 2px solid #7fad39;
+}
 .mainNavbar .navbar-brand {
   cursor: pointer;
 }
@@ -11509,7 +11512,6 @@ textarea.form-control-lg {
   cursor: pointer;
 }
 .mainNavbar .endNav {
-  margin-inline-end: 9rem;
   align-items: center;
 }
 .mainNavbar .endNav svg {
@@ -11530,6 +11532,121 @@ textarea.form-control-lg {
 .mainNavbar .endNav h6 {
   font-size: 0.95rem;
   margin: 0;
+}
+
+.profileSettingsPage {
+  padding-block: 0.5rem 4rem;
+}
+.profileSettingsPage .profileSettingsContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.profileSettingsPage .profileSettingsContainer section {
+  width: 25%;
+  margin-block-start: 2rem;
+  padding: 1.5rem 1rem;
+  box-shadow: 0px 2px 4px 0px #c5c5c5;
+}
+.profileSettingsPage .profileSettingsContainer section:nth-child(n+2):nth-child(-n+3) {
+  width: 40%;
+}
+.profileSettingsPage .profileSettingsContainer section #subtitle {
+  font-size: 0.75rem;
+  color: #868686;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul {
+  list-style: none;
+  padding: 0;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul li {
+  padding-inline-start: 16px;
+  cursor: pointer;
+  padding-block: 0.5rem;
+  margin-block: 0.5rem;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul li.active {
+  background-color: #f0f0f0;
+  padding-inline-start: 12px;
+  border-left: 4px solid #7fad39;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm input {
+  color: #464646;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .profileName {
+  display: flex;
+  justify-content: space-between;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .profileName div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 992px) {
+  .profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector div:nth-child(n+3) {
+    margin-block-start: 1rem;
+  }
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm input {
+  color: #464646;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 992px) {
+  .profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector div:nth-child(n+3) {
+    margin-block-start: 1rem;
+  }
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer .profilePicture .profileImg {
+  margin-block: 2rem;
+  text-align: center;
+}
+.profileSettingsPage .profileSettingsContainer .profilePicture .profileImg img {
+  border-radius: 50%;
+}
+.profileSettingsPage .profileSettingsContainer button {
+  width: 100%;
+}
+.profileSettingsPage .profileSettingsContainer .customDivider {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px solid #c5c5c5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.profileSettingsPage .profileSettingsContainer .customDivider .dividerText {
+  font-size: 14px;
+  background-color: white;
+  padding: 0 10px;
+  color: #bbbbbb;
+}
+.profileSettingsPage .confirmButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+.profileSettingsPage .confirmButtons button {
+  padding-inline: 2.4rem;
+  margin-inline-start: 1rem;
 }
 
 /*# sourceMappingURL=main.css.map */

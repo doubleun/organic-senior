@@ -1,21 +1,19 @@
+// Component imports
 import Link from "next/link";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 
+// Icon imports
 import { HiHeart } from "react-icons/hi";
 import { HiShoppingBag } from "react-icons/hi";
 
-import { getSession, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+// Auth and react imports
+import { signOut, useSession } from "next-auth/react";
 
 const MainNavbar = () => {
-  const [session, setSession] = useState();
-  useEffect(async () => {
-    const data = await getSession();
-    setSession(data);
-  }, []);
+  const { data: session } = useSession();
 
   return (
     <Navbar
@@ -24,6 +22,7 @@ const MainNavbar = () => {
       bg="light"
       variant="light"
       className="mainNavbar"
+      sticky="top"
     >
       <Container>
         <Link href="/home/catalogue">
@@ -37,10 +36,11 @@ const MainNavbar = () => {
             <Link href="/home/catalogue">
               <Nav.Link as="a">HOME</Nav.Link>
             </Link>
-            <Link href="/">
+            {/*// ! Edit route ! */}
+            <Link href="#">
               <Nav.Link as="a">SHOP</Nav.Link>
             </Link>
-            <Link href="/">
+            <Link href="#">
               <Nav.Link as="a">CONTACT</Nav.Link>
             </Link>
           </Nav>
@@ -57,6 +57,10 @@ const MainNavbar = () => {
               title={session ? session.user.name : "...."}
               className="loginStatus"
             >
+              <Link href="/settings/profile">
+                <NavDropdown.Item as="button">Settings</NavDropdown.Item>
+              </Link>
+              <NavDropdown.Divider />
               <NavDropdown.Item as="button" onClick={() => signOut()}>
                 Logout
               </NavDropdown.Item>

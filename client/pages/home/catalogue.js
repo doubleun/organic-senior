@@ -184,13 +184,13 @@ export async function getServerSideProps(context) {
       id: 6,
       name: "Crab Pool Security",
       category: "Vegetables",
-      image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
+      image: "https://technext.github.io/ogani/img/featured/feature-6.jpg",
     },
     {
       id: 7,
       name: "Crab Pool Security",
       category: "Oranges",
-      image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
+      image: "https://technext.github.io/ogani/img/featured/feature-7.jpg",
     },
   ];
 
