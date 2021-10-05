@@ -98,10 +98,12 @@
     // Profile picture section
     .profilePicture {
       .profileImg {
+        position: relative;
         margin-block: 2rem;
         text-align: center;
         img {
           border-radius: 50%;
+          z-index: -1;
         }
       }
     }
@@ -131,6 +133,48 @@
     button {
       padding-inline: 2.4rem;
       margin-inline-start: 1rem;
+    }
+  }
+}
+// Modals
+// Setting updated modal
+// .settingsUpdatedModal {
+//   position: absolute;
+//   inset: 0;
+//   // transform: translateY(50%);
+//   // margin-inline: auto;
+//   background-color: rgba(50, 50, 50, 0.5);
+
+//   .settingsUpdatedContent {
+//     background-color: white;
+//     width: 50%;
+//     position: fixed;
+//     margin: 2% auto;
+//     left: 0;
+//     right: 0;
+//     padding: 1.4rem;
+
+//   }
+// }
+
+// Alert submitted
+.alertSubmiited {
+  position: fixed;
+  top: 48px;
+  right: 24px;
+  left: auto;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  svg {
+    margin-inline-end: 0.4rem;
+    width: 1.4rem;
+    height: auto;
+
+    &:last-child {
+      cursor: pointer;
+      width: 1.6rem;
+      margin-inline-start: 0.6rem;
     }
   }
 }

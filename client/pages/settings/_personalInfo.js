@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 // React imports
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function PersonalInfo({
   provinces,
@@ -12,16 +12,35 @@ export default function PersonalInfo({
   userInfo,
   u,
 }) {
-  const [selectedProvince, setSelectedProvince] = useState(provinces[0].amphoe);
-  const [selectedAmphoe, setSelectedAmphoe] = useState(
-    provinces[0].amphoe[0].districts
+  let provinceIndex, amphoeIndex;
+
+  // Get province index
+  if (userInfo.province) {
+    provinceIndex = provinces
+      .map((province) => province.name)
+      .indexOf(userInfo.province);
+  }
+
+  // Get district index
+  if (userInfo.district) {
+    amphoeIndex = provinces[provinceIndex].amphoe
+      .map((amphoe) => amphoe.name)
+      .indexOf(userInfo.district);
+  }
+
+  // Set initial indexs
+  const [selectedProvince, setSelectedProvince] = useState(
+    userInfo.province ? provinceIndex : 0
   );
-  const [districtCode, setDistrictCode] = useState(
-    provinces[0].amphoe[0].districts[0].zipcode
+  const [selectedAmphoe, setSelectedAmphoe] = useState(
+    userInfo.district ? amphoeIndex : 0
+  );
+  const [postalCode, setPostalCode] = useState(
+    userInfo.postalCode ? userInfo.postalCode : ""
   );
 
   // Initial inputs
-  console.log(userInfo);
+  // console.log(userInfo);
   useEffect(() => {
     u.userFirstName.current.value = userInfo.name.split(" ")[0];
     u.userLastName.current.value = userInfo.name.split(" ")[1];
@@ -30,7 +49,6 @@ export default function PersonalInfo({
     u.userProvince.current.value = userInfo?.province;
     u.userDistrict.current.value = userInfo?.district;
     u.userSubDistrict.current.value = userInfo?.subDistrict;
-    u.userPostalCode.current.value = userInfo?.postalCode;
     u.userSocial.current.value = userInfo?.socialLink;
   }, []);
 
@@ -126,16 +144,7 @@ export default function PersonalInfo({
               id="userProvince"
               aria-label="Default select example"
               onChange={(e) => {
-                setSelectedProvince(
-                  provinces[e.target.selectedOptions[0].id].amphoe
-                );
-                setSelectedAmphoe(
-                  provinces[e.target.selectedOptions[0].id].amphoe[0].districts
-                );
-                setDistrictCode(
-                  provinces[e.target.selectedOptions[0].id].amphoe[0]
-                    .districts[0].zipcode
-                );
+                setSelectedProvince(e.target.selectedOptions[0].id);
               }}
               ref={u.userProvince}
             >
@@ -153,18 +162,11 @@ export default function PersonalInfo({
               id="userDistrict"
               aria-label="Default select example"
               onChange={(e) => {
-                setSelectedAmphoe(
-                  selectedProvince[Number(e.target.selectedOptions[0].id)]
-                    .districts
-                );
-                setDistrictCode(
-                  selectedProvince[e.target.selectedOptions[0].id].districts[0]
-                    .zipcode
-                );
+                setSelectedAmphoe(e.target.selectedOptions[0].id);
               }}
               ref={u.userDistrict}
             >
-              {selectedProvince.map((amphoe, index) => (
+              {provinces[selectedProvince].amphoe.map((amphoe, index) => (
                 <option
                   id={index}
                   key={amphoe.name + index}
@@ -182,17 +184,21 @@ export default function PersonalInfo({
               id="userSubDistrict"
               aria-label="Default select example"
               onChange={(e) => {
-                setDistrictCode(
-                  selectedAmphoe[Number(e.target.selectedOptions[0].id)].zipcode
-                );
+                setPostalCode(e.target.selectedOptions[0].id);
               }}
               ref={u.userSubDistrict}
             >
-              {selectedAmphoe.map((sub, index) => (
-                <option id={index} key={sub.district} value={sub.district}>
-                  {sub.district}
-                </option>
-              ))}
+              {provinces[selectedProvince].amphoe[selectedAmphoe].districts.map(
+                (sub) => (
+                  <option
+                    id={sub.zipcode}
+                    key={sub.district}
+                    value={sub.district}
+                  >
+                    {sub.district}
+                  </option>
+                )
+              )}
             </Form.Select>
           </div>
           {/* Postal code */}
@@ -201,8 +207,8 @@ export default function PersonalInfo({
             <Form.Control
               type="number"
               placeholder="Zip code"
-              value={districtCode}
-              onChange={(e) => setDistrictCode(e.target.value)}
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
               id="userPostalCode"
               ref={u.userPostalCode}
             />

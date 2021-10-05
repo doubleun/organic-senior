@@ -2,22 +2,26 @@ import prisma from "../../../prisma/client";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const updateUser = await prisma.user.update({
-      where: {
-        email: req.body.email,
-      },
-      data: {
-        name: req.body.name,
-        phone: req.body.phone,
-        address: req.body.address,
-        province: req.body.province,
-        district: req.body.district,
-        subDistrict: req.body.subDistrict,
-        postalCode: Number(req.body.postalCode),
-        socialLink: req.body.socialLink,
-      },
-    });
-    res.status(200).json(updateUser);
+    try {
+      await prisma.user.update({
+        where: {
+          email: req.body.email,
+        },
+        data: {
+          name: req.body.name,
+          phone: req.body.phone,
+          address: req.body.address,
+          province: req.body.province,
+          district: req.body.district,
+          subDistrict: req.body.subDistrict,
+          postalCode: Number(req.body.postalCode),
+          socialLink: req.body.socialLink,
+        },
+      });
+      res.status(200).send({ msg: "success" });
+    } catch (err) {
+      res.status(500).send({ msg: "success", err });
+    }
   }
 
   // if (req.method === "GET") {
