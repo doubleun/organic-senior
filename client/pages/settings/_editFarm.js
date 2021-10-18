@@ -3,15 +3,58 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 // React imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function EditFarm({ provinces, displayProfile }) {
-  const [selectedProvince, setSelectedProvince] = useState(provinces[0].amphoe);
-  const [selectedAmphoe, setSelectedAmphoe] = useState(
-    provinces[0].amphoe[0].districts
+export default function EditFarm({
+  provinces,
+  displayProfile,
+  farmInfo,
+  handleFarmCheck,
+  f,
+}) {
+  let provinceIndex, amphoeIndex;
+
+  if (farmInfo) {
+    // Get province index
+    if (farmInfo.province) {
+      provinceIndex = provinces
+        .map((province) => province.name)
+        .indexOf(farmInfo.province);
+    }
+
+    // Get district index
+    if (farmInfo.district) {
+      amphoeIndex = provinces[provinceIndex].amphoe
+        .map((amphoe) => amphoe.name)
+        .indexOf(farmInfo.district);
+    }
+    // Initial inputs
+    // console.log(farmInfo);
+    useEffect(() => {
+      f.farmName.current.value = farmInfo?.name;
+      f.farmAddress.current.value = farmInfo?.address;
+      f.farmProvince.current.value = farmInfo?.province;
+      f.farmDistrict.current.value = farmInfo?.district;
+      f.farmSubDistrict.current.value = farmInfo?.subDistrict;
+      f.farmAbout.current.value = farmInfo?.about;
+      f.farmPhone.current.value = farmInfo?.phone;
+      f.farmPostalCode.current.value = farmInfo?.postalCode;
+      f.farmSocialLink.current.value = farmInfo?.socialLink;
+
+      f.farmStoreFront.current.checked = farmInfo?.storeFront;
+      f.farmDelivery.current.checked = farmInfo?.delivery;
+    }, []);
+  }
+
+  // Set initial indexs
+  const [selectedProvince, setSelectedProvince] = useState(
+    farmInfo ? provinceIndex : 0
   );
-  const [districtCode, setDistrictCode] = useState(
-    provinces[0].amphoe[0].districts[0].zipcode
+  const [selectedAmphoe, setSelectedAmphoe] = useState(
+    farmInfo ? amphoeIndex : 0
+  );
+  const [postalCode, setPostalCode] = useState(
+    farmInfo ? farmInfo.postalCode : ""
   );
 
   return (
@@ -22,11 +65,16 @@ export default function EditFarm({ provinces, displayProfile }) {
       <h5>Edit Farm</h5>
       <p id="subtitle">Farm informations</p>
       <Form className="editFarmForm">
-        {/* First and last name */}
+        {/* Farm name */}
         <div className="mb-3">
           <Form.Group className="">
             <Form.Label>Farm Name</Form.Label>
-            <Form.Control type="text" placeholder="Farm name" id="farmName" />
+            <Form.Control
+              type="text"
+              placeholder="Farm name"
+              id="farmName"
+              ref={f.farmName}
+            />
           </Form.Group>
         </div>
 
@@ -42,6 +90,7 @@ export default function EditFarm({ provinces, displayProfile }) {
             rows={2}
             placeholder="Farm address"
             id="farmAddress"
+            ref={f.farmAddress}
           />
         </Form.Group>
 
@@ -54,20 +103,12 @@ export default function EditFarm({ provinces, displayProfile }) {
               id="farmProvince"
               aria-label="Default select example"
               onChange={(e) => {
-                setSelectedProvince(
-                  provinces[e.target.selectedOptions[0].id].amphoe
-                );
-                setSelectedAmphoe(
-                  provinces[e.target.selectedOptions[0].id].amphoe[0].districts
-                );
-                setDistrictCode(
-                  provinces[e.target.selectedOptions[0].id].amphoe[0]
-                    .districts[0].zipcode
-                );
+                setSelectedProvince(e.target.selectedOptions[0].id);
               }}
+              ref={f.farmProvince}
             >
               {provinces.map((province, index) => (
-                <option id={index} key={province.name}>
+                <option id={index} key={province.name} value={province.name}>
                   {province.name}
                 </option>
               ))}
@@ -77,21 +118,19 @@ export default function EditFarm({ provinces, displayProfile }) {
           <div>
             <Form.Label>District</Form.Label>
             <Form.Select
-              id="farmDistrict"
+              id="farmProvince"
               aria-label="Default select example"
               onChange={(e) => {
-                setSelectedAmphoe(
-                  selectedProvince[Number(e.target.selectedOptions[0].id)]
-                    .districts
-                );
-                setDistrictCode(
-                  selectedProvince[e.target.selectedOptions[0].id].districts[0]
-                    .zipcode
-                );
+                setSelectedAmphoe(e.target.selectedOptions[0].id);
               }}
+              ref={f.farmDistrict}
             >
-              {selectedProvince.map((amphoe, index) => (
-                <option id={index} key={amphoe.name + index}>
+              {provinces[selectedProvince].amphoe.map((amphoe, index) => (
+                <option
+                  id={index}
+                  key={amphoe.name + index}
+                  value={amphoe.name}
+                >
                   {amphoe.name}
                 </option>
               ))}
@@ -104,27 +143,33 @@ export default function EditFarm({ provinces, displayProfile }) {
               id="farmSubDistrict"
               aria-label="Default select example"
               onChange={(e) => {
-                setDistrictCode(
-                  selectedAmphoe[Number(e.target.selectedOptions[0].id)].zipcode
-                );
+                setPostalCode(e.target.selectedOptions[0].id);
               }}
+              ref={f.farmSubDistrict}
             >
-              {selectedAmphoe.map((sub, index) => (
-                <option id={index} key={index}>
-                  {sub.district}
-                </option>
-              ))}
+              {provinces[selectedProvince].amphoe[selectedAmphoe].districts.map(
+                (sub) => (
+                  <option
+                    id={sub.zipcode}
+                    key={sub.district}
+                    value={sub.district}
+                  >
+                    {sub.district}
+                  </option>
+                )
+              )}
             </Form.Select>
           </div>
           {/* Postal code */}
           <div>
             <Form.Label>Postal code</Form.Label>
             <Form.Control
-              id="farmPostalCode"
               type="number"
               placeholder="Zip code"
-              value={districtCode}
-              onChange={(e) => setDistrictCode(e.target.value)}
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              id="farmPostalCode"
+              ref={f.farmPostalCode}
             />
           </div>
         </Form.Group>
@@ -141,6 +186,7 @@ export default function EditFarm({ provinces, displayProfile }) {
             rows={3}
             placeholder="About farm"
             id="farmAbout"
+            ref={f.farmAbout}
           />
         </Form.Group>
 
@@ -167,6 +213,7 @@ export default function EditFarm({ provinces, displayProfile }) {
             type="number"
             placeholder="Phone number"
             id="farmPhone"
+            ref={f.farmPhone}
           />
         </Form.Group>
 
@@ -177,6 +224,7 @@ export default function EditFarm({ provinces, displayProfile }) {
             type="text"
             placeholder="Facebook or LINE"
             id="farmSocialLink"
+            ref={f.farmSocialLink}
           />
         </Form.Group>
 
@@ -190,8 +238,19 @@ export default function EditFarm({ provinces, displayProfile }) {
           label="Store front"
           type="checkbox"
           id="storeFront"
+          value="Store Front"
+          onChange={handleFarmCheck}
+          ref={f.farmStoreFront}
         />
-        <Form.Check inline label="Delivery" type="checkbox" id="delivery" />
+        <Form.Check
+          inline
+          label="Delivery"
+          type="checkbox"
+          id="delivery"
+          value="Delivery"
+          onChange={handleFarmCheck}
+          ref={f.farmDelivery}
+        />
       </Form>
     </section>
   );

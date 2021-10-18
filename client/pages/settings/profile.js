@@ -20,9 +20,13 @@ import FileUploadModal from "../../components/Modal/FileUploadModal";
 // SQL Database
 import prisma from "../../prisma/client";
 
-export default function EditProfile({ provinces, user, userInfo }) {
+export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
   const [displayProfile, setDisplayProfile] = useState(true);
   const [displaySubmitted, setDisplaySubmitted] = useState(false);
+  const [farmSellingMethod, setFarmSellingMethod] = useState({
+    storeFront: false,
+    delivery: false,
+  });
 
   // User form refs
   const userFirstName = useRef();
@@ -41,10 +45,12 @@ export default function EditProfile({ provinces, user, userInfo }) {
   const farmProvince = useRef();
   const farmDistrict = useRef();
   const farmSubDistrict = useRef();
+  const farmPostalCode = useRef();
   const farmAbout = useRef();
   const farmPhone = useRef();
   const farmSocialLink = useRef();
-  const farmSellingMethod = useRef();
+  const farmStoreFront = useRef();
+  const farmDelivery = useRef();
 
   // Submit function
   const handleSubmit = async () => {
@@ -64,6 +70,19 @@ export default function EditProfile({ provinces, user, userInfo }) {
         subDistrict: userSubDistrict.current.value,
         postalCode: userPostalCode.current.value,
         socialLink: userSocial.current.value,
+
+        // Farm info
+        farmName: farmName.current.value,
+        farmAddress: farmAddress.current.value,
+        farmProvince: farmProvince.current.value,
+        farmDistrict: farmDistrict.current.value,
+        farmSubDistrict: farmSubDistrict.current.value,
+        farmPostalCode: farmPostalCode.current.value,
+        farmAbout: farmAbout.current.value,
+        farmPhone: farmPhone.current.value,
+        farmSocialLink: farmSocialLink.current.value,
+        farmStoreFront: farmSellingMethod.storeFront,
+        farmDelivery: farmSellingMethod.delivery,
       }),
     });
 
@@ -71,6 +90,14 @@ export default function EditProfile({ provinces, user, userInfo }) {
     if (userRes.status === 200) {
       setDisplaySubmitted(true);
       setTimeout(() => setDisplaySubmitted(false), 6000);
+    }
+  };
+
+  const handleFarmCheck = (e) => {
+    if (e.target.checked) {
+      setFarmSellingMethod((prev) => ({ ...prev, [e.target.id]: true }));
+    } else {
+      setFarmSellingMethod((prev) => ({ ...prev, [e.target.id]: false }));
     }
   };
 
@@ -127,16 +154,21 @@ export default function EditProfile({ provinces, user, userInfo }) {
         <EditFarm
           provinces={provinces}
           displayProfile={displayProfile}
+          farmInfo={farmInfo}
+          handleFarmCheck={handleFarmCheck}
           f={{
             farmName,
             farmAddress,
             farmProvince,
             farmDistrict,
             farmSubDistrict,
+            farmPostalCode,
             farmAbout,
             farmPhone,
             farmSocialLink,
             farmSellingMethod,
+            farmStoreFront,
+            farmDelivery,
           }}
         />
 
@@ -189,11 +221,18 @@ export async function getServerSideProps(context) {
       email: user.email,
     },
   });
+
+  // Fetch farm info
+  const farmInfo = await prisma.farmMain.findFirst({
+    where: {
+      user_id: userInfo.id,
+    },
+  });
   await prisma.$disconnect();
   // console.log(userInfo);
 
   return {
-    props: { user, provinces: provinces_data, userInfo },
+    props: { user, provinces: provinces_data, userInfo, farmInfo },
   };
 }
 
