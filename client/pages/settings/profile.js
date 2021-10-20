@@ -1,3 +1,6 @@
+// TODO: Loading animation while fetching, lock screen while updating profile, delete previous profile image (perferred)
+// TODO: Upload for farm pics
+
 // Bootstrap imports
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
@@ -15,7 +18,7 @@ import { BsCheck2Circle, BsX } from "react-icons/bs";
 import Layout from "../layout/_layout";
 import PersonalInfo from "./_personalInfo";
 import EditFarm from "./_editFarm";
-import FileUploadModal from "../../components/Modal/FileUploadModal";
+import FileUploadModal from "../../components/Modal/FileUploadModal"; //! Remove soon ?
 
 // SQL Database
 import prisma from "../../prisma/client";
@@ -27,6 +30,7 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
     storeFront: false,
     delivery: false,
   });
+  const [selectedImage, setSelectedImage] = useState();
 
   // User form refs
   const userFirstName = useRef();
@@ -98,6 +102,40 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
       setFarmSellingMethod((prev) => ({ ...prev, [e.target.id]: true }));
     } else {
       setFarmSellingMethod((prev) => ({ ...prev, [e.target.id]: false }));
+    }
+  };
+
+  // Handle profile upload
+  const handleProfileUpload = async () => {
+    // If no image selected, stop the function
+    if (!selectedImage) return;
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+
+    // Upload to cloudinary
+    const res = await fetch("http://localhost:3000/api/settings/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const newImage = await res.json();
+
+    // Update database to cloudinary
+    const resUpdate = await fetch(
+      "http://localhost:3000/api/settings/update-profile",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: userInfo.email,
+          img_url: newImage.img_url,
+        }),
+      }
+    );
+    if (resUpdate.status === 200) {
+      setDisplaySubmitted(true);
+      setTimeout(() => setDisplaySubmitted(false), 6000);
     }
   };
 
@@ -183,7 +221,15 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
           </div>
 
           {/* Add profile image button */}
-          <Button variant="success">Upload profile image</Button>
+          <input
+            className="form-control mb-2"
+            accept=".jpg, .jpeg, .png"
+            type="file"
+            onChange={(e) => setSelectedImage(e.target.files[0])}
+          />
+          <Button variant="success" onClick={handleProfileUpload}>
+            Upload profile image
+          </Button>
         </section>
       </div>
 
@@ -232,7 +278,12 @@ export async function getServerSideProps(context) {
   // console.log(userInfo);
 
   return {
-    props: { user, provinces: provinces_data, userInfo, farmInfo },
+    props: {
+      user,
+      provinces: provinces_data,
+      userInfo,
+      farmInfo,
+    },
   };
 }
 
