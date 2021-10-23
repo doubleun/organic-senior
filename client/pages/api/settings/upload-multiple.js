@@ -16,6 +16,7 @@ export default async (req, res) => {
   const options = {
     filter: ({ mimetype }) => mimetype && mimetype.includes("image"),
     keepExtensions: true,
+    multiples: true,
   };
 
   // New instance
@@ -30,15 +31,33 @@ export default async (req, res) => {
 
   form.parse(req, async (err, fields, files) => {
     try {
-      // Upload to cloudinary
-      const uploadRes = await cloudinary.uploader.upload(files.image.path);
+      let finalRes = [];
 
-      res.json({
-        message: "success",
-        full_results: uploadRes,
-        asset_id: uploadRes.asset_id,
-        img_url: uploadRes.url,
-      });
+      // If multiple files
+      if (files.image.length > 1) {
+        for await (let img of files.image) {
+          const uploadRes = await cloudinary.uploader.upload(img.path);
+          finalRes.push({
+            message: "success",
+            asset_id: uploadRes.asset_id,
+            img_url: uploadRes.url,
+          });
+          console.log("farm upload images log: " + uploadRes.asset_id);
+        }
+
+        res.json({
+          message: "All success",
+          detail: finalRes,
+          image_urls: finalRes.map((img) => img.img_url),
+        });
+      } else {
+        const uploadRes = await cloudinary.uploader.upload(files.image.path);
+        res.json({
+          message: "All success",
+          detail: uploadRes,
+          image_urls: [uploadRes.url],
+        });
+      }
     } catch (e) {
       return res.status(422).send({ message: e.message, e: e });
     }

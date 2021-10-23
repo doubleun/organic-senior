@@ -1,7 +1,78 @@
+@use "../config";
+
+@mixin farmPill {
+  cursor: pointer;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+}
+
 .farmDetails {
   .farmImages {
+    position: relative;
     display: flex;
-    justify-content: space-between;
+    gap: 0.4rem;
+    // justify-content: space-evenly;
+  }
+  .editFarmImagesButton {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    background-color: white;
+    padding: 0.6rem;
+    border-radius: 4rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .farmImageUploadModal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    inset: 0;
+    width: 50%;
+    height: auto;
+    margin-inline: auto;
+    margin-block: 1.6rem;
+    background-color: white;
+    padding-block: 1rem;
+    padding-inline: 2rem;
+    border-radius: 0.6rem;
+    z-index: 3;
+
+    h4 {
+      margin: 0;
+    }
+    p {
+      font-size: 14px;
+      font-style: italic;
+      margin-block-end: 4px;
+    }
+
+    .farmPreviewImages {
+      display: flex;
+      justify-content: space-evenly;
+      width: 90%;
+      margin-block-start: 0.2rem;
+      margin-block-end: 0.8rem;
+      flex-grow: 1;
+    }
+
+    input {
+      width: 50%;
+    }
+
+    .farmUploadImageButtons {
+      display: flex;
+      width: 50%;
+      justify-content: space-between;
+      button {
+        width: 48%;
+      }
+    }
   }
   .farmContainer {
     // Farm detail (ie. banner)
@@ -59,12 +130,13 @@
       .farmAbout {
         padding-inline-end: 6rem;
         p {
+          transition: max-height 0.2s ease-out;
           font-size: 0.95rem;
-          height: 20px;
+          max-height: 20px;
+          height: auto;
           overflow: hidden;
           &#more {
-            height: auto;
-            overflow: visible;
+            max-height: 100px;
           }
         }
         a {
@@ -73,5 +145,106 @@
         }
       }
     }
+  }
+}
+
+// Farm content
+.farmContent {
+  position: relative;
+  margin-block-start: 2rem;
+
+  .farmTopContent {
+    display: flex;
+
+    .productSearchInput {
+      width: 16%;
+      transition: width 0.2s ease-out;
+      &:focus {
+        width: 30%;
+      }
+    }
+  }
+  .farmBodyContent {
+    display: flex;
+    .farmBodyContentCategories {
+      cursor: pointer;
+      width: 20%;
+    }
+    .farmBodyContentItems {
+      margin-inline-start: 2rem;
+      width: auto;
+
+      .farmEditItemsMenu {
+        display: flex;
+        align-items: flex-start;
+
+        h4 {
+          margin-block-end: 1rem;
+        }
+        .farmEditItemsButton {
+          &-green {
+            @include farmPill;
+            color: white;
+            background-color: config.$custom-primary;
+          }
+          &-gray {
+            @include farmPill;
+            color: white;
+            background-color: gray;
+          }
+        }
+      }
+      .farmItemsGrid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(4, 1fr);
+
+        .farmItemCard {
+          padding: 0.6rem;
+          border: none;
+          cursor: pointer;
+          transition: box-shadow 0.2s ease-out;
+          &:hover {
+            box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.1);
+          }
+          .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0.6rem 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+//* For modal *//
+// Main of the farm page
+.farmPageMain {
+  position: relative;
+
+  &#modal {
+    &::after {
+      background-color: black;
+      opacity: 0.65;
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+    }
+  }
+  .farmAddNewItemModal {
+    position: absolute;
+    background-color: white;
+    padding: 0.6rem;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    height: fit-content;
+    z-index: 3;
   }
 }

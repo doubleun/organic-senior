@@ -73,6 +73,23 @@
       }
 
       // Edit farm section (ie. middle one)
+      .editFarmFormTitle {
+        display: flex;
+
+        .goToFarmButton {
+          display: flex;
+          align-items: center;
+          font-size: 13px;
+          cursor: pointer;
+          margin-inline-start: 1.6rem;
+          background-color: config.$custom-primary;
+          color: white;
+          padding-block: 1px;
+          padding-inline: 6px;
+          border-radius: 0.4rem;
+          margin-bottom: 0.5rem;
+        }
+      }
       .editFarmForm {
         input {
           color: rgb(70, 70, 70);

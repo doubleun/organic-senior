@@ -11598,6 +11598,22 @@ textarea.form-control-lg {
 .profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector div {
   width: 46%;
 }
+.profileSettingsPage .profileSettingsContainer section .editFarmFormTitle {
+  display: flex;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmFormTitle .goToFarmButton {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+  margin-inline-start: 1.6rem;
+  background-color: #7fad39;
+  color: white;
+  padding-block: 1px;
+  padding-inline: 6px;
+  border-radius: 0.4rem;
+  margin-bottom: 0.5rem;
+}
 .profileSettingsPage .profileSettingsContainer section .editFarmForm input {
   color: #464646;
 }
@@ -11673,8 +11689,63 @@ textarea.form-control-lg {
 }
 
 .farmDetails .farmImages {
+  position: relative;
   display: flex;
+  gap: 0.4rem;
+}
+.farmDetails .editFarmImagesButton {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  background-color: white;
+  padding: 0.6rem;
+  border-radius: 4rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+}
+.farmDetails .farmImageUploadModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inset: 0;
+  width: 50%;
+  height: auto;
+  margin-inline: auto;
+  margin-block: 1.6rem;
+  background-color: white;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  border-radius: 0.6rem;
+  z-index: 3;
+}
+.farmDetails .farmImageUploadModal h4 {
+  margin: 0;
+}
+.farmDetails .farmImageUploadModal p {
+  font-size: 14px;
+  font-style: italic;
+  margin-block-end: 4px;
+}
+.farmDetails .farmImageUploadModal .farmPreviewImages {
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  margin-block-start: 0.2rem;
+  margin-block-end: 0.8rem;
+  flex-grow: 1;
+}
+.farmDetails .farmImageUploadModal input {
+  width: 50%;
+}
+.farmDetails .farmImageUploadModal .farmUploadImageButtons {
+  display: flex;
+  width: 50%;
   justify-content: space-between;
+}
+.farmDetails .farmImageUploadModal .farmUploadImageButtons button {
+  width: 48%;
 }
 .farmDetails .farmContainer .farmProfileRow {
   display: flex;
@@ -11724,17 +11795,116 @@ textarea.form-control-lg {
   padding-inline-end: 6rem;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAbout p {
+  transition: max-height 0.2s ease-out;
   font-size: 0.95rem;
-  height: 20px;
+  max-height: 20px;
+  height: auto;
   overflow: hidden;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAbout p#more {
-  height: auto;
-  overflow: visible;
+  max-height: 100px;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAbout a {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.farmContent {
+  position: relative;
+  margin-block-start: 2rem;
+}
+.farmContent .farmTopContent {
+  display: flex;
+}
+.farmContent .farmTopContent .productSearchInput {
+  width: 16%;
+  transition: width 0.2s ease-out;
+}
+.farmContent .farmTopContent .productSearchInput:focus {
+  width: 30%;
+}
+.farmContent .farmBodyContent {
+  display: flex;
+}
+.farmContent .farmBodyContent .farmBodyContentCategories {
+  cursor: pointer;
+  width: 20%;
+}
+.farmContent .farmBodyContent .farmBodyContentItems {
+  margin-inline-start: 2rem;
+  width: auto;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu {
+  display: flex;
+  align-items: flex-start;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu h4 {
+  margin-block-end: 1rem;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-green {
+  cursor: pointer;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #7fad39;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-gray {
+  cursor: pointer;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  color: white;
+  background-color: gray;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard {
+  padding: 0.6rem;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-out;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard:hover {
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.1);
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+}
+
+.farmPageMain {
+  position: relative;
+}
+.farmPageMain#modal::after {
+  background-color: black;
+  opacity: 0.65;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+}
+.farmPageMain .farmAddNewItemModal {
+  position: absolute;
+  background-color: white;
+  padding: 0.6rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: fit-content;
+  z-index: 3;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -5,16 +5,21 @@ import Button from "react-bootstrap/Button";
 // React imports
 import { useState, useEffect } from "react";
 
+// Nextjs imports
+import { useRouter } from "next/router";
+import Image from "next/image";
+
 export default function EditFarm({
   provinces,
   displayProfile,
   farmInfo,
   handleFarmCheck,
   f,
+  handleUploadImage,
 }) {
   let provinceIndex, amphoeIndex;
 
-  if (farmInfo) {
+  if (farmInfo?.province && farmInfo?.district) {
     // Get province index
     if (farmInfo.province) {
       provinceIndex = provinces
@@ -48,21 +53,36 @@ export default function EditFarm({
 
   // Set initial indexs
   const [selectedProvince, setSelectedProvince] = useState(
-    farmInfo ? provinceIndex : 0
+    farmInfo?.province ? provinceIndex : 0
   );
   const [selectedAmphoe, setSelectedAmphoe] = useState(
-    farmInfo ? amphoeIndex : 0
+    farmInfo?.district ? amphoeIndex : 0
   );
   const [postalCode, setPostalCode] = useState(
-    farmInfo ? farmInfo.postalCode : ""
+    farmInfo?.postalCode ? farmInfo.postalCode : ""
   );
+
+  // Images state
+  const [selectedSocialImage, setSelectedSocialImage] = useState();
+  const [selectedOrganicImage, setSelectedOrganicImage] = useState();
+
+  // useRouter
+  const router = useRouter();
 
   return (
     <section
-      className="profilePersonal"
+      className="farmForm"
       style={!displayProfile ? { display: "unset" } : { display: "none" }}
     >
-      <h5>Edit Farm</h5>
+      <div className="editFarmFormTitle">
+        <h5>Edit Farm</h5>
+        {/* If a user has a farm we want to show "view farm" button that will take them to thier farm page */}
+        {farmInfo ? (
+          <div className="goToFarmButton" onClick={() => router.push("/farm")}>
+            View farm
+          </div>
+        ) : null}
+      </div>
       <p id="subtitle">Farm informations</p>
       <Form className="editFarmForm">
         {/* Farm name */}
@@ -193,12 +213,66 @@ export default function EditFarm({
         {/* Upload social security card and organic cert */}
         <div className="uploadSocialAndCert">
           <div className="mb-3">
-            <Form.Label>Upload social security card image</Form.Label>
-            <Button variant="success">Upload image</Button>
+            <Form.Label>Social security card image</Form.Label>
+            {/* Display social security card image or upload buttons */}
+            {farmInfo?.socialImage ? (
+              <div>
+                <Image
+                  src={farmInfo.socialImage}
+                  width="200px"
+                  height="200px"
+                />
+              </div>
+            ) : (
+              <>
+                <input
+                  className="form-control mb-2"
+                  accept=".jpg, .jpeg, .png"
+                  type="file"
+                  onChange={(e) => setSelectedSocialImage(e.target.files[0])}
+                />
+                <Button
+                  variant="success"
+                  disabled={!selectedSocialImage}
+                  onClick={() =>
+                    handleUploadImage("social-security", selectedSocialImage)
+                  }
+                >
+                  Upload social security card image
+                </Button>
+              </>
+            )}
           </div>
           <div className="mb-3">
-            <Form.Label>Upload organic certification image</Form.Label>
-            <Button variant="success">Upload image</Button>
+            <Form.Label>Organic certification image</Form.Label>
+            {/* Display organic certification image or upload buttons */}
+            {farmInfo?.organicCertImage ? (
+              <div>
+                <Image
+                  src={farmInfo.organicCertImage}
+                  width="200px"
+                  height="200px"
+                />
+              </div>
+            ) : (
+              <>
+                <input
+                  className="form-control mb-2"
+                  accept=".jpg, .jpeg, .png"
+                  type="file"
+                  onChange={(e) => setSelectedOrganicImage(e.target.files[0])}
+                />
+                <Button
+                  variant="success"
+                  disabled={!selectedOrganicImage}
+                  onClick={() =>
+                    handleUploadImage("organic-cert", selectedOrganicImage)
+                  }
+                >
+                  Upload organic certification image
+                </Button>
+              </>
+            )}
           </div>
         </div>
 

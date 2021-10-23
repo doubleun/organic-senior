@@ -97,6 +97,7 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
     }
   };
 
+  // Handle farm selling methods check box
   const handleFarmCheck = (e) => {
     if (e.target.checked) {
       setFarmSellingMethod((prev) => ({ ...prev, [e.target.id]: true }));
@@ -106,11 +107,11 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
   };
 
   // Handle profile upload
-  const handleProfileUpload = async () => {
+  const handleUploadImage = async (action, image) => {
     // If no image selected, stop the function
-    if (!selectedImage) return;
+    if (!image) return;
     const formData = new FormData();
-    formData.append("image", selectedImage);
+    formData.append("image", image);
 
     // Upload to cloudinary
     const res = await fetch("http://localhost:3000/api/settings/upload", {
@@ -121,13 +122,14 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
 
     // Update database to cloudinary
     const resUpdate = await fetch(
-      "http://localhost:3000/api/settings/update-profile",
+      "http://localhost:3000/api/settings/update-database",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          action,
           email: userInfo.email,
           img_url: newImage.img_url,
         }),
@@ -208,6 +210,7 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
             farmStoreFront,
             farmDelivery,
           }}
+          handleUploadImage={handleUploadImage}
         />
 
         {/* Profile pic */}
@@ -227,7 +230,11 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
             type="file"
             onChange={(e) => setSelectedImage(e.target.files[0])}
           />
-          <Button variant="success" onClick={handleProfileUpload}>
+          <Button
+            variant="success"
+            disabled={!selectedImage}
+            onClick={() => handleUploadImage("profile", selectedImage)}
+          >
             Upload profile image
           </Button>
         </section>

@@ -79,9 +79,9 @@ model FarmMain {
   subDistrict   String?
   postalCode    Int?
   socialLink    String?
-  // socialImage String?
-  // organicCertImage String?
-  // sellingMethod String?
+  socialImage String?
+  organicCertImage String?
+  farmImages String[]
   storeFront  Boolean?
   delivery Boolean?
   rating        Int?
