@@ -18,10 +18,6 @@
       &:nth-child(n + 2):nth-child(-n + 3) {
         width: 40%;
       }
-      #subtitle {
-        font-size: 0.75rem;
-        color: rgb(134, 134, 134);
-      }
 
       // Profile settings nav
       .profileSettingsNav {
@@ -127,22 +123,6 @@
     button {
       width: 100%;
     }
-
-    // Custom divider
-    .customDivider {
-      width: 100%;
-      height: 15px;
-      border-bottom: 1px solid #c5c5c5;
-      text-align: center;
-      margin-bottom: 20px;
-
-      .dividerText {
-        font-size: 14px;
-        background-color: white;
-        padding: 0 10px;
-        color: #bbbbbb;
-      }
-    }
   }
   .confirmButtons {
     display: flex;
@@ -194,4 +174,26 @@
       margin-inline-start: 0.6rem;
     }
   }
+}
+
+// Custom divider
+.customDivider {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px solid #c5c5c5;
+  text-align: center;
+  margin-bottom: 20px;
+
+  .dividerText {
+    font-size: 14px;
+    background-color: white;
+    padding: 0 10px;
+    color: #bbbbbb;
+  }
+}
+
+// Subtitle
+#subtitle {
+  font-size: 0.75rem;
+  color: rgb(134, 134, 134);
 }

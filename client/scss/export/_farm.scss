@@ -237,7 +237,8 @@
   .farmAddNewItemModal {
     position: absolute;
     background-color: white;
-    padding: 0.6rem;
+    padding: 2rem;
+    border-radius: 0.4rem;
     left: 0;
     right: 0;
     margin-inline: auto;
@@ -246,5 +247,15 @@
     width: 50%;
     height: fit-content;
     z-index: 3;
+
+    .addProductStockFlex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      input[type="number"] {
+        width: 70%;
+      }
+    }
   }
 }

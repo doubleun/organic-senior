@@ -11552,10 +11552,6 @@ textarea.form-control-lg {
 .profileSettingsPage .profileSettingsContainer section:nth-child(n+2):nth-child(-n+3) {
   width: 40%;
 }
-.profileSettingsPage .profileSettingsContainer section #subtitle {
-  font-size: 0.75rem;
-  color: #868686;
-}
 .profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul {
   list-style: none;
   padding: 0;
@@ -11646,19 +11642,6 @@ textarea.form-control-lg {
 .profileSettingsPage .profileSettingsContainer button {
   width: 100%;
 }
-.profileSettingsPage .profileSettingsContainer .customDivider {
-  width: 100%;
-  height: 15px;
-  border-bottom: 1px solid #c5c5c5;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.profileSettingsPage .profileSettingsContainer .customDivider .dividerText {
-  font-size: 14px;
-  background-color: white;
-  padding: 0 10px;
-  color: #bbbbbb;
-}
 .profileSettingsPage .confirmButtons {
   display: flex;
   justify-content: flex-end;
@@ -11686,6 +11669,25 @@ textarea.form-control-lg {
   cursor: pointer;
   width: 1.6rem;
   margin-inline-start: 0.6rem;
+}
+
+.customDivider {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px solid #c5c5c5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.customDivider .dividerText {
+  font-size: 14px;
+  background-color: white;
+  padding: 0 10px;
+  color: #bbbbbb;
+}
+
+#subtitle {
+  font-size: 0.75rem;
+  color: #868686;
 }
 
 .farmDetails .farmImages {
@@ -11896,7 +11898,8 @@ textarea.form-control-lg {
 .farmPageMain .farmAddNewItemModal {
   position: absolute;
   background-color: white;
-  padding: 0.6rem;
+  padding: 2rem;
+  border-radius: 0.4rem;
   left: 0;
   right: 0;
   margin-inline: auto;
@@ -11905,6 +11908,14 @@ textarea.form-control-lg {
   width: 50%;
   height: fit-content;
   z-index: 3;
+}
+.farmPageMain .farmAddNewItemModal .addProductStockFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.farmPageMain .farmAddNewItemModal .addProductStockFlex input[type=number] {
+  width: 70%;
 }
 
 /*# sourceMappingURL=main.css.map */
