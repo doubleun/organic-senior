@@ -11827,6 +11827,7 @@ textarea.form-control-lg {
 }
 .farmContent .farmBodyContent {
   display: flex;
+  padding-block-end: 4rem;
 }
 .farmContent .farmBodyContent .farmBodyContentCategories {
   cursor: pointer;
@@ -11909,13 +11910,42 @@ textarea.form-control-lg {
   height: fit-content;
   z-index: 3;
 }
-.farmPageMain .farmAddNewItemModal .addProductStockFlex {
+.farmPageMain .farmAddNewItemModal .addProductNamePrice {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+.farmPageMain .farmAddNewItemModal .addProductNamePrice div:first-child {
+  width: 60%;
+}
+.farmPageMain .farmAddNewItemModal .addProductStockFlex {
+  display: flex;
+  align-items: center;
+}
 .farmPageMain .farmAddNewItemModal .addProductStockFlex input[type=number] {
-  width: 70%;
+  margin-inline-start: 2rem;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons {
+  display: flex;
+  margin-inline-start: auto;
+  width: 40%;
+  justify-content: space-between;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button {
+  width: 45%;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button:last-child {
+  background-color: #7fad39;
+  border-color: #7fad39;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button:last-child:hover {
+  background-color: #719a33;
+}
+.farmPageMain .farmAddNewItemModal .addProductImagesPreview {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 160px;
 }
 
 /*# sourceMappingURL=main.css.map */

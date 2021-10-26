@@ -7,14 +7,19 @@ import farm3 from "../../public/images/farm3.jpg";
 import { useState } from "react";
 import FarmImageUpload from "./modals/_imageUpload";
 
-export default function FarmImages({ userInfo, farmInfo, editFarmImages }) {
+export default function FarmImages({
+  userInfo,
+  farmInfo,
+  editFarmImages,
+  setAlertSuccess,
+}) {
   const [showImageUpload, setShowImageUpload] = useState(false);
 
   return (
     <div className="farmImages">
       {farmInfo.farmImages.length !== 0 ? (
-        farmInfo.farmImages.map((img) => (
-          <Image src={img} width="526" height="380" />
+        farmInfo.farmImages.map((img, index) => (
+          <Image src={img} width="526" height="380" key={index} />
         ))
       ) : (
         <>
@@ -41,6 +46,7 @@ export default function FarmImages({ userInfo, farmInfo, editFarmImages }) {
           userInfo={userInfo}
           farmInfo={farmInfo}
           setShowImageUpload={setShowImageUpload}
+          setAlertSuccess={setAlertSuccess}
         />
       ) : null}
     </div>

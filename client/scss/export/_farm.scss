@@ -166,6 +166,8 @@
   }
   .farmBodyContent {
     display: flex;
+    padding-block-end: 4rem;
+
     .farmBodyContentCategories {
       cursor: pointer;
       width: 20%;
@@ -248,14 +250,48 @@
     height: fit-content;
     z-index: 3;
 
-    .addProductStockFlex {
+    .addProductNamePrice {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      input[type="number"] {
-        width: 70%;
+      div {
+        &:first-child {
+          width: 60%;
+        }
       }
+    }
+
+    .addProductStockFlex {
+      display: flex;
+      align-items: center;
+
+      input[type="number"] {
+        margin-inline-start: 2rem;
+      }
+    }
+    .addProductButtons {
+      display: flex;
+      margin-inline-start: auto;
+      width: 40%;
+      justify-content: space-between;
+
+      button {
+        width: 45%;
+        &:last-child {
+          background-color: config.$custom-primary;
+          border-color: config.$custom-primary;
+          &:hover {
+            background-color: darken(config.$custom-primary, 5%);
+          }
+        }
+      }
+    }
+    .addProductImagesPreview {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      height: 160px;
     }
   }
 }

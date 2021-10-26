@@ -1,20 +1,18 @@
 //! BUG: Can't delete image, can only "replace" them
 
-import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 
 import { useState, useEffect } from "react";
-import { BsCheck2Circle, BsX } from "react-icons/bs";
 import Image from "next/image";
 
 export default function FarmImageUpload({
   userInfo,
   farmInfo,
   setShowImageUpload,
+  setAlertSuccess,
 }) {
   const [uploadImages, setUploadImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
-  const [displaySubmitted, setDisplaySubmitted] = useState(false);
 
   // Fetch farm images first time loaded
   useEffect(() => {
@@ -92,8 +90,9 @@ export default function FarmImageUpload({
       }
     );
     if (resUpdate.status === 200) {
-      setDisplaySubmitted(true);
-      setTimeout(() => setDisplaySubmitted(false), 6000);
+      setAlertSuccess(true);
+      setTimeout(() => setAlertSuccess(false), 6000);
+      setShowImageUpload(false);
     }
   };
 
@@ -143,19 +142,11 @@ export default function FarmImageUpload({
           disabled={uploadImages.length < 1}
           onClick={() => {
             handleUploadImages("farm-images", uploadImages);
-            setShowImageUpload(false);
           }}
         >
           Confirm
         </Button>
       </div>
-
-      {displaySubmitted ? (
-        <Alert variant="success" className="alertSubmiited">
-          <BsCheck2Circle /> Update profile successfully!{" "}
-          <BsX onClick={() => setDisplaySubmitted(false)} />
-        </Alert>
-      ) : null}
     </div>
   );
 }

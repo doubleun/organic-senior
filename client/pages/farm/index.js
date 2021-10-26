@@ -9,30 +9,39 @@ import Image from "next/image";
 import { getSession } from "next-auth/react";
 
 // Bootstrap imports
+import Alert from "react-bootstrap/Alert";
 import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
-import { BsFillPencilFill } from "react-icons/bs";
+import { BsFillPencilFill, BsCheck2Circle, BsX } from "react-icons/bs";
 
 // SQL Database
 import prisma from "../../prisma/client";
 
 import { useState } from "react";
 
-export default function Farm({ userInfo, farmInfo, mockProducts }) {
+export default function Farm({ userInfo, farmInfo, farmProducts }) {
   const [readMore, setReadMore] = useState(false);
   const [editFarmImages, setEditFarmImages] = useState(false);
   const [editFarmProducts, setEditFarmProducts] = useState(false);
   const [showNewItmModal, setShowNewItmModal] = useState(false);
+  const [alertSuccess, setAlertSuccess] = useState(false);
+  const [farmProductsUI, setFarmProductsUI] = useState(farmProducts);
 
   return (
     <main className="farmPageMain">
-      {/* Modal */}
+      {/* Add new product modal */}
       <div
         className="farmPageMain"
         id={showNewItmModal ? "modal" : ""}
         onClick={() => setShowNewItmModal(false)}
       ></div>
-      {showNewItmModal ? <NewItmModal /> : null}
+      {showNewItmModal ? (
+        <NewItmModal
+          setShowNewItmModal={setShowNewItmModal}
+          setAlertSuccess={setAlertSuccess}
+          setFarmProductsUI={setFarmProductsUI}
+        />
+      ) : null}
 
       {/* Farm details section */}
       <section className="farmDetails">
@@ -45,6 +54,7 @@ export default function Farm({ userInfo, farmInfo, mockProducts }) {
             userInfo={userInfo}
             farmInfo={farmInfo}
             editFarmImages={editFarmImages}
+            setAlertSuccess={setAlertSuccess}
           />
         </div>
         <div className="container farmContainer">
@@ -169,15 +179,18 @@ export default function Farm({ userInfo, farmInfo, mockProducts }) {
 
               {/* Grid items(Products) */}
               <div className="farmItemsGrid">
-                {mockProducts.map((itm, index) => (
-                  <ItemCard
-                    productName={itm.name}
-                    productStock={itm.stock}
-                    productPrice={itm.price}
-                    productImage={itm.image}
-                    key={index + itm.name}
-                  />
-                ))}
+                {/* Render all products */}
+                {farmProductsUI.length !== 0
+                  ? farmProductsUI.map((itm, index) => (
+                      <ItemCard
+                        productName={itm.name}
+                        productStock={itm.stockAmount}
+                        productPrice={itm.price}
+                        productImage={itm.productImages[0]}
+                        key={index + itm.name}
+                      />
+                    ))
+                  : null}
                 <div
                   style={
                     editFarmProducts
@@ -202,6 +215,14 @@ export default function Farm({ userInfo, farmInfo, mockProducts }) {
         </div>
       </section>
       {/* Farm content section */}
+
+      {/* Alert for image uplaoded */}
+      {alertSuccess ? (
+        <Alert variant="success" className="alertSubmiited">
+          <BsCheck2Circle /> Update profile successfully!
+          <BsX onClick={() => setAlertSuccess(false)} />
+        </Alert>
+      ) : null}
     </main>
   );
 }
@@ -245,67 +266,23 @@ export async function getServerSideProps(context) {
 
   //TODO: Check if the userInfo.id === farmInfo.user_id to see if the user is an admin or not, if they are allow them to edit the farm
 
+  // Fetch farm products
+  const farmProducts = await prisma.product.findMany({
+    where: {
+      farm_id: farmInfo.id,
+    },
+  });
+
   await prisma.$disconnect();
 
-  //* MOCK PRODUCTS *//
-
-  const mockProducts = [
-    {
-      name: "Best orange",
-      stock: 10,
-      price: 20,
-      image:
-        "https://www.luluhypermarket.com/medias/1291292-01.jpg-1200Wx1200H?context=bWFzdGVyfGltYWdlc3wxMjM5OTh8aW1hZ2UvanBlZ3xpbWFnZXMvaDU0L2g4MS85MTQ4Mjc4MTEyMjg2LmpwZ3w0ODI2ZjY1NzU5NGU3ZGJiYTExMTM4NzNkODZlYjRjYTBmNzNkMTdkYmQ0ZjFiMTk0YjNlMDk3YjRkZTUxNjVh",
-    },
-    {
-      name: "Strawberries",
-      stock: 5,
-      price: 35,
-      image:
-        "https://f.btwcdn.com/store-34660/product/c93a36a6-b39e-d836-da28-58ce291f6f59.jpg",
-    },
-    {
-      name: "Grapes",
-      stock: 32,
-      price: 40,
-      image:
-        "https://pictures.attention-ngn.com//portal/30/402600/products/1572787745.8241_115_o.jpg",
-    },
-    {
-      name: "Good onion",
-      stock: 21,
-      price: 25,
-      image:
-        "https://f.btwcdn.com/store-43065/product/e83b4a8a-b28d-62a3-45fd-6010eee9bf20.jpg",
-    },
-    {
-      name: "Carrot",
-      stock: 45,
-      price: 15,
-      image: "https://m.media-amazon.com/images/I/71S6oQqVa5L._SL1500_.jpg",
-    },
-    {
-      name: "Apple",
-      stock: 17,
-      price: 22,
-      image:
-        "https://escapemaker.com/wp-content/uploads/2019/01/snapdragon.jpg",
-    },
-    {
-      name: "Cellery",
-      stock: 56,
-      price: 12,
-      image:
-        "https://www.gardeningknowhow.com/wp-content/uploads/2021/06/fresh-celery.jpg",
-    },
-  ];
+  // console.log(farmProducts);
 
   return {
     props: {
       user,
       userInfo,
       farmInfo,
-      mockProducts,
+      farmProducts,
     },
   };
 }

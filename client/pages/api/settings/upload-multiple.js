@@ -45,14 +45,14 @@ export default async (req, res) => {
           console.log("farm upload images log: " + uploadRes.asset_id);
         }
 
-        res.json({
+        res.status(200).json({
           message: "All success",
           detail: finalRes,
           image_urls: finalRes.map((img) => img.img_url),
         });
       } else {
         const uploadRes = await cloudinary.uploader.upload(files.image.path);
-        res.json({
+        res.status(200).json({
           message: "All success",
           detail: uploadRes,
           image_urls: [uploadRes.url],

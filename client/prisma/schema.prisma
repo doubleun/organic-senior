@@ -71,7 +71,7 @@ model VerificationToken {
 model FarmMain {
   id            Int     @id @default(autoincrement())
   name          String?
-  about         String? @db.VarChar(255)
+  about         String?
   phone         String?
   address       String? @db.VarChar(255)
   province      String?
@@ -87,4 +87,20 @@ model FarmMain {
   rating        Int?
   user          User    @relation(fields: [user_id], references: [id])
   user_id       String
+  Product Product[]
+}
+
+// Products
+model Product {
+  id Int @id @default(autoincrement())
+  name String?
+  price Int?
+  category String?
+  description String?
+  inStock Boolean?
+  stockAmount Int?
+  productImages String[]
+  clickPastMonth Int?
+  farm FarmMain @relation(fields: [farm_id], references: [id])
+  farm_id Int
 }
