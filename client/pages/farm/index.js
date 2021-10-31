@@ -183,6 +183,7 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                 {farmProductsUI.length !== 0
                   ? farmProductsUI.map((itm, index) => (
                       <ItemCard
+                        editFarmProducts={editFarmProducts}
                         productName={itm.name}
                         productStock={itm.stockAmount}
                         productPrice={itm.price}

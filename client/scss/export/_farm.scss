@@ -202,10 +202,12 @@
         grid-template-columns: repeat(4, 1fr);
 
         .farmItemCard {
+          position: relative;
           padding: 0.6rem;
           border: none;
           cursor: pointer;
           transition: box-shadow 0.2s ease-out;
+
           &:hover {
             box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.1);
           }
@@ -214,6 +216,13 @@
             flex-direction: column;
             justify-content: center;
             padding: 0.6rem 1rem;
+          }
+
+          .farmItmCardRemove {
+            position: absolute;
+            width: 15%;
+            right: 0px;
+            padding: 3px 0px;
           }
         }
       }

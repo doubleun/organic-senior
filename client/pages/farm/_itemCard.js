@@ -1,7 +1,9 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { BsXLg } from "react-icons/bs";
 
 export default function ItemCard({
+  editFarmProducts,
   productName,
   productPrice,
   productStock,
@@ -23,6 +25,11 @@ export default function ItemCard({
         </Card>
       ) : (
         <Card style={{ width: "15rem" }} className="farmItemCard">
+          {editFarmProducts ? (
+            <Button className="farmItmCardRemove" variant="alert">
+              <BsXLg />
+            </Button>
+          ) : null}
           <Card.Img
             variant="top"
             src={productImage}
