@@ -78,7 +78,10 @@ export default function EditFarm({
         <h5>Edit Farm</h5>
         {/* If a user has a farm we want to show "view farm" button that will take them to thier farm page */}
         {farmInfo ? (
-          <div className="goToFarmButton" onClick={() => router.push("/farm")}>
+          <div
+            className="goToFarmButton"
+            onClick={() => router.push(`/farm/${farmInfo.id}`)}
+          >
             View farm
           </div>
         ) : null}

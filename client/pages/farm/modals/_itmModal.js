@@ -5,8 +5,11 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
 export default function NewItemModal({
-  setShowNewItmModal,
+  selectedProductIndex,
+  farmId,
+  setShowItemModal,
   setAlertSuccess,
+  farmProductsUI,
   setFarmProductsUI,
 }) {
   const productName = useRef();
@@ -14,9 +17,37 @@ export default function NewItemModal({
   const productDesc = useRef();
   const productStockAmount = useRef();
   const productPrice = useRef();
-  const [productInStock, setProductInStock] = useState(false);
   const [uploadImages, setUploadImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
+
+  // If no product provide default value which is false, otherwise grab it from the array
+  const [productInStock, setProductInStock] = useState(
+    farmProductsUI[selectedProductIndex]?.inStock || false
+  );
+
+  // Function that sets initial product value
+  useEffect(() => {
+    // If no index (ie. adding not updating), return
+    if (selectedProductIndex === null) {
+      return;
+    }
+
+    // Give values to all field
+    productName.current.value = farmProductsUI[selectedProductIndex].name;
+    productStockAmount.current.value =
+      farmProductsUI[selectedProductIndex].stockAmount;
+    productDesc.current.value =
+      farmProductsUI[selectedProductIndex].description;
+    productCategory.current.value =
+      farmProductsUI[selectedProductIndex].category;
+    productPrice.current.value = farmProductsUI[selectedProductIndex].price;
+
+    // Set images if there are any
+    // TODO: Make product images updatable
+    for (let image of farmProductsUI[selectedProductIndex].productImages) {
+      setUploadImages((prev) => [...prev, { file: "none", preview: image }]);
+    }
+  }, []);
 
   // Function that run every time new image select
   useEffect(() => {
@@ -37,79 +68,101 @@ export default function NewItemModal({
   }, [selectedImage]);
 
   // Function for handling add new product
-  const handleAddProduct = async (images) => {
+  const handleUpdateProduct = async (action, images) => {
     //* Upload images *//
     // If no image selected, stop the function
     if (!images || images.length === 0) return;
 
-    // Map and append all images
-    const formData = new FormData();
-    images.map((img) => {
-      formData.append("image", img.file);
-    });
+    // Filter alreay uploaded images
+    const temp_arr = images.filter((img) => img.file !== "none");
 
-    // Upload to cloudinary
-    const res = await fetch(
-      "http://localhost:3000/api/settings/upload-multiple",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    if (res.status === 200) {
-      // Get image urls
-      const newImage = await res.json();
+    // If there are new images, we are going to upload them and then push existed images url into the response array
+    let newImage = { image_urls: [] };
+    if (temp_arr.length > 0) {
+      // Map and append all images
+      const formData = new FormData();
+      temp_arr.map((img) => {
+        formData.append("image", img.file);
+      });
 
-      // console.log(newImage.image_urls);
-
-      // Update database
-      const updateRes = await fetch(
-        "http://localhost:3000/api/farm/add-product",
+      // Upload to cloudinary
+      const res = await fetch(
+        "http://localhost:3000/api/settings/upload-multiple",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            productName: productName.current.value,
-            productPrice: parseInt(productPrice.current.value),
-            productCategory: productCategory.current.value,
-            productDesc: productDesc.current.value,
-            productInStock,
-            productStockAmount: parseInt(productStockAmount.current.value),
-            productImages: newImage.image_urls,
-          }),
+          body: formData,
         }
       );
-      if (updateRes.status === 200) {
-        // Show success alert
-        setAlertSuccess(true);
-        setTimeout(() => setAlertSuccess(false), 6000);
-        console.log("Successfully added a new product");
-
-        // Update UI
-        setFarmProductsUI((prev) => [
-          ...prev,
-          {
-            name: productName.current.value,
-            price: parseInt(productPrice.current.value),
-            category: productCategory.current.value,
-            description: productDesc.current.value,
-            inStock: productInStock,
-            stockAmount: parseInt(productStockAmount.current.value),
-            productImages: newImage.image_urls,
-          },
-        ]);
-
-        // Close the modal
-        setShowNewItmModal(false);
+      if (res.status === 200) {
+        // Get image urls
+        newImage = await res.json();
+        // console.log(newImage.image_urls);
       }
+    }
+
+    // Add existed images urls to newImage.image_urls array
+    images.map((img) =>
+      img.file === "none" ? newImage.image_urls.push(img.preview) : null
+    );
+
+    // Update database
+    const updateRes = await fetch(
+      "http://localhost:3000/api/farm/update-product-database",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action,
+          farmId,
+          productId: farmProductsUI[selectedProductIndex]?.id,
+          productName: productName.current.value,
+          productPrice: parseInt(productPrice.current.value),
+          productCategory: productCategory.current.value,
+          productDesc: productDesc.current.value,
+          productInStock,
+          productStockAmount: productInStock
+            ? parseInt(productStockAmount.current.value)
+            : 0,
+          productImages: newImage.image_urls,
+        }),
+      }
+    );
+
+    // Get data out of response
+    const updateData = await updateRes.json();
+    // console.log(updateData);
+
+    if (updateRes.status === 200) {
+      // Show success alert
+      setAlertSuccess(true);
+      setTimeout(() => setAlertSuccess(false), 6000);
+      console.log("Successfully added a new product");
+
+      // Update UI
+      if (action === "add") {
+        setFarmProductsUI(updateData.prismaRes.Product);
+      } else {
+        setFarmProductsUI(updateData.prismaRes.farm.Product);
+      }
+
+      // Close the modal
+      setShowItemModal(false);
     }
   };
 
   return (
     <div className="farmAddNewItemModal">
-      <h3>Add new product</h3>
-      <p id="subtitle">Add new product you wish to sell</p>
-
+      {selectedProductIndex !== null ? (
+        <>
+          <h3>Update product</h3>
+          <p id="subtitle">Update product you wish to sell</p>
+        </>
+      ) : (
+        <>
+          <h3>Add new product</h3>
+          <p id="subtitle">Add new product you wish to sell</p>
+        </>
+      )}
       {/* Divider about product */}
       <div className="customDivider">
         <span className="dividerText">About product</span>
@@ -174,8 +227,8 @@ export default function NewItemModal({
             <Form.Check
               type="checkbox"
               label="In stock"
-              checked={productInStock}
-              onClick={() => setProductInStock(!productInStock)}
+              defaultChecked={productInStock}
+              onChange={(e) => setProductInStock(e.target.checked)}
             />
           </Form.Group>
 
@@ -233,17 +286,29 @@ export default function NewItemModal({
           <Button
             variant="secondary"
             type="button"
-            onClick={() => setShowNewItmModal(false)}
+            onClick={() => setShowItemModal(false)}
           >
             Cancel
           </Button>
-          <Button
-            variant="primary"
-            type="button"
-            onClick={() => handleAddProduct(uploadImages)}
-          >
-            Submit
-          </Button>
+
+          {/* Button for add and update */}
+          {selectedProductIndex !== null ? (
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => handleUpdateProduct("update", uploadImages)}
+            >
+              Update
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => handleUpdateProduct("add", uploadImages)}
+            >
+              Submit
+            </Button>
+          )}
         </div>
       </Form>
     </div>

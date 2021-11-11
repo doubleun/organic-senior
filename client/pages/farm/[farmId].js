@@ -2,7 +2,7 @@
 import Layout from "../layout/_layout";
 import ItemCard from "./_itemCard";
 import FarmImages from "./_farmImages";
-import NewItmModal from "./modals/_newItmModal";
+import ItemModal from "./modals/_itmModal";
 
 // Nextjs imports
 import Image from "next/image";
@@ -22,9 +22,14 @@ import { useState } from "react";
 export default function Farm({ userInfo, farmInfo, farmProducts }) {
   const [readMore, setReadMore] = useState(false);
   const [editFarmImages, setEditFarmImages] = useState(false);
+  // State for setting edit mode
   const [editFarmProducts, setEditFarmProducts] = useState(false);
-  const [showNewItmModal, setShowNewItmModal] = useState(false);
+  // State for showing item modal and a state for keeping product index to render in update modal
+  const [showItemModal, setShowItemModal] = useState(false);
+  const [selectedProductIndex, setSelectedProductIndex] = useState(null);
+  // State for showing alert message
   const [alertSuccess, setAlertSuccess] = useState(false);
+  // State for keeping track of the products in the front-end
   const [farmProductsUI, setFarmProductsUI] = useState(farmProducts);
 
   return (
@@ -32,13 +37,16 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
       {/* Add new product modal */}
       <div
         className="farmPageMain"
-        id={showNewItmModal ? "modal" : ""}
-        onClick={() => setShowNewItmModal(false)}
+        id={showItemModal ? "modal" : ""}
+        onClick={() => setShowItemModal(false)}
       ></div>
-      {showNewItmModal ? (
-        <NewItmModal
-          setShowNewItmModal={setShowNewItmModal}
+      {showItemModal ? (
+        <ItemModal
+          farmId={farmInfo.id}
+          selectedProductIndex={selectedProductIndex}
+          setShowItemModal={setShowItemModal}
           setAlertSuccess={setAlertSuccess}
+          farmProductsUI={farmProductsUI}
           setFarmProductsUI={setFarmProductsUI}
         />
       ) : null}
@@ -60,7 +68,7 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
         <div className="container farmContainer">
           <div className="farmProfileRow">
             {/* Farm name and address */}
-            <Image src="/images/farmProfile.jpg" width="120px" height="120px" />
+            <Image src={farmInfo.user.image} width="120px" height="120px" />
             <div className="flexProfile">
               <div>
                 <h3>{farmInfo.name}</h3>
@@ -142,20 +150,10 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                 {editFarmProducts ? (
                   <>
                     <div
-                      className="farmEditItemsButton-gray"
+                      className="farmEditItemsButton-done"
                       onClick={() => setEditFarmProducts(false)}
                       style={{
-                        width: "5rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      Cancel
-                    </div>
-                    <div
-                      className="farmEditItemsButton-green"
-                      onClick={() => setEditFarmProducts(false)}
-                      style={{
-                        marginInlineStart: ".6rem",
+                        marginInlineStart: "2rem",
                         width: "5rem",
                         textAlign: "center",
                       }}
@@ -165,7 +163,7 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                   </>
                 ) : (
                   <div
-                    className="farmEditItemsButton-green"
+                    className="farmEditItemsButton"
                     id="edit"
                     onClick={() => setEditFarmProducts(true)}
                   >
@@ -182,14 +180,20 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                 {/* Render all products */}
                 {farmProductsUI.length !== 0
                   ? farmProductsUI.map((itm, index) => (
-                      <ItemCard
-                        editFarmProducts={editFarmProducts}
-                        productName={itm.name}
-                        productStock={itm.stockAmount}
-                        productPrice={itm.price}
-                        productImage={itm.productImages[0]}
-                        key={index + itm.name}
-                      />
+                      <div
+                        onClick={(e) => {
+                          setSelectedProductIndex(index);
+                          setShowItemModal(true);
+                        }}
+                      >
+                        <ItemCard
+                          editFarmProducts={editFarmProducts}
+                          productObj={itm}
+                          setAlertSuccess={setAlertSuccess}
+                          setFarmProductsUI={setFarmProductsUI}
+                          key={itm.id}
+                        />
+                      </div>
                     ))
                   : null}
                 <div
@@ -202,7 +206,8 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                   {/* Add new product */}
                   <div
                     onClick={(e) => {
-                      setShowNewItmModal(true);
+                      setSelectedProductIndex(null);
+                      setShowItemModal(true);
                       e.stopPropagation();
                     }}
                   >
@@ -232,6 +237,9 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const user = session?.user;
 
+  // Get farm id from the params
+  const { farmId } = context.query;
+
   // redirect
   if (!session)
     return {
@@ -249,10 +257,13 @@ export async function getServerSideProps(context) {
   });
 
   // Fetch farm info
-  //TODO: Fetch farm accroding to id in the route params
   const farmInfo = await prisma.farmMain.findFirst({
     where: {
-      user_id: userInfo.id,
+      id: parseInt(farmId),
+    },
+    // Fetch farm owner data
+    include: {
+      user: true,
     },
   });
 
@@ -271,6 +282,9 @@ export async function getServerSideProps(context) {
   const farmProducts = await prisma.product.findMany({
     where: {
       farm_id: farmInfo.id,
+    },
+    orderBy: {
+      id: "asc",
     },
   });
 

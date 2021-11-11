@@ -2,6 +2,7 @@
 
 @mixin farmPill {
   cursor: pointer;
+  color: white;
   margin-inline-start: 1.6rem;
   padding-block: 0.2rem;
   padding-inline: 0.6rem;
@@ -184,15 +185,14 @@
           margin-block-end: 1rem;
         }
         .farmEditItemsButton {
-          &-green {
+          @include farmPill;
+          background-color: config.$custom-primary;
+          &-done {
             @include farmPill;
-            color: white;
-            background-color: config.$custom-primary;
-          }
-          &-gray {
-            @include farmPill;
-            color: white;
-            background-color: gray;
+            background-color: config.$success;
+            margin-inline-start: 2rem;
+            width: 5rem;
+            text-align: center;
           }
         }
       }
@@ -217,12 +217,25 @@
             justify-content: center;
             padding: 0.6rem 1rem;
           }
+          .card-img-top {
+            width: 200px;
+            height: 180px;
+          }
 
           .farmItmCardRemove {
             position: absolute;
             width: 15%;
             right: 0px;
             padding: 3px 0px;
+          }
+          .card-text {
+            .stock {
+              font-weight: bold;
+              &-out {
+                font-weight: bold;
+                color: red;
+              }
+            }
           }
         }
       }

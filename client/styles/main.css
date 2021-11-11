@@ -11844,25 +11844,28 @@ textarea.form-control-lg {
 .farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu h4 {
   margin-block-end: 1rem;
 }
-.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-green {
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton {
   cursor: pointer;
+  color: white;
   margin-inline-start: 1.6rem;
   padding-block: 0.2rem;
   padding-inline: 0.6rem;
   border-radius: 2rem;
   font-weight: bold;
-  color: white;
   background-color: #7fad39;
 }
-.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-gray {
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-done {
   cursor: pointer;
+  color: white;
   margin-inline-start: 1.6rem;
   padding-block: 0.2rem;
   padding-inline: 0.6rem;
   border-radius: 2rem;
   font-weight: bold;
-  color: white;
-  background-color: gray;
+  background-color: #198754;
+  margin-inline-start: 2rem;
+  width: 5rem;
+  text-align: center;
 }
 .farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid {
   display: grid;
@@ -11885,11 +11888,22 @@ textarea.form-control-lg {
   justify-content: center;
   padding: 0.6rem 1rem;
 }
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard .card-img-top {
+  width: 200px;
+  height: 180px;
+}
 .farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard .farmItmCardRemove {
   position: absolute;
   width: 15%;
   right: 0px;
   padding: 3px 0px;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard .card-text .stock {
+  font-weight: bold;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid .farmItemCard .card-text .stock-out {
+  font-weight: bold;
+  color: red;
 }
 
 .farmPageMain {
