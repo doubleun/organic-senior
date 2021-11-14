@@ -18,7 +18,6 @@ import { BsCheck2Circle, BsX } from "react-icons/bs";
 import Layout from "../layout/_layout";
 import PersonalInfo from "./_personalInfo";
 import EditFarm from "./_editFarm";
-import FileUploadModal from "../../components/Modal/FileUploadModal"; //! Remove soon ?
 
 // SQL Database
 import prisma from "../../prisma/client";

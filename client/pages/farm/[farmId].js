@@ -5,6 +5,7 @@ import FarmImages from "./_farmImages";
 import ItemModal from "./modals/_itmModal";
 
 // Nextjs imports
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { getSession } from "next-auth/react";
 
@@ -20,6 +21,9 @@ import prisma from "../../prisma/client";
 import { useState } from "react";
 
 export default function Farm({ userInfo, farmInfo, farmProducts }) {
+  // TODO: We shouldn't need user info here anymore, since we have owner in farm info
+
+  const router = useRouter();
   const [readMore, setReadMore] = useState(false);
   const [editFarmImages, setEditFarmImages] = useState(false);
   // State for setting edit mode
@@ -182,9 +186,15 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                   ? farmProductsUI.map((itm, index) => (
                       <div
                         onClick={(e) => {
-                          setSelectedProductIndex(index);
-                          setShowItemModal(true);
+                          if (editFarmProducts) {
+                            setSelectedProductIndex(index);
+                            setShowItemModal(true);
+                            return;
+                          } else {
+                            router.push(`/product/${itm.id}`);
+                          }
                         }}
+                        key={itm.id}
                       >
                         <ItemCard
                           editFarmProducts={editFarmProducts}
@@ -240,7 +250,7 @@ export async function getServerSideProps(context) {
   // Get farm id from the params
   const { farmId } = context.query;
 
-  // redirect
+  // redirect if not logged in
   if (!session)
     return {
       redirect: {

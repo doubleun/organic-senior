@@ -1,0 +1,12 @@
+@use "../config";
+
+// Review stars
+.reviewStarsContainer {
+  display: flex;
+  align-items: center;
+  color: config.$custom-primary;
+
+  h5 {
+    margin: 0 0.5rem 0 0;
+  }
+}

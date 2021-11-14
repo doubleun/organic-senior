@@ -23,11 +23,12 @@ export default function ItemCard({
           }),
         }
       );
+    } else {
+      return;
     }
-
     // Update UI
     setFarmProductsUI((prev) =>
-      prev.filter((product) => product.id !== productId)
+      prev.filter((product) => product.id !== productObj.id)
     );
 
     // Show success alert
@@ -68,9 +69,11 @@ export default function ItemCard({
             <Card.Title>{productObj.name}</Card.Title>
             <Card.Text>
               {productObj.stockAmount === 0 ? (
-                <span class="stock-out">Out of stock</span>
+                <span className="stock-out">Out of stock</span>
               ) : (
-                <span class="stock">In Stock: {productObj.stockAmount}</span>
+                <span className="stock">
+                  In Stock: {productObj.stockAmount}
+                </span>
               )}
               <br />
               THB {productObj.price} <br />
