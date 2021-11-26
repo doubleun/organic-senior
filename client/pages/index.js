@@ -2,13 +2,14 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { getSession } from "next-auth/react";
 
 import SignUpModal from "../components/SignUpModal";
 
 export default function Landing() {
   const [showSignUp, setShowSignUp] = useState();
   const callbackRedirect = {
-    callbackUrl: "http://localhost:3000/mock-auth",
+    callbackUrl: "http://localhost:3000/home/catalogue",
   };
 
   return (
@@ -19,7 +20,7 @@ export default function Landing() {
         <div className="landingLoginBox">
           <div className="loginBoxContent">
             <h4>ORGANIC PLATFORM</h4>
-            <h2>Local Made</h2>
+            <h2>OGANI</h2>
             <Form>
               <Form.Group className="mb-3" controlId="formEmail">
                 {/* <Form.Label>Email Address</Form.Label> */}
@@ -97,4 +98,19 @@ export default function Landing() {
       </section>
     </main>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  // redirect if already logged in
+  if (session)
+    return {
+      redirect: {
+        destination: "/home/catalogue",
+        permanent: false,
+      },
+    };
+
+  return { props: {} };
 }

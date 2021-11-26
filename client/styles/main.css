@@ -12,6 +12,7 @@ body {
 
 #__next {
   height: 100%;
+  position: relative;
 }
 
 /*!
@@ -11127,6 +11128,296 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.card {
+  padding: 1rem;
+  border: none;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.reviewStarsContainer {
+  display: flex;
+  align-items: center;
+  color: #7fad39;
+}
+.reviewStarsContainer h5 {
+  margin: 0 0.5rem 0 0;
+}
+
+.badgesContainer {
+  display: flex !important;
+  gap: 6px;
+}
+.badgesContainer .badge {
+  padding: 2px 5px;
+  font-size: 11px;
+}
+.badgesContainer .badge.bg-custom-primary-outline {
+  color: #7fad39;
+  border: 1px solid #7fad39;
+}
+.badgesContainer .badge.bg-warning {
+  border-block: none;
+  border-inline: 2px dotted white;
+}
+.badgesContainer .badge.bg-partner {
+  display: flex;
+  color: #9560b8;
+  border: 1px solid #9560b8;
+}
+.badgesContainer .badge.bg-partner svg {
+  font-size: 16px;
+  margin-right: 0.4rem !important;
+}
+.badgesContainer .badge.bg-partner p {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.farmItemCard {
+  position: relative;
+  padding: 0.6rem;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-out;
+}
+.farmItemCard:hover {
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.1);
+}
+.farmItemCard .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+}
+.farmItemCard .card-img-top {
+  width: 200px;
+  height: 180px;
+}
+.farmItemCard .farmItmCardRemove {
+  position: absolute;
+  width: 15%;
+  right: 0px;
+  padding: 3px 0px;
+}
+.farmItemCard .card-title {
+  margin: 0;
+}
+.farmItemCard .card-text span {
+  display: block;
+  margin: 0;
+}
+.farmItemCard .card-text .price {
+  font-weight: bold;
+}
+.farmItemCard .card-text .stock {
+  font-size: 15px;
+}
+.farmItemCard .card-text .stock-out {
+  font-size: 14px;
+  font-weight: bold;
+  color: red;
+}
+.farmItemCard .card-text .province {
+  font-size: 14px;
+}
+
+.orderCardContainer {
+  margin-block: 1rem;
+}
+.orderCardContainer .farmShopFlex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.orderCardContainer .farmShopFlex div:first-child {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.orderCardContainer .farmShopFlex div:first-child h5 {
+  margin: 0;
+}
+.orderCardContainer .farmShopFlex div:first-child svg {
+  font-weight: 400;
+}
+.orderCardContainer .farmShopFlex div:first-child .productShopeProfileButtons {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.4rem;
+  font-size: 14px !important;
+}
+.orderCardContainer .farmShopFlex div:first-child .productShopeProfileButtons svg {
+  margin-inline-end: 0.3rem;
+}
+.orderCardContainer .productDisplayFlex {
+  display: flex;
+  gap: 1rem;
+  padding-block: 0.5rem;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  cursor: pointer;
+}
+.orderCardContainer .productDisplayFlex * {
+  margin: 0;
+}
+.orderCardContainer .productDisplayFlex .productDisplayFlexImage {
+  width: 100px;
+}
+.orderCardContainer .productDisplayFlex .productNameVariations {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.orderCardContainer .productDisplayFlex .orderCardPriceTag {
+  margin: auto 0 auto auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.orderCardContainer .orderDateBtn {
+  display: flex;
+  margin-top: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+.orderCardContainer .orderDateBtn * {
+  margin: 0;
+}
+
+.progressStepperCard {
+  padding: 2rem 2rem 1rem 2rem;
+}
+.progressStepperCard div.stepperOrderIdFlex {
+  display: flex;
+  padding-bottom: 1rem;
+}
+.progressStepperCard div.stepperOrderIdFlex * {
+  margin: 0;
+}
+.progressStepperCard div.stepperOrderIdFlex > a:first-child {
+  color: #757575;
+  text-decoration: none;
+  flex: 1;
+}
+.progressStepperCard div.stepperOrderIdFlex > div {
+  display: flex;
+  gap: 0.5rem;
+}
+.progressStepperCard div.stepperOrderIdFlex > div > p:first-child {
+  padding-right: 0.5rem;
+  border-right: 2px solid #339bd1;
+}
+.progressStepperCard div.stepperContainer {
+  display: flex;
+  border-top: 1px dotted #e8e8e8;
+  border-bottom: 1px dotted #e8e8e8;
+  padding: 1rem 4rem 1rem 4rem;
+  justify-content: space-evenly;
+  overflow-x: auto;
+}
+.progressStepperCard div.stepperContainer > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 20%;
+}
+.progressStepperCard div.stepperContainer > div p {
+  margin: 0;
+}
+.progressStepperCard div.stepperContainer > div p.text-secondary {
+  font-size: 14px;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle {
+  position: relative;
+  text-align: center;
+  padding: 0.8rem;
+  border-radius: 50%;
+  margin-bottom: 0.6rem;
+  border: 4px solid #666666;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle div {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 2;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle svg {
+  position: inherit;
+  font-size: 2.5rem;
+  z-index: 3;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  width: 221%;
+  left: 100%;
+  background-color: #009f00;
+  z-index: 1;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle svg {
+  color: #666666;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle::before {
+  background-color: #666666;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle-finish {
+  position: relative;
+  text-align: center;
+  padding: 0.8rem;
+  border-radius: 50%;
+  margin-bottom: 0.6rem;
+  border: 4px solid #009f00;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle-finish div {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 2;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle-finish svg {
+  position: inherit;
+  font-size: 2.5rem;
+  z-index: 3;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle-finish::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  width: 221%;
+  left: 100%;
+  background-color: #009f00;
+  z-index: 1;
+}
+.progressStepperCard div.stepperContainer > div .progressCircle-finish svg {
+  color: #00a400;
+}
+.progressStepperCard div.stepperContainer > div:last-child .progressCircle::before,
+.progressStepperCard div.stepperContainer > div:last-child .progressCircle-finish::before {
+  display: none;
+}
+.progressStepperCard div.buttonsContainer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .mainLandingPage {
   height: 100%;
 }
@@ -11495,6 +11786,9 @@ textarea.form-control-lg {
   font-weight: bolder;
 }
 
+.mainNavbar {
+  border-bottom: 2px solid #7fad39;
+}
 .mainNavbar .navbar-brand {
   cursor: pointer;
 }
@@ -11509,7 +11803,6 @@ textarea.form-control-lg {
   cursor: pointer;
 }
 .mainNavbar .endNav {
-  margin-inline-end: 9rem;
   align-items: center;
 }
 .mainNavbar .endNav svg {
@@ -11530,6 +11823,676 @@ textarea.form-control-lg {
 .mainNavbar .endNav h6 {
   font-size: 0.95rem;
   margin: 0;
+}
+
+.profileSettingsPage {
+  padding-block: 0.5rem 4rem;
+}
+.profileSettingsPage .profileSettingsContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.profileSettingsPage .profileSettingsContainer section {
+  width: 25%;
+  margin-block-start: 2rem;
+  padding: 1.5rem 1rem;
+  box-shadow: 0px 2px 4px 0px #c5c5c5;
+}
+.profileSettingsPage .profileSettingsContainer section:nth-child(n+2):nth-child(-n+3) {
+  width: 40%;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul {
+  list-style: none;
+  padding: 0;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul li {
+  padding-inline-start: 16px;
+  cursor: pointer;
+  padding-block: 0.5rem;
+  margin-block: 0.5rem;
+}
+.profileSettingsPage .profileSettingsContainer section .profileSettingsNav ul li.active {
+  background-color: #f0f0f0;
+  padding-inline-start: 12px;
+  border-left: 4px solid #7fad39;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm input {
+  color: #464646;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .profileName {
+  display: flex;
+  justify-content: space-between;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .profileName div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 992px) {
+  .profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector div:nth-child(n+3) {
+    margin-block-start: 1rem;
+  }
+}
+.profileSettingsPage .profileSettingsContainer section .profileInfoForm .provinceSelector div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmFormTitle {
+  display: flex;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmFormTitle .goToFarmButton {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+  margin-inline-start: 1.6rem;
+  background-color: #7fad39;
+  color: white;
+  padding-block: 1px;
+  padding-inline: 6px;
+  border-radius: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm input {
+  color: #464646;
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 992px) {
+  .profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector div:nth-child(n+3) {
+    margin-block-start: 1rem;
+  }
+}
+.profileSettingsPage .profileSettingsContainer section .editFarmForm .provinceSelector div {
+  width: 46%;
+}
+.profileSettingsPage .profileSettingsContainer .profilePicture .profileImg {
+  position: relative;
+  margin-block: 2rem;
+  text-align: center;
+}
+.profileSettingsPage .profileSettingsContainer .profilePicture .profileImg img {
+  border-radius: 50%;
+  z-index: -1;
+}
+.profileSettingsPage .profileSettingsContainer button {
+  width: 100%;
+}
+.profileSettingsPage .confirmButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+.profileSettingsPage .confirmButtons button {
+  padding-inline: 2.4rem;
+  margin-inline-start: 1rem;
+}
+
+.alertSubmiited {
+  position: fixed;
+  top: 48px;
+  right: 24px;
+  left: auto;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+}
+.alertSubmiited svg {
+  margin-inline-end: 0.4rem;
+  width: 1.4rem;
+  height: auto;
+}
+.alertSubmiited svg:last-child {
+  cursor: pointer;
+  width: 1.6rem;
+  margin-inline-start: 0.6rem;
+}
+
+.customDivider {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px solid #c5c5c5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.customDivider .dividerText {
+  font-size: 14px;
+  background-color: white;
+  padding: 0 10px;
+  color: #bbbbbb;
+}
+
+#subtitle {
+  font-size: 0.75rem;
+  color: #868686;
+}
+
+.farmDetails .farmImages {
+  position: relative;
+  display: flex;
+  gap: 0.4rem;
+}
+.farmDetails .editFarmImagesButton {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  background-color: white;
+  padding: 0.6rem;
+  border-radius: 4rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+}
+.farmDetails .farmImageUploadModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inset: 0;
+  width: 50%;
+  height: auto;
+  margin-inline: auto;
+  margin-block: 1.6rem;
+  background-color: white;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  border-radius: 0.6rem;
+  z-index: 3;
+}
+.farmDetails .farmImageUploadModal h4 {
+  margin: 0;
+}
+.farmDetails .farmImageUploadModal p {
+  font-size: 14px;
+  font-style: italic;
+  margin-block-end: 4px;
+}
+.farmDetails .farmImageUploadModal .farmPreviewImages {
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  margin-block-start: 0.2rem;
+  margin-block-end: 0.8rem;
+  flex-grow: 1;
+}
+.farmDetails .farmImageUploadModal input {
+  width: 50%;
+}
+.farmDetails .farmImageUploadModal .farmUploadImageButtons {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+.farmDetails .farmImageUploadModal .farmUploadImageButtons button {
+  width: 48%;
+}
+.farmDetails .farmContainer .farmProfileRow {
+  display: flex;
+  margin-block: 1.6rem;
+}
+.farmDetails .farmContainer .farmProfileRow img {
+  border-radius: 50%;
+}
+.farmDetails .farmContainer .farmProfileRow .flexProfile {
+  display: flex;
+  flex-direction: column;
+  margin-inline-start: 2rem;
+  justify-content: space-evenly;
+  margin-inline-end: 10rem;
+}
+.farmDetails .farmContainer .farmProfileRow .flexProfile * {
+  margin: 0;
+}
+.farmDetails .farmContainer .farmProfileRow .flexProfile p {
+  font-size: 0.85rem;
+}
+.farmDetails .farmContainer .farmProfileRow .flexProfile div:last-child {
+  display: flex;
+  align-items: center;
+}
+.farmDetails .farmContainer .farmProfileRow .flexProfile div:last-child .reviewStarsContainer {
+  margin-inline-start: 1rem;
+}
+.farmDetails .farmContainer .farmProfileRow .farmLocation {
+  border-left: 1px solid #e0e0e0;
+  padding-inline: 2rem;
+}
+.farmDetails .farmContainer .farmProfileRow .farmLocation p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+.farmDetails .farmContainer .farmAboutRow {
+  display: flex;
+}
+.farmDetails .farmContainer .farmAboutRow h5 {
+  font-size: 1.2rem;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement {
+  margin-inline-end: 10rem;
+  flex-shrink: 0;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement * {
+  margin: 0;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement p {
+  font-size: 0.85rem;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAbout {
+  padding-inline-end: 6rem;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAbout p {
+  transition: max-height 0.2s ease-out;
+  font-size: 0.95rem;
+  max-height: 20px;
+  height: auto;
+  overflow: hidden;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAbout p#more {
+  max-height: 100px;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAbout a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.farmContent {
+  position: relative;
+  margin-block-start: 2rem;
+}
+.farmContent .farmTopContent {
+  display: flex;
+}
+.farmContent .farmTopContent .productSearchInput {
+  width: 16%;
+  transition: width 0.2s ease-out;
+}
+.farmContent .farmTopContent .productSearchInput:focus {
+  width: 30%;
+}
+.farmContent .farmBodyContent {
+  display: flex;
+  padding-block-end: 4rem;
+}
+.farmContent .farmBodyContent .farmBodyContentCategories {
+  cursor: pointer;
+  width: 20%;
+}
+.farmContent .farmBodyContent .farmBodyContentItems {
+  margin-inline-start: 2rem;
+  width: auto;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu {
+  display: flex;
+  align-items: flex-start;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu h4 {
+  margin-block-end: 1rem;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton {
+  cursor: pointer;
+  color: white;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  background-color: #7fad39;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmEditItemsMenu .farmEditItemsButton-done {
+  cursor: pointer;
+  color: white;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  background-color: #198754;
+  margin-inline-start: 2rem;
+  width: 5rem;
+  text-align: center;
+}
+.farmContent .farmBodyContent .farmBodyContentItems .farmItemsGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.farmPageMain {
+  position: relative;
+}
+.farmPageMain#modal::after {
+  background-color: black;
+  opacity: 0.65;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+}
+.farmPageMain .farmAddNewItemModal {
+  position: absolute;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: fit-content;
+  z-index: 3;
+}
+.farmPageMain .farmAddNewItemModal .addProductNameCategory {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.farmPageMain .farmAddNewItemModal .addProductNameCategory div:first-child {
+  width: 60%;
+}
+.farmPageMain .farmAddNewItemModal .addProductNameCategory div.categorySelect {
+  width: 30%;
+}
+.farmPageMain .farmAddNewItemModal .addProductPriceGridContainer {
+  height: 140px;
+  overflow-y: auto;
+}
+.farmPageMain .farmAddNewItemModal .addProductPriceGridContainer div.priceGrid {
+  display: grid;
+  grid-template-columns: 66% auto;
+  gap: 0 2rem;
+}
+.farmPageMain .farmAddNewItemModal .addProductStockFlex {
+  display: flex;
+  align-items: center;
+}
+.farmPageMain .farmAddNewItemModal .addProductStockFlex input[type=number] {
+  margin-inline-start: 2rem;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons {
+  display: flex;
+  margin-inline-start: auto;
+  width: 40%;
+  justify-content: space-between;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button {
+  width: 45%;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button:last-child {
+  background-color: #7fad39;
+  border-color: #7fad39;
+}
+.farmPageMain .farmAddNewItemModal .addProductButtons button:last-child:hover {
+  background-color: #719a33;
+}
+.farmPageMain .farmAddNewItemModal .addProductImagesPreview {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 160px;
+}
+
+.productPageMain {
+  background-color: #f5f5f5;
+}
+.productPageMain .card {
+  padding: 1rem;
+  border: none;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+.productPageMain section:first-child {
+  padding-block-start: 3rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner {
+  display: flex;
+  gap: 4rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery {
+  display: flex;
+  gap: 1rem;
+  width: 42%;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider {
+  width: 20%;
+  margin-inline-end: 1rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider ul {
+  list-style: none;
+  padding: 0;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider ul li {
+  border-radius: 10px;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider ul li:not(:last-child) {
+  margin-block-end: 10px;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider ul li.selected {
+  border: 1px solid #7fad39;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .imageGallerySlider ul li img {
+  border-radius: 10px;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerImageGallery .productImagePreview {
+  width: 74%;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent h2 {
+  font-size: 2.2rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .ratingsSoldContainer {
+  display: flex;
+  gap: 1rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .ratingsSoldContainer div:first-child {
+  padding-right: 1rem;
+  border-right: 1px solid #dbdbdb;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .ratingsSoldContainer p {
+  margin: 0;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex div input::-webkit-outer-spin-button,
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex div input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex div input[type=number] {
+  width: 4rem;
+  font-size: 18px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex div svg {
+  font-size: 24px;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .productQuantityFlex p {
+  margin: 0;
+}
+.productPageMain .productDetailBannerCard .productDetailBanner .productDetailBannerContent .text-secondary {
+  margin: 0 0 0.4rem 0;
+}
+.productPageMain .productShopeProfileCard {
+  margin-top: 1rem;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent {
+  display: flex;
+  padding-inline: 2rem;
+  gap: 2rem;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent img {
+  border-radius: 50%;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border-right: 2px solid #f2f2f2;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft div {
+  display: flex;
+  gap: 1rem;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft .shopActiveSign {
+  display: flex;
+  align-items: center;
+  margin-block-end: 1rem;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft .shopActiveSign p {
+  margin: 0;
+  font-weight: bold;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft .productShopeProfileButtons {
+  display: flex;
+  align-items: center;
+}
+.productPageMain .productShopeProfileCard .productShopeProfileContent .productShopeProfileLeft .productShopeProfileButtons svg {
+  margin-inline-end: 0.3rem;
+}
+.productPageMain .productDetailBody .productDetailBodyCard {
+  margin-top: 1rem;
+}
+.productPageMain .productDetailComment .productDetailCommentCard {
+  margin-block-start: 1rem;
+}
+.productPageMain .productDetailComment .commentContainer {
+  display: flex;
+  margin-block-start: 1.5rem;
+}
+.productPageMain .productDetailComment .commentContainer img {
+  border-radius: 50%;
+}
+.productPageMain .productDetailComment .commentContainer p {
+  margin: 0;
+}
+.productPageMain .productDetailComment .commentContainer .commentProfileImageDiv {
+  width: clamp(9px, 40%, 100px);
+}
+.productPageMain .productDetailComment .commentContainer .reviewContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-inline-start: 1rem;
+}
+.productPageMain .productDetailComment .commentContainer .reviewContentContainer .reviewTagsContainer {
+  display: flex;
+  font-size: 18px;
+  gap: 1rem;
+}
+
+.allProductsPageMain .allProductsPageContent {
+  display: flex;
+  margin-block-start: 1rem;
+}
+.allProductsPageMain .allProductsPageContent div.searchFilterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1rem 2rem 0 0;
+  width: 18%;
+}
+.allProductsPageMain .allProductsPageContent div.searchFilterContainer .list-group {
+  border-bottom: 1px solid #dfdfdf;
+}
+.allProductsPageMain .allProductsPageContent div.searchFilterContainer .list-group .list-group-item {
+  border: none;
+}
+.allProductsPageMain .allProductsPageContent div.searchFilterContainer .list-group p {
+  margin: 0;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer {
+  flex: 1;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab {
+  display: flex;
+  background-color: #ededed;
+  align-items: center;
+  text-align: center;
+  padding: 0.8rem 1.5rem;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab button {
+  border: none;
+  background-color: white;
+  width: 6rem;
+  padding: 0.3rem;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab button.btn-active {
+  background-color: #7fad39;
+  color: white;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab select {
+  width: 12rem;
+  border: none;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab input {
+  margin-inline-start: auto;
+  width: 16rem;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsSortingTab p {
+  margin: 0;
+}
+.allProductsPageMain .allProductsPageContent .productListingContainer .productsListingGrid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 1rem;
+}
+
+main.mainOrderPage {
+  background-color: #f5f5f5;
+}
+main.mainOrderPage div.orderPageTabFlex {
+  padding-top: 2rem;
+  margin: 0 auto 1rem auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  width: clamp(10rem, 90%, 20rem);
+}
+main.mainOrderPage div.orderPageTabFlex h5 {
+  display: inline-block;
+  font-weight: 400;
+  padding: 0 14px 8px 14px;
+  cursor: pointer;
+}
+main.mainOrderPage div.orderPageTabFlex h5.tabSelected {
+  font-weight: 500;
+  border-bottom: 2px solid #7fad39;
+}
+main.orderProgressPage {
+  background-color: #f5f5f5;
+}
+main.orderProgressPage section.orderProgressSection {
+  padding-block: 1rem;
+}
+main.orderProgressPage .progressOrderDetail {
+  margin-top: 2rem;
 }
 
 /*# sourceMappingURL=main.css.map */

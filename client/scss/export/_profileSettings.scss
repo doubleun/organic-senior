@@ -1,0 +1,199 @@
+@use "../config";
+
+.profileSettingsPage {
+  padding-block: 0.5rem 4rem;
+  .profileSettingsContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    // For all sections
+    section {
+      width: 25%;
+      margin-block-start: 2rem;
+      padding: 1.5rem 1rem;
+      box-shadow: 0px 2px 4px 0px #c5c5c5;
+
+      // Select the second to third child
+      &:nth-child(n + 2):nth-child(-n + 3) {
+        width: 40%;
+      }
+
+      // Profile settings nav
+      .profileSettingsNav {
+        ul {
+          list-style: none;
+          padding: 0;
+          li {
+            padding-inline-start: 16px;
+            cursor: pointer;
+            padding-block: 0.5rem;
+            margin-block: 0.5rem;
+
+            &.active {
+              background-color: #f0f0f0;
+              padding-inline-start: 12px;
+              border-left: 4px solid config.$custom-primary;
+            }
+          }
+        }
+      }
+
+      // Profile info section (ie. middle one)
+      .profileInfoForm {
+        input {
+          color: rgb(70, 70, 70);
+        }
+        .profileName {
+          display: flex;
+          justify-content: space-between;
+          div {
+            width: 46%;
+          }
+        }
+        .provinceSelector {
+          display: flex;
+          flex-direction: column;
+          @include config.media-breakpoint-up(lg) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            div:nth-child(n + 3) {
+              margin-block-start: 1rem;
+            }
+          }
+          div {
+            width: 46%;
+          }
+        }
+      }
+
+      // Edit farm section (ie. middle one)
+      .editFarmFormTitle {
+        display: flex;
+
+        .goToFarmButton {
+          display: flex;
+          align-items: center;
+          font-size: 13px;
+          cursor: pointer;
+          margin-inline-start: 1.6rem;
+          background-color: config.$custom-primary;
+          color: white;
+          padding-block: 1px;
+          padding-inline: 6px;
+          border-radius: 0.4rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+      .editFarmForm {
+        input {
+          color: rgb(70, 70, 70);
+        }
+        .provinceSelector {
+          display: flex;
+          flex-direction: column;
+          @include config.media-breakpoint-up(lg) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            div:nth-child(n + 3) {
+              margin-block-start: 1rem;
+            }
+          }
+          div {
+            width: 46%;
+          }
+        }
+      }
+    }
+
+    // Profile picture section
+    .profilePicture {
+      .profileImg {
+        position: relative;
+        margin-block: 2rem;
+        text-align: center;
+        img {
+          border-radius: 50%;
+          z-index: -1;
+        }
+      }
+    }
+    button {
+      width: 100%;
+    }
+  }
+  .confirmButtons {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding-inline: 2.4rem;
+      margin-inline-start: 1rem;
+    }
+  }
+}
+// Modals
+// Setting updated modal
+// .settingsUpdatedModal {
+//   position: absolute;
+//   inset: 0;
+//   // transform: translateY(50%);
+//   // margin-inline: auto;
+//   background-color: rgba(50, 50, 50, 0.5);
+
+//   .settingsUpdatedContent {
+//     background-color: white;
+//     width: 50%;
+//     position: fixed;
+//     margin: 2% auto;
+//     left: 0;
+//     right: 0;
+//     padding: 1.4rem;
+
+//   }
+// }
+
+// Alert submitted
+.alertSubmiited {
+  position: fixed;
+  top: 48px;
+  right: 24px;
+  left: auto;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  svg {
+    margin-inline-end: 0.4rem;
+    width: 1.4rem;
+    height: auto;
+
+    &:last-child {
+      cursor: pointer;
+      width: 1.6rem;
+      margin-inline-start: 0.6rem;
+    }
+  }
+}
+
+// Custom divider
+.customDivider {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px solid #c5c5c5;
+  text-align: center;
+  margin-bottom: 20px;
+
+  .dividerText {
+    font-size: 14px;
+    background-color: white;
+    padding: 0 10px;
+    color: #bbbbbb;
+  }
+}
+
+// Subtitle
+#subtitle {
+  font-size: 0.75rem;
+  color: rgb(134, 134, 134);
+}

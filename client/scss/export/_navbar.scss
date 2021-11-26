@@ -2,6 +2,7 @@
 
 .mainNavbar {
   // background-color: config.$custom-primary;
+  border-bottom: 2px solid config.$custom-primary;
   .navbar-brand {
     cursor: pointer;
   }
@@ -16,7 +17,6 @@
     }
   }
   .endNav {
-    margin-inline-end: 9rem;
     align-items: center;
 
     svg {

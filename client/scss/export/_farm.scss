@@ -1,0 +1,304 @@
+@use "../config";
+
+@mixin farmPill {
+  cursor: pointer;
+  color: white;
+  margin-inline-start: 1.6rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.6rem;
+  border-radius: 2rem;
+  font-weight: bold;
+}
+
+.farmDetails {
+  .farmImages {
+    position: relative;
+    display: flex;
+    gap: 0.4rem;
+    // justify-content: space-evenly;
+  }
+  .editFarmImagesButton {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    background-color: white;
+    padding: 0.6rem;
+    border-radius: 4rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .farmImageUploadModal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    inset: 0;
+    width: 50%;
+    height: auto;
+    margin-inline: auto;
+    margin-block: 1.6rem;
+    background-color: white;
+    padding-block: 1rem;
+    padding-inline: 2rem;
+    border-radius: 0.6rem;
+    z-index: 3;
+
+    h4 {
+      margin: 0;
+    }
+    p {
+      font-size: 14px;
+      font-style: italic;
+      margin-block-end: 4px;
+    }
+
+    .farmPreviewImages {
+      display: flex;
+      justify-content: space-evenly;
+      width: 90%;
+      margin-block-start: 0.2rem;
+      margin-block-end: 0.8rem;
+      flex-grow: 1;
+    }
+
+    input {
+      width: 50%;
+    }
+
+    .farmUploadImageButtons {
+      display: flex;
+      width: 50%;
+      justify-content: space-between;
+      button {
+        width: 48%;
+      }
+    }
+  }
+  .farmContainer {
+    // Farm detail (ie. banner)
+    .farmProfileRow {
+      display: flex;
+      margin-block: 1.6rem;
+      img {
+        border-radius: 50%;
+      }
+
+      // Farm detail of the farm (ie. left side of the profile)
+      .flexProfile {
+        display: flex;
+        flex-direction: column;
+        margin-inline-start: 2rem;
+        justify-content: space-evenly;
+        margin-inline-end: 10rem;
+        * {
+          margin: 0;
+        }
+        p {
+          font-size: 0.85rem;
+        }
+        & div:last-child {
+          display: flex;
+          align-items: center;
+          .reviewStarsContainer {
+            margin-inline-start: 1rem;
+          }
+        }
+      }
+
+      // Farm locations (ie. right side of the profile banner)
+      .farmLocation {
+        border-left: 1px solid #e0e0e0;
+        padding-inline: 2rem;
+        p {
+          font-size: 0.95rem;
+          margin: 0;
+        }
+      }
+    }
+
+    // Farm announcement and about row
+    .farmAboutRow {
+      display: flex;
+
+      h5 {
+        font-size: 1.2rem;
+      }
+      .farmAboutAnnouncement {
+        margin-inline-end: 10rem;
+        flex-shrink: 0;
+        * {
+          margin: 0;
+        }
+        p {
+          font-size: 0.85rem;
+        }
+      }
+
+      .farmAbout {
+        padding-inline-end: 6rem;
+        p {
+          transition: max-height 0.2s ease-out;
+          font-size: 0.95rem;
+          max-height: 20px;
+          height: auto;
+          overflow: hidden;
+          &#more {
+            max-height: 100px;
+          }
+        }
+        a {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Farm content
+.farmContent {
+  position: relative;
+  margin-block-start: 2rem;
+
+  .farmTopContent {
+    display: flex;
+
+    .productSearchInput {
+      width: 16%;
+      transition: width 0.2s ease-out;
+      &:focus {
+        width: 30%;
+      }
+    }
+  }
+  .farmBodyContent {
+    display: flex;
+    padding-block-end: 4rem;
+
+    .farmBodyContentCategories {
+      cursor: pointer;
+      width: 20%;
+    }
+    .farmBodyContentItems {
+      margin-inline-start: 2rem;
+      width: auto;
+
+      .farmEditItemsMenu {
+        display: flex;
+        align-items: flex-start;
+
+        h4 {
+          margin-block-end: 1rem;
+        }
+        .farmEditItemsButton {
+          @include farmPill;
+          background-color: config.$custom-primary;
+          &-done {
+            @include farmPill;
+            background-color: config.$success;
+            margin-inline-start: 2rem;
+            width: 5rem;
+            text-align: center;
+          }
+        }
+      }
+      .farmItemsGrid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+}
+
+//* For modal *//
+// Main of the farm page
+.farmPageMain {
+  position: relative;
+
+  &#modal {
+    &::after {
+      background-color: black;
+      opacity: 0.65;
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+    }
+  }
+  .farmAddNewItemModal {
+    position: absolute;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.4rem;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    height: fit-content;
+    z-index: 3;
+
+    // Name and category
+    .addProductNameCategory {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      div {
+        &:first-child {
+          width: 60%;
+        }
+      }
+      div.categorySelect {
+        width: 30%;
+      }
+    }
+
+    // Unit and price grid
+    .addProductPriceGridContainer {
+      height: 140px;
+      overflow-y: auto;
+
+      div.priceGrid {
+        display: grid;
+        grid-template-columns: 66% auto;
+        gap: 0 2rem;
+      }
+    }
+
+    .addProductStockFlex {
+      display: flex;
+      align-items: center;
+
+      input[type="number"] {
+        margin-inline-start: 2rem;
+      }
+    }
+    .addProductButtons {
+      display: flex;
+      margin-inline-start: auto;
+      width: 40%;
+      justify-content: space-between;
+
+      button {
+        width: 45%;
+        &:last-child {
+          background-color: config.$custom-primary;
+          border-color: config.$custom-primary;
+          &:hover {
+            background-color: darken(config.$custom-primary, 5%);
+          }
+        }
+      }
+    }
+    .addProductImagesPreview {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      height: 160px;
+    }
+  }
+}

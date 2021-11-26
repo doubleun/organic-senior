@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("LOCAL_DEV_DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  phone         String?
+  address       String?   @db.VarChar(255)
+  image         String?
+  province      String?
+  district      String?
+  subDistrict   String?
+  postalCode    Int?
+  socialLink    String?
+  Account       Account[]
+  Session       Session[]
+  FarmMain      FarmMain?
+  Order         Order[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Farm
+model FarmMain {
+  id               Int       @id @default(autoincrement())
+  name             String?
+  about            String?
+  phone            String?
+  address          String?   @db.VarChar(255)
+  province         String?
+  district         String?
+  subDistrict      String?
+  postalCode       Int?
+  socialLink       String?
+  socialImage      String?
+  organicCertImage String?
+  farmImages       String[]
+  storeFront       Boolean?
+  delivery         Boolean?
+  user             User      @relation(fields: [user_id], references: [id])
+  user_id          String
+  Product          Product[]
+}
+
+// Products
+model Product {
+  id             Int      @id @default(autoincrement())
+  name           String?
+  price          Json[]
+  category       String?
+  description    String?
+  inStock        Boolean?
+  stockAmount    Int?
+  productImages  String[]
+  clickPastMonth Int?
+  farm           FarmMain @relation(fields: [farm_id], references: [id])
+  farm_id        Int
+  Order          Order[]
+}
+
+// Orders
+model Order {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [user_id], references: [id])
+  user_id           String
+  product           Product  @relation(fields: [product_id], references: [id])
+  product_id        Int
+  cutomerEmail String?
+  ownerEmail String?
+  amount            Int?
+  selectedVariation Json?
+  deliveryMethod    String?
+  total_price       Float?
+  status            String?
+  date              DateTime @default(now())
+  Review            Review?
+}
+
+// Reviews
+model Review {
+  id       Int     @id @default(autoincrement())
+  order    Order   @relation(fields: [order_id], references: [id])
+  order_id Int
+  rating   Int?
+  comment  String?
+}

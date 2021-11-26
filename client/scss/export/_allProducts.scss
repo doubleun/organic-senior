@@ -1,0 +1,73 @@
+@use "../config";
+
+.allProductsPageMain {
+  .allProductsPageContent {
+    display: flex;
+    margin-block-start: 1rem;
+
+    // Search filter (left side content)
+    div.searchFilterContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 1rem 2rem 0 0;
+      width: 18%;
+
+      .list-group {
+        border-bottom: 1px solid #dfdfdf;
+        .list-group-item {
+          border: none;
+        }
+        p {
+          margin: 0;
+        }
+      }
+    }
+
+    // Product listing (right side content)
+    .productListingContainer {
+      flex: 1;
+
+      // Product sorting tab
+      .productsSortingTab {
+        display: flex;
+        background-color: #ededed;
+        align-items: center;
+        text-align: center;
+        padding: 0.8rem 1.5rem;
+        gap: 1rem;
+        margin-block: 1rem;
+
+        button {
+          border: none;
+          background-color: white;
+          width: 6rem;
+          padding: 0.3rem;
+
+          &.btn-active {
+            background-color: config.$custom-primary;
+            color: white;
+          }
+        }
+        select {
+          width: 12rem;
+          border: none;
+        }
+        input {
+          margin-inline-start: auto;
+          width: 16rem;
+        }
+        p {
+          margin: 0;
+        }
+      }
+
+      // Product grid
+      .productsListingGrid {
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        gap: 1rem;
+      }
+    }
+  }
+}
