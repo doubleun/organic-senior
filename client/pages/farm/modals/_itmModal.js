@@ -16,9 +16,13 @@ export default function NewItemModal({
   const productCategory = useRef();
   const productDesc = useRef();
   const productStockAmount = useRef();
-  const productPrice = useRef();
+  // Array of all unit name field refs
+  const productUnitEls = useRef([]);
+  // Array of all unit price field refs
+  const productPriceEls = useRef([]);
   const [uploadImages, setUploadImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
+  const variationNumber = Array(3).fill(0);
 
   // If no product provide default value which is false, otherwise grab it from the array
   const [productInStock, setProductInStock] = useState(
@@ -40,7 +44,12 @@ export default function NewItemModal({
       farmProductsUI[selectedProductIndex].description;
     productCategory.current.value =
       farmProductsUI[selectedProductIndex].category;
-    productPrice.current.value = farmProductsUI[selectedProductIndex].price;
+    console.log(farmProductsUI);
+    farmProductsUI[selectedProductIndex].price.forEach((option, index) => {
+      productUnitEls.current[index].value = option.unit;
+      productPriceEls.current[index].value = option.price;
+    });
+    // productPrice.current.value = farmProductsUI[selectedProductIndex].price;
 
     // Set images if there are any
     // TODO: Make product images updatable
@@ -72,6 +81,14 @@ export default function NewItemModal({
     //* Upload images *//
     // If no image selected, stop the function
     if (!images || images.length === 0) return;
+
+    // If form not filled up return
+    if (
+      !productName ||
+      productUnitEls.current[0].value === "" ||
+      productPriceEls.current[0].value === ""
+    )
+      return;
 
     // Filter alreay uploaded images
     const temp_arr = images.filter((img) => img.file !== "none");
@@ -105,6 +122,23 @@ export default function NewItemModal({
       img.file === "none" ? newImage.image_urls.push(img.preview) : null
     );
 
+    // Wrap unit and price togther
+    const productUnitPrice = productUnitEls.current.reduce(
+      (arr, current, index) =>
+        // If unit name is "" we return the previous object
+        // (ie. skip an iteration and not put empty variation in the object)
+        current.value === ""
+          ? arr
+          : [
+              ...arr,
+              {
+                unit: current.value,
+                price: productPriceEls.current[index].value,
+              },
+            ],
+      []
+    );
+
     // Update database
     const updateRes = await fetch(
       "http://localhost:3000/api/farm/update-product-database",
@@ -116,7 +150,7 @@ export default function NewItemModal({
           farmId,
           productId: farmProductsUI[selectedProductIndex]?.id,
           productName: productName.current.value,
-          productPrice: parseInt(productPrice.current.value),
+          productPrice: productUnitPrice,
           productCategory: productCategory.current.value,
           productDesc: productDesc.current.value,
           productInStock,
@@ -170,7 +204,7 @@ export default function NewItemModal({
 
       {/* About product */}
       <Form>
-        <div className="addProductNamePrice">
+        <div className="addProductNameCategory">
           {/* Product name */}
           <div>
             <Form.Label>Product name</Form.Label>
@@ -184,33 +218,57 @@ export default function NewItemModal({
             </Form.Group>
           </div>
 
-          {/* Product price */}
-          <div>
-            <Form.Label>Price</Form.Label>
-            <Form.Group className="mb-3" controlId="addProductName">
-              <Form.Control
-                type="number"
-                placeholder="Enter product price"
-                ref={productPrice}
-                defaultValue={1}
-              />
-            </Form.Group>
+          {/* Category */}
+          <div className="categorySelect">
+            <Form.Label>Category</Form.Label>
+            <Form.Select className="mb-3" ref={productCategory}>
+              <option value="Fruits">Fruits</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Meat">Meat</option>
+              <option value="Dairy products">Dairy products</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Nuts">Nuts</option>
+              <option value="Grains">Grains</option>
+              <option value="Sweets">Sweets</option>
+              <option value="Oils">Oils</option>
+            </Form.Select>
           </div>
         </div>
 
-        <Form.Label>Category</Form.Label>
-        <Form.Select className="mb-3" ref={productCategory}>
-          <option value="Fruits">Fruits</option>
-          <option value="Vegetables">Vegetables</option>
-          <option value="Meat">Meat</option>
-          <option value="Dairy products">Dairy products</option>
-          <option value="Bakery">Bakery</option>
-          <option value="Nuts">Nuts</option>
-          <option value="Grains">Grains</option>
-          <option value="Sweets">Sweets</option>
-          <option value="Oils">Oils</option>
-        </Form.Select>
+        {/* Product unit and price (grid container) */}
+        <div className="addProductPriceGridContainer">
+          {/* Product unit and price grid */}
+          <div className="priceGrid">
+            {/* Attributes */}
+            <Form.Label>Unit variation</Form.Label>
+            <Form.Label>Price</Form.Label>
 
+            {/* Variations and price */}
+            {/* //TODO: Add button for adjusting the variation number */}
+            {variationNumber.map((variation, index) => (
+              <>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Unit name"
+                    ref={(el) => (productUnitEls.current[index] = el)}
+                    key={index}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="number"
+                    placeholder="Enter unit price"
+                    ref={(el) => (productPriceEls.current[index] = el)}
+                    key={index + 1}
+                  />
+                </Form.Group>
+              </>
+            ))}
+          </div>
+        </div>
+
+        {/* Product description */}
         <Form.Group className="mb-3" controlId="addProductDescription">
           <Form.Label>Description</Form.Label>
           <Form.Control as="textarea" rows={3} ref={productDesc} />

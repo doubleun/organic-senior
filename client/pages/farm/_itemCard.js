@@ -8,6 +8,7 @@ export default function ItemCard({
   setAlertSuccess,
   setFarmProductsUI,
   addNewProduct,
+  showProvince,
 }) {
   // Delete item function
   const handleDeleteProduct = async () => {
@@ -71,13 +72,25 @@ export default function ItemCard({
               {productObj.stockAmount === 0 ? (
                 <span className="stock-out">Out of stock</span>
               ) : (
-                <span className="stock">
+                <span className="stock text-secondary">
                   In Stock: {productObj.stockAmount}
                 </span>
               )}
-              <br />
-              THB {productObj.price} <br />
-              pill
+              <span className="badgesContainer">
+                <span className="badge bg-warning text-dark">30% off</span>
+                <span className="badge bg-custom-primary-outline">
+                  Certified
+                </span>
+              </span>
+              <span className="price">
+                {productObj.price[0].price} THB/
+                {productObj.price[0].unit}
+              </span>
+              {showProvince ? (
+                <span className="province text-secondary">
+                  From: {showProvince}
+                </span>
+              ) : null}
             </Card.Text>
           </Card.Body>
         </Card>

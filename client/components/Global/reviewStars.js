@@ -15,11 +15,11 @@ const reviewStars = ({ ratings, displayNumber, lg }) => {
         <h5 style={lg ? { fontSize: "1.6rem" } : {}}>{ratings}</h5>
       ) : null}
 
-      {starsArr.map((star) => {
+      {starsArr.map((star, index) => {
         if (star === 1) {
-          return <FaStar />;
+          return <FaStar key={index} />;
         } else {
-          return <FaRegStar />;
+          return <FaRegStar key={index} />;
         }
       })}
     </div>

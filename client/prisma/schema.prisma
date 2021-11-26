@@ -42,12 +42,12 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?   @unique
   emailVerified DateTime?
   phone         String?
-  address       String?    @db.VarChar(255)
+  address       String?   @db.VarChar(255)
   image         String?
   province      String?
   district      String?
@@ -57,6 +57,7 @@ model User {
   Account       Account[]
   Session       Session[]
   FarmMain      FarmMain?
+  Order         Order[]
 }
 
 model VerificationToken {
@@ -69,38 +70,65 @@ model VerificationToken {
 
 // Farm
 model FarmMain {
-  id            Int     @id @default(autoincrement())
-  name          String?
-  about         String?
-  phone         String?
-  address       String? @db.VarChar(255)
-  province      String?
-  district      String?
-  subDistrict   String?
-  postalCode    Int?
-  socialLink    String?
-  socialImage String?
+  id               Int       @id @default(autoincrement())
+  name             String?
+  about            String?
+  phone            String?
+  address          String?   @db.VarChar(255)
+  province         String?
+  district         String?
+  subDistrict      String?
+  postalCode       Int?
+  socialLink       String?
+  socialImage      String?
   organicCertImage String?
-  farmImages String[]
-  storeFront  Boolean?
-  delivery Boolean?
-  rating        Int?
-  user          User    @relation(fields: [user_id], references: [id])
-  user_id       String
-  Product Product[]
+  farmImages       String[]
+  storeFront       Boolean?
+  delivery         Boolean?
+  user             User      @relation(fields: [user_id], references: [id])
+  user_id          String
+  Product          Product[]
 }
 
 // Products
 model Product {
-  id Int @id @default(autoincrement())
-  name String?
-  price Int?
-  category String?
-  description String?
-  inStock Boolean?
-  stockAmount Int?
-  productImages String[]
+  id             Int      @id @default(autoincrement())
+  name           String?
+  price          Json[]
+  category       String?
+  description    String?
+  inStock        Boolean?
+  stockAmount    Int?
+  productImages  String[]
   clickPastMonth Int?
-  farm FarmMain @relation(fields: [farm_id], references: [id])
-  farm_id Int
+  farm           FarmMain @relation(fields: [farm_id], references: [id])
+  farm_id        Int
+  Order          Order[]
+}
+
+// Orders
+model Order {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [user_id], references: [id])
+  user_id           String
+  product           Product  @relation(fields: [product_id], references: [id])
+  product_id        Int
+  cutomerEmail String?
+  ownerEmail String?
+  amount            Int?
+  selectedVariation Json?
+  deliveryMethod    String?
+  total_price       Float?
+  status            String?
+  date              DateTime @default(now())
+  Review            Review?
+}
+
+// Reviews
+model Review {
+  id       Int     @id @default(autoincrement())
+  order    Order   @relation(fields: [order_id], references: [id])
+  order_id Int
+  rating   Int?
+  comment  String?
 }

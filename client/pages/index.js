@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { getSession } from "next-auth/react";
 
 import SignUpModal from "../components/SignUpModal";
 
@@ -97,4 +98,19 @@ export default function Landing() {
       </section>
     </main>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  // redirect if already logged in
+  if (session)
+    return {
+      redirect: {
+        destination: "/home/catalogue",
+        permanent: false,
+      },
+    };
+
+  return { props: {} };
 }

@@ -3,7 +3,8 @@ import { useState } from "react";
 // import Layout from "../../components/Layout";
 import Layout from "../layout/_layout";
 import CatalogueCarousel from "../../components/Carousel/CatalogueCarousel";
-import FeaturedProductCard from "../../components/Catalogue/FeaturedProductCard";
+// import FeaturedProductCard from "../../components/Catalogue/FeaturedProductCard";
+import ItemCard from "/pages/farm/_itemCard";
 
 // Bootstrap imports
 import { BsList } from "react-icons/bs";
@@ -16,9 +17,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import prisma from "/prisma/client";
 
-export default function Catalogue({ products, listFeatured, user }) {
+export default function Catalogue({ listFeatured, user, featuredProducts }) {
   const [activeFeatured, setActiveFeatured] = useState(0);
+  const router = useRouter();
 
   return (
     <main className="container">
@@ -120,9 +124,11 @@ export default function Catalogue({ products, listFeatured, user }) {
 
             {/* Product cards */}
             <Row className="productCardsGrid">
-              {products.map((product) => (
+              {featuredProducts.map((product) => (
                 <Col xs={12} lg={3} key={product.id}>
-                  <FeaturedProductCard product={product} />
+                  <div onClick={() => router.push(`/product/${product.id}`)}>
+                    <ItemCard productObj={product} />
+                  </div>
                 </Col>
               ))}
             </Row>
@@ -146,56 +152,18 @@ export async function getServerSideProps(context) {
       },
     };
 
-  console.log(user);
+  // Get farm products
+  const featuredProducts = await prisma.product.findMany({
+    orderBy: {
+      name: "asc",
+    },
+    take: 8,
+  });
 
-  const listFeatured = ["All", "Oranges", "Melons", "Berries", "Vegetables"];
-  const products = [
-    {
-      id: 1,
-      name: "Crab Pool Security",
-      category: "Oranges",
-      image: "https://technext.github.io/ogani/img/featured/feature-1.jpg",
-    },
-    {
-      id: 2,
-      name: "Crab Pool Security",
-      category: "Melons",
-      image: "https://technext.github.io/ogani/img/featured/feature-2.jpg",
-    },
-    {
-      id: 3,
-      name: "Crab Pool Security",
-      category: "Berries",
-      image: "https://technext.github.io/ogani/img/featured/feature-3.jpg",
-    },
-    {
-      id: 4,
-      name: "Crab Pool Security",
-      category: "Oranges",
-      image: "https://technext.github.io/ogani/img/featured/feature-4.jpg",
-    },
-    {
-      id: 5,
-      name: "Crab Pool Security",
-      category: "Berries",
-      image: "https://technext.github.io/ogani/img/featured/feature-5.jpg",
-    },
-    {
-      id: 6,
-      name: "Crab Pool Security",
-      category: "Vegetables",
-      image: "https://technext.github.io/ogani/img/featured/feature-6.jpg",
-    },
-    {
-      id: 7,
-      name: "Crab Pool Security",
-      category: "Oranges",
-      image: "https://technext.github.io/ogani/img/featured/feature-7.jpg",
-    },
-  ];
+  const listFeatured = ["All", "Fruits", "Vegetables", "Meat", "Dairy"];
 
   return {
-    props: { listFeatured, products, user },
+    props: { listFeatured, user, featuredProducts },
   };
 }
 

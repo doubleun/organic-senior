@@ -3,6 +3,7 @@ import Layout from "../layout/_layout";
 import ItemCard from "./_itemCard";
 import FarmImages from "./_farmImages";
 import ItemModal from "./modals/_itmModal";
+import ReviewStars from "/components/Global/reviewStars";
 
 // Nextjs imports
 import { useRouter } from "next/router";
@@ -13,19 +14,23 @@ import { getSession } from "next-auth/react";
 import Alert from "react-bootstrap/Alert";
 import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
-import { BsFillPencilFill, BsCheck2Circle, BsX } from "react-icons/bs";
+import {
+  BsFillPencilFill,
+  BsCheck2Circle,
+  BsX,
+  BsPatchCheckFill,
+} from "react-icons/bs";
 
 // SQL Database
 import prisma from "../../prisma/client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-export default function Farm({ userInfo, farmInfo, farmProducts }) {
-  // TODO: We shouldn't need user info here anymore, since we have owner in farm info
-
+export default function Farm({ farmInfo, farmProducts, farmOwner }) {
   const router = useRouter();
   const [readMore, setReadMore] = useState(false);
   const [editFarmImages, setEditFarmImages] = useState(false);
+  const searchInput = useRef();
   // State for setting edit mode
   const [editFarmProducts, setEditFarmProducts] = useState(false);
   // State for showing item modal and a state for keeping product index to render in update modal
@@ -35,6 +40,17 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
   const [alertSuccess, setAlertSuccess] = useState(false);
   // State for keeping track of the products in the front-end
   const [farmProductsUI, setFarmProductsUI] = useState(farmProducts);
+
+  // Handle search product
+  function handleSearchProduct() {
+    setFarmProductsUI(
+      farmProducts.filter((product) =>
+        product.name
+          .toLowerCase()
+          .includes(searchInput.current.value.toLowerCase())
+      )
+    );
+  }
 
   return (
     <main className="farmPageMain">
@@ -59,11 +75,13 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
       <section className="farmDetails">
         {/* Hover farm images to edit */}
         <div
-          onMouseEnter={() => setEditFarmImages(true)}
+          onMouseEnter={() => {
+            if (farmOwner) setEditFarmImages(true);
+          }}
           onMouseLeave={() => setEditFarmImages(false)}
         >
           <FarmImages
-            userInfo={userInfo}
+            userInfo={farmInfo.user}
             farmInfo={farmInfo}
             editFarmImages={editFarmImages}
             setAlertSuccess={setAlertSuccess}
@@ -78,15 +96,30 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
                 <h3>{farmInfo.name}</h3>
                 <p>Organically made from hearts of local</p>
               </div>
-              <p>3,211 sales</p>
+              <div>
+                <div className="badgesContainer mb-2">
+                  <span className="badge bg-partner">
+                    <BsPatchCheckFill />
+                    <p>Partner</p>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <p>3,211 sales</p>
+                <ReviewStars ratings={4} />
+              </div>
             </div>
 
             <div className="farmLocation">
               <h5>Address</h5>
-              <p>Province: {farmInfo.province}</p>
-              <p>District: {farmInfo.district}</p>
-              <p>Sub-District: {farmInfo.subDistrict}</p>
-              <p>Postal-Code: {farmInfo.postalCode}</p>
+              <p className="text-secondary">Province: {farmInfo.province}</p>
+              <p className="text-secondary">District: {farmInfo.district}</p>
+              <p className="text-secondary">
+                Sub-District: {farmInfo.subDistrict}
+              </p>
+              <p className="text-secondary">
+                Postal-Code: {farmInfo.postalCode}
+              </p>
             </div>
           </div>
 
@@ -124,7 +157,8 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
               type="search"
               placeholder="Search"
               className="productSearchInput"
-              aria-label="Search"
+              ref={searchInput}
+              onChange={handleSearchProduct}
             />
           </div>
 
@@ -151,32 +185,36 @@ export default function Farm({ userInfo, farmInfo, farmProducts }) {
               {/* Edit items(Products) */}
               <div className="farmEditItemsMenu">
                 <h4>All items</h4>
-                {editFarmProducts ? (
-                  <>
-                    <div
-                      className="farmEditItemsButton-done"
-                      onClick={() => setEditFarmProducts(false)}
-                      style={{
-                        marginInlineStart: "2rem",
-                        width: "5rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      Done
-                    </div>
-                  </>
-                ) : (
-                  <div
-                    className="farmEditItemsButton"
-                    id="edit"
-                    onClick={() => setEditFarmProducts(true)}
-                  >
-                    <BsFillPencilFill
-                      style={{ fontSize: "14px", marginInline: "6px" }}
-                    />
-                    Edit items
+                {farmOwner ? (
+                  <div>
+                    {editFarmProducts ? (
+                      <>
+                        <div
+                          className="farmEditItemsButton-done"
+                          onClick={() => setEditFarmProducts(false)}
+                          style={{
+                            marginInlineStart: "2rem",
+                            width: "5rem",
+                            textAlign: "center",
+                          }}
+                        >
+                          Done
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        className="farmEditItemsButton"
+                        id="edit"
+                        onClick={() => setEditFarmProducts(true)}
+                      >
+                        <BsFillPencilFill
+                          style={{ fontSize: "14px", marginInline: "6px" }}
+                        />
+                        Edit items
+                      </div>
+                    )}
                   </div>
-                )}
+                ) : null}
               </div>
 
               {/* Grid items(Products) */}
@@ -259,13 +297,6 @@ export async function getServerSideProps(context) {
       },
     };
 
-  // Fetch user info
-  const userInfo = await prisma.user.findFirst({
-    where: {
-      email: user.email,
-    },
-  });
-
   // Fetch farm info
   const farmInfo = await prisma.farmMain.findFirst({
     where: {
@@ -277,6 +308,9 @@ export async function getServerSideProps(context) {
     },
   });
 
+  // Check if the current user is the farm owner or not
+  const farmOwner = farmInfo.user.email === session.user.email;
+
   // no farm redirect
   if (!farmInfo)
     return {
@@ -285,8 +319,6 @@ export async function getServerSideProps(context) {
         permanent: false,
       },
     };
-
-  //TODO: Check if the userInfo.id === farmInfo.user_id to see if the user is an admin or not, if they are allow them to edit the farm
 
   // Fetch farm products
   const farmProducts = await prisma.product.findMany({
@@ -305,9 +337,9 @@ export async function getServerSideProps(context) {
   return {
     props: {
       user,
-      userInfo,
       farmInfo,
       farmProducts,
+      farmOwner,
     },
   };
 }
