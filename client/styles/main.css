@@ -11143,6 +11143,16 @@ textarea.form-control-lg {
   margin: 0 0.5rem 0 0;
 }
 
+.orderReviewStarsContainer {
+  display: flex;
+  align-items: center;
+  color: #7fad39;
+  justify-content: center;
+}
+.orderReviewStarsContainer h5 {
+  margin: 0 0.5rem 0 0;
+}
+
 .badgesContainer {
   display: flex !important;
   gap: 6px;
@@ -11223,7 +11233,7 @@ textarea.form-control-lg {
 }
 
 .orderCardContainer {
-  margin-block: 1rem;
+  margin-block-end: 1rem;
 }
 .orderCardContainer .farmShopFlex {
   display: flex;
@@ -11416,6 +11426,56 @@ textarea.form-control-lg {
   margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
+}
+
+.progressTrackingModal {
+  position: absolute;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: fit-content;
+  z-index: 5;
+}
+.progressTrackingModal .progressTrackingModalBtn {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+}
+
+.productDetailComment {
+  padding-bottom: 1rem;
+}
+.productDetailComment .productDetailCommentCard {
+  margin-block: 1rem;
+}
+.productDetailComment .commentContainer {
+  display: flex;
+}
+.productDetailComment .commentContainer img {
+  border-radius: 50%;
+}
+.productDetailComment .commentContainer p {
+  margin: 0;
+}
+.productDetailComment .commentContainer .commentProfileImageDiv {
+  width: clamp(9px, 40%, 100px);
+}
+.productDetailComment .commentContainer .reviewContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-inline-start: 1rem;
+}
+.productDetailComment .commentContainer .reviewContentContainer .reviewTagsContainer {
+  display: flex;
+  font-size: 18px;
+  gap: 1rem;
 }
 
 .mainLandingPage {
@@ -12377,33 +12437,6 @@ textarea.form-control-lg {
 .productPageMain .productDetailBody .productDetailBodyCard {
   margin-top: 1rem;
 }
-.productPageMain .productDetailComment .productDetailCommentCard {
-  margin-block-start: 1rem;
-}
-.productPageMain .productDetailComment .commentContainer {
-  display: flex;
-  margin-block-start: 1.5rem;
-}
-.productPageMain .productDetailComment .commentContainer img {
-  border-radius: 50%;
-}
-.productPageMain .productDetailComment .commentContainer p {
-  margin: 0;
-}
-.productPageMain .productDetailComment .commentContainer .commentProfileImageDiv {
-  width: clamp(9px, 40%, 100px);
-}
-.productPageMain .productDetailComment .commentContainer .reviewContentContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-inline-start: 1rem;
-}
-.productPageMain .productDetailComment .commentContainer .reviewContentContainer .reviewTagsContainer {
-  display: flex;
-  font-size: 18px;
-  gap: 1rem;
-}
 
 .allProductsPageMain .allProductsPageContent {
   display: flex;
@@ -12485,13 +12518,25 @@ main.mainOrderPage div.orderPageTabFlex h5.tabSelected {
   font-weight: 500;
   border-bottom: 2px solid #7fad39;
 }
-main.orderProgressPage {
-  background-color: #f5f5f5;
+main.mainOrderPage .inProgressTabContainer {
+  padding-block-end: 1rem;
 }
-main.orderProgressPage section.orderProgressSection {
+.orderProgressPage {
+  background-color: #f5f5f5;
+  position: relative;
+}
+.orderProgressPage#modal::after {
+  background-color: black;
+  opacity: 0.65;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+}
+.orderProgressPage section.orderProgressSection {
   padding-block: 1rem;
 }
-main.orderProgressPage .progressOrderDetail {
+.orderProgressPage .progressOrderDetail {
   margin-top: 2rem;
 }
 

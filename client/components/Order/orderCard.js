@@ -10,7 +10,7 @@ import {
   FaUserAlt,
 } from "react-icons/fa";
 
-function orderCard({ newOrder, finished, orderObj, handleRespondOrder }) {
+function orderCard({ incomingOrder, finished, orderObj, handleRespondOrder }) {
   const router = useRouter();
   return (
     <Card className="orderCardContainer">
@@ -18,7 +18,7 @@ function orderCard({ newOrder, finished, orderObj, handleRespondOrder }) {
         {/* Farm shop flex */}
         <div className="farmShopFlex">
           {/* Left side (ie. display shop) */}
-          {newOrder ? (
+          {incomingOrder ? (
             <div>
               <FaUserAlt />
               <h5>{orderObj.user.name}</h5>
@@ -49,12 +49,24 @@ function orderCard({ newOrder, finished, orderObj, handleRespondOrder }) {
           {finished ? (
             <ReviewStars ratings={4} displayNumber />
           ) : (
-            orderObj.status
+            <h6
+              className={
+                orderObj.status === "Cancelled" ? "text-danger" : "text-success"
+              }
+            >
+              {orderObj.status}
+            </h6>
           )}
         </div>
 
         {/* Product display flex */}
-        <div className="productDisplayFlex">
+        <div
+          className="productDisplayFlex"
+          onClick={() =>
+            orderObj.status !== "Cancelled" &&
+            router.push(`/order/progress/${orderObj.id}`)
+          }
+        >
           {/* Left side (ie. image, name, variation, amount) */}
           <div className="productDisplayFlexImage">
             <Image
@@ -85,12 +97,19 @@ function orderCard({ newOrder, finished, orderObj, handleRespondOrder }) {
             Ordered date: (
             {new Date(Date.parse(orderObj.date)).toISOString().slice(0, 10)})
           </p>
-          {orderObj.status === "New" ? (
+          {orderObj.status === "New" && incomingOrder ? (
             <>
-              <Button variant="danger">DECLINE</Button>
+              <Button
+                variant="danger"
+                onClick={() => handleRespondOrder(orderObj.id, "Cancelled", 0)}
+              >
+                DECLINE
+              </Button>
               <Button
                 variant="success"
-                onClick={() => handleRespondOrder(orderObj.id, "In Progress")}
+                onClick={() =>
+                  handleRespondOrder(orderObj.id, "In Progress", 1)
+                }
               >
                 ACCEPT
               </Button>
@@ -99,6 +118,7 @@ function orderCard({ newOrder, finished, orderObj, handleRespondOrder }) {
             <Button
               variant="success"
               onClick={() => router.push(`/order/progress/${orderObj.id}`)}
+              disabled={orderObj.status === "Cancelled"}
             >
               VIEW ORDER
             </Button>

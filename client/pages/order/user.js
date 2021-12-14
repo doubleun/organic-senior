@@ -1,6 +1,7 @@
 // Component imports
 import Layout from "../layout/_layout";
 // import OrderCard from "/components/Order/orderCard";
+import AlertSnack from "/components/Global/alertSnack";
 import InProgressPage from "./_inProgress";
 import FinishedPage from "./_finished";
 
@@ -16,11 +17,48 @@ import { useState } from "react";
 import prisma from "../../prisma/client";
 
 export default function OrderUser({ userOrders, currentUser }) {
-  const [tabInProgress, setTabInProgress] = useState(true);
   userOrders = JSON.parse(userOrders);
+  const [tabInProgress, setTabInProgress] = useState(true);
+  const [ordersUI, setOrdersUI] = useState(userOrders);
+  const [alert, setAlert] = useState(false);
+  console.log(userOrders);
 
+  //* === Functions === *//
+  async function handleRespondOrder(orderId, status, progress) {
+    if (!status || !orderId) return;
+
+    if (confirm(`This order will be "${status}"`)) {
+      const res = await fetch("http://localhost:3000/api/order/product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "RES_ORDER",
+          order_id: orderId,
+          order_status: status,
+          order_progress: progress,
+        }),
+      });
+
+      if (res.status === 200) {
+        // Show success alert
+        setAlert(true);
+        setTimeout(() => setAlert(false), 6000);
+
+        // Update UI
+        setOrdersUI((prev) =>
+          prev.map((order) =>
+            order.id === orderId ? { ...order, status } : order
+          )
+        );
+      }
+      // console.log(res);
+    }
+  }
+
+  //* === Main === *//
   return (
     <main className="mainOrderPage">
+      {alert ? <AlertSnack setAlert={setAlert} /> : null}
       <section className="container">
         {/* Tabs container flex */}
         <div className="orderPageTabFlex">
@@ -34,22 +72,24 @@ export default function OrderUser({ userOrders, currentUser }) {
             className={tabInProgress ? "" : "tabSelected"}
             onClick={() => setTabInProgress(false)}
           >
-            Finished
+            Completed
           </h5>
         </div>
 
         {/* Content */}
-        <div className="inProgressTabContainer">
-          {/* Order cards */}
-          {tabInProgress ? (
-            <InProgressPage orders={userOrders} currentUser={currentUser} />
-          ) : (
-            // TODO: Add finished orders
-            <FinishedPage
-              orders={userOrders.filter((order) => order.status === "Finished")}
-            />
-          )}
-        </div>
+        {/* Order cards */}
+        {tabInProgress ? (
+          <InProgressPage
+            orders={ordersUI.filter((order) => order.status === "In Progress")}
+            currentUser={currentUser}
+            handleRespondOrder={handleRespondOrder}
+          />
+        ) : (
+          // TODO: Add finished orders
+          <FinishedPage
+            orders={ordersUI.filter((order) => order.status !== "In Progress")}
+          />
+        )}
       </section>
     </main>
   );
@@ -80,9 +120,9 @@ export async function getServerSideProps(context) {
           ownerEmail: user.email,
         },
       ],
-      NOT: {
-        status: "New",
-      },
+      // NOT: {
+      //   status: "Cancelled",
+      // },
     },
     include: {
       Review: true,

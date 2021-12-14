@@ -27,13 +27,21 @@ export default async (req, res) => {
             },
           },
         });
+        await prisma.product.update({
+          where: {
+            id: req.body.product_id,
+          },
+          data: {
+            stockAmount: { decrement: req.body.amount },
+          },
+        });
         res.status(200).json({ message: "success", prismaRes });
       } catch (e) {
         res.status(422).send({ message: e.message, e: e });
       }
       break;
+
     // Response order
-    // TODO: Add case where the order status could be "decline"
     case "RES_ORDER":
       try {
         const prismaRes = await prisma.order.update({
@@ -42,6 +50,7 @@ export default async (req, res) => {
           },
           data: {
             status: req.body.order_status,
+            progress: req.body.order_progress,
           },
         });
         res.status(200).json({ message: "success", prismaRes });

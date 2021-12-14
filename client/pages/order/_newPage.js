@@ -8,7 +8,7 @@ export default function InProgress({ orders, handleRespondOrder }) {
         <OrderCard
           key={index}
           orderObj={order}
-          newOrder
+          incomingOrder
           handleRespondOrder={handleRespondOrder}
         />
       ))}

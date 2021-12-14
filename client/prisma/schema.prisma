@@ -119,7 +119,9 @@ model Order {
   selectedVariation Json?
   deliveryMethod    String?
   total_price       Float?
-  status            String?
+  status            String? //New, In Progress, Complete, Cancelled
+  progress          Int?    //1 (Placed), 2 (ReadyToShip), 3 (Shipped), 4 (Received), 5 (Rated)
+  trackID           String?
   date              DateTime @default(now())
   Review            Review?
 }

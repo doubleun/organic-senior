@@ -28,6 +28,9 @@ import prisma from "../../prisma/client";
 export default function ProductPage({ productDetail, currentUser }) {
   const router = useRouter();
   const [alert, setAlert] = useState(false);
+  const [productInStock, setProductInStock] = useState(
+    productDetail.stockAmount
+  );
   const [productQuantity, setProductQuantity] = useState(1);
   const [productShipMethod, setProductShipMethod] = useState();
   const [productPrice, setProductPrice] = useState(
@@ -71,8 +74,10 @@ export default function ProductPage({ productDetail, currentUser }) {
       // Show success alert
       setAlert(true);
       setTimeout(() => setAlert(false), 6000);
+
+      // Update amount UI
+      setProductInStock((prev) => prev - productQuantity);
     }
-    console.log(res);
   }
 
   return (
@@ -135,7 +140,7 @@ export default function ProductPage({ productDetail, currentUser }) {
                   {/* <p className="text-secondary">No Rating Yet</p> */}
                 </div>
               </div>
-              <h2>฿{calTotalPrice}</h2>
+              <h2>฿{productPrice}</h2>
 
               {/* Shipping */}
               <div>
@@ -187,33 +192,51 @@ export default function ProductPage({ productDetail, currentUser }) {
               {/* Quantity */}
               <div>
                 <p className="text-secondary">Quantity</p>
-                <div className="productQuantityFlex">
+                {productInStock === 0 ? (
                   <div>
-                    <FaMinus
-                      onClick={() =>
-                        setProductQuantity((prev) =>
-                          prev > 1 ? prev - 1 : prev
-                        )
-                      }
-                    />
-
-                    <input
-                      type="number"
-                      value={productQuantity}
-                      onChange={(e) =>
-                        setProductQuantity(parseInt(e.target.value))
-                      }
-                    />
-                    <FaPlus
-                      onClick={() => setProductQuantity((prev) => prev + 1)}
-                    />
+                    <h5 className="text-danger">Out of Stock</h5>
                   </div>
-                  <p>30 pieces available</p>
-                </div>
+                ) : (
+                  <div className="productQuantityFlex">
+                    <div>
+                      <FaMinus
+                        onClick={() =>
+                          setProductQuantity((prev) =>
+                            prev > 1 ? prev - 1 : prev
+                          )
+                        }
+                      />
+
+                      <input
+                        type="number"
+                        value={productQuantity}
+                        onChange={(e) =>
+                          setProductQuantity(
+                            parseInt(e.target.value) > productInStock
+                              ? productInStock
+                              : parseInt(e.target.value)
+                          )
+                        }
+                      />
+                      <FaPlus
+                        onClick={() =>
+                          setProductQuantity((prev) =>
+                            prev < productInStock ? prev + 1 : prev
+                          )
+                        }
+                      />
+                    </div>
+                    <p>{productInStock} pieces available</p>
+                  </div>
+                )}
               </div>
 
               {/* Buy button */}
-              <Button variant="success" onClick={handleOrder}>
+              <Button
+                variant="success"
+                onClick={handleOrder}
+                disabled={productInStock <= 0}
+              >
                 Buy Now
               </Button>
             </div>
@@ -300,8 +323,8 @@ export default function ProductPage({ productDetail, currentUser }) {
             </h4>
 
             {/* Comments */}
-            <Comment />
-            <Comment />
+            {/* <Comment />
+            <Comment /> */}
           </div>
         </div>
       </section>

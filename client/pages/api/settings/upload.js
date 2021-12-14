@@ -31,7 +31,7 @@ export default async (req, res) => {
   form.parse(req, async (err, fields, files) => {
     try {
       // Upload to cloudinary
-      const uploadRes = await cloudinary.uploader.upload(files.image.path);
+      const uploadRes = await cloudinary.uploader.upload(files.image.filepath);
 
       res.json({
         message: "success",

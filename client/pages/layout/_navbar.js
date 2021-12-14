@@ -68,7 +68,7 @@ const MainNavbar = () => {
             </Link>
           </Nav>
           <Nav className="endNav">
-            <Nav.Link href="/order/farm">{farm ? <FaBell /> : null}</Nav.Link>
+            {/* <Nav.Link href="/order/farm">{farm ? <FaBell /> : null}</Nav.Link> */}
             <Nav.Link href="/order/user">
               <FaReceipt />
             </Nav.Link>

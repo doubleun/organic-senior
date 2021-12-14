@@ -23,7 +23,7 @@ export default function OrderFarm({ farmNewOrders }) {
   const [alert, setAlert] = useState(false);
 
   //* === Functions === *//
-  async function handleRespondOrder(orderId, status) {
+  async function handleRespondOrder(orderId, status, progress) {
     if (!status || !orderId) return;
 
     if (confirm(`This order will be "${status}"`)) {
@@ -34,6 +34,7 @@ export default function OrderFarm({ farmNewOrders }) {
           action: "RES_ORDER",
           order_id: orderId,
           order_status: status,
+          order_progress: progress,
         }),
       });
 

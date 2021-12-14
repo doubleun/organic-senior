@@ -1,6 +1,10 @@
 import OrderCard from "/components/Order/orderCard";
 
-export default function InProgress({ orders, currentUser }) {
+export default function InProgress({
+  orders,
+  currentUser,
+  handleRespondOrder,
+}) {
   return (
     <div className="inProgressTabContainer">
       {/* Order cards */}
@@ -8,7 +12,8 @@ export default function InProgress({ orders, currentUser }) {
         <OrderCard
           key={index}
           orderObj={order}
-          newOrder={order.ownerEmail === currentUser.email}
+          incomingOrder={order.ownerEmail === currentUser.email}
+          handleRespondOrder={handleRespondOrder}
         />
       ))}
     </div>

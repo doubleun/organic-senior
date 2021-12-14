@@ -36,7 +36,7 @@ export default async (req, res) => {
       // If multiple files
       if (files.image.length > 1) {
         for await (let img of files.image) {
-          const uploadRes = await cloudinary.uploader.upload(img.path);
+          const uploadRes = await cloudinary.uploader.upload(img.filepath);
           finalRes.push({
             message: "success",
             asset_id: uploadRes.asset_id,
@@ -51,7 +51,9 @@ export default async (req, res) => {
           image_urls: finalRes.map((img) => img.img_url),
         });
       } else {
-        const uploadRes = await cloudinary.uploader.upload(files.image.path);
+        const uploadRes = await cloudinary.uploader.upload(
+          files.image.filepath
+        );
         res.status(200).json({
           message: "All success",
           detail: uploadRes,

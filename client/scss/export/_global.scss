@@ -17,6 +17,17 @@
     margin: 0 0.5rem 0 0;
   }
 }
+// Review stars for order {
+.orderReviewStarsContainer {
+  display: flex;
+  align-items: center;
+  color: config.$custom-primary;
+  justify-content: center;
+
+  h5 {
+    margin: 0 0.5rem 0 0;
+  }
+}
 
 // Product badge
 .badgesContainer {
@@ -106,7 +117,7 @@
 
 // Order card
 .orderCardContainer {
-  margin-block: 1rem;
+  margin-block-end: 1rem;
   // Farm shop card
   .farmShopFlex {
     display: flex;
@@ -307,5 +318,60 @@
     margin-top: 1rem;
     display: flex;
     justify-content: flex-end;
+  }
+}
+
+// Progress tracking modal (shipment tracking)
+.progressTrackingModal {
+  position: absolute;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: fit-content;
+  z-index: 5;
+
+  .progressTrackingModalBtn {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-end;
+  }
+}
+
+// Product, order comment (review)
+.productDetailComment {
+  padding-bottom: 1rem;
+  .productDetailCommentCard {
+    margin-block: 1rem;
+  }
+  .commentContainer {
+    display: flex;
+
+    img {
+      border-radius: 50%;
+    }
+    p {
+      margin: 0;
+    }
+    .commentProfileImageDiv {
+      width: clamp(9px, 40%, 100px);
+    }
+    .reviewContentContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      margin-inline-start: 1rem;
+
+      .reviewTagsContainer {
+        display: flex;
+        font-size: 18px;
+        gap: 1rem;
+      }
+    }
   }
 }

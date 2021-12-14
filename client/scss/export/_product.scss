@@ -159,37 +159,4 @@
       margin-top: 1rem;
     }
   }
-
-  // Product comment section
-  .productDetailComment {
-    .productDetailCommentCard {
-      margin-block-start: 1rem;
-    }
-    .commentContainer {
-      display: flex;
-      margin-block-start: 1.5rem;
-
-      img {
-        border-radius: 50%;
-      }
-      p {
-        margin: 0;
-      }
-      .commentProfileImageDiv {
-        width: clamp(9px, 40%, 100px);
-      }
-      .reviewContentContainer {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-        margin-inline-start: 1rem;
-
-        .reviewTagsContainer {
-          display: flex;
-          font-size: 18px;
-          gap: 1rem;
-        }
-      }
-    }
-  }
 }

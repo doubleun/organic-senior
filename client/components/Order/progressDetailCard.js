@@ -1,5 +1,5 @@
 import Card from "react-bootstrap/Card";
-import OrderCardDetail from "/components/Order/orderCardDetail";
+import OrderCard from "/components/Order/orderCard";
 // import { useRouter } from "next/router";
 import {
   MdOutlineReceiptLong,
@@ -9,12 +9,12 @@ import {
   MdCardTravel,
 } from "react-icons/md";
 
-function ProgressDetail({ orderObj }) {
+function ProgressDetail({ orderObj, incomingOrder }) {
   // const router = useRouter();
   return (
     <div className="progressOrderDetail">
       <h5>Order detail</h5>
-      <OrderCardDetail orderObj={orderObj} />
+      <OrderCard orderObj={orderObj} incomingOrder={incomingOrder} />
     </div>
   );
 }
