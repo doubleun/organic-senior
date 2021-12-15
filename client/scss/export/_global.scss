@@ -17,7 +17,7 @@
     margin: 0 0.5rem 0 0;
   }
 }
-// Review stars for order {
+// Review stars for order
 .orderReviewStarsContainer {
   display: flex;
   align-items: center;
@@ -26,6 +26,17 @@
 
   h5 {
     margin: 0 0.5rem 0 0;
+  }
+}
+
+// Review pills for order
+.orderReviewPillsContainer {
+  display: flex;
+  font-size: 18px;
+  gap: 1rem;
+  margin-block: 1rem;
+  .badge {
+    cursor: pointer;
   }
 }
 
@@ -151,7 +162,7 @@
   // Product display (image, name, variation, price)
   .productDisplayFlex {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     padding-block: 0.5rem;
     border-top: 1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
@@ -161,7 +172,7 @@
     }
 
     .productDisplayFlexImage {
-      width: 100px;
+      width: 130px;
     }
     .productNameVariations {
       display: flex;
@@ -351,6 +362,7 @@
   }
   .commentContainer {
     display: flex;
+    margin-block: 1.4rem;
 
     img {
       border-radius: 50%;
@@ -359,7 +371,7 @@
       margin: 0;
     }
     .commentProfileImageDiv {
-      width: clamp(9px, 40%, 100px);
+      width: clamp(9px, 40%, 82px);
     }
     .reviewContentContainer {
       display: flex;

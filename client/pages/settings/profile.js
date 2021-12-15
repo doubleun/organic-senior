@@ -24,6 +24,7 @@ import prisma from "../../prisma/client";
 
 export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
   const [displayProfile, setDisplayProfile] = useState(true);
+  const [editFarmLock, setEditFarmLock] = useState(farmInfo === null);
   const [displaySubmitted, setDisplaySubmitted] = useState(false);
   const [farmSellingMethod, setFarmSellingMethod] = useState({
     storeFront: false,
@@ -64,6 +65,9 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        farm_lock: editFarmLock,
+
+        // Personal info
         name: `${userFirstName.current.value} ${userLastName.current.value}`,
         email: user.email,
         phone: userPhone.current.value,
@@ -74,18 +78,20 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
         postalCode: userPostalCode.current.value,
         socialLink: userSocial.current.value,
 
-        // Farm info
-        farmName: farmName.current.value,
-        farmAddress: farmAddress.current.value,
-        farmProvince: farmProvince.current.value,
-        farmDistrict: farmDistrict.current.value,
-        farmSubDistrict: farmSubDistrict.current.value,
-        farmPostalCode: farmPostalCode.current.value,
-        farmAbout: farmAbout.current.value,
-        farmPhone: farmPhone.current.value,
-        farmSocialLink: farmSocialLink.current.value,
-        farmStoreFront: farmSellingMethod.storeFront,
-        farmDelivery: farmSellingMethod.delivery,
+        ...(!editFarmLock && {
+          // Farm info
+          farmName: farmName.current.value,
+          farmAddress: farmAddress.current.value,
+          farmProvince: farmProvince.current.value,
+          farmDistrict: farmDistrict.current.value,
+          farmSubDistrict: farmSubDistrict.current.value,
+          farmPostalCode: farmPostalCode.current.value,
+          farmAbout: farmAbout.current.value,
+          farmPhone: farmPhone.current.value,
+          farmSocialLink: farmSocialLink.current.value,
+          farmStoreFront: farmSellingMethod.storeFront,
+          farmDelivery: farmSellingMethod.delivery,
+        }),
       }),
     });
 
@@ -193,6 +199,8 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
         <EditFarm
           provinces={provinces}
           displayProfile={displayProfile}
+          editFarmLock={editFarmLock}
+          setEditFarmLock={setEditFarmLock}
           farmInfo={farmInfo}
           handleFarmCheck={handleFarmCheck}
           f={{

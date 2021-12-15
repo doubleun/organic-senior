@@ -55,7 +55,7 @@ export default function OrderProgress({ orderInfo, currentUser }) {
   }
 
   // Handle rate order
-  async function handleRateOrder(rating, comment) {
+  async function handleRateOrder(rating, comment, pillsArr) {
     const newProgress = orderUI.progress + 1;
     const res = await fetch("http://localhost:3000/api/order/progress", {
       method: "POST",
@@ -66,6 +66,7 @@ export default function OrderProgress({ orderInfo, currentUser }) {
         new_progress: newProgress,
         rating,
         comment,
+        pills: pillsArr,
       }),
     });
 

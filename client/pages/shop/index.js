@@ -12,8 +12,10 @@ import { useState, useRef, useMemo } from "react";
 import prisma from "../../prisma/client";
 
 export default function ShopPage({ allProducts }) {
+  allProducts = JSON.parse(allProducts);
   const router = useRouter();
-  const [productsUI, setProdcutsUI] = useState(allProducts);
+  const [productsUI, setProductsUI] = useState(allProducts);
+  const [sortBy, setSortBy] = useState("Relevance");
   const [filterObject, setFilterObject] = useState({
     category: {
       Fruits: false,
@@ -29,7 +31,7 @@ export default function ShopPage({ allProducts }) {
 
   // Handle search product
   function handleSearchProduct() {
-    setProdcutsUI(
+    setProductsUI(
       allProducts.filter((product) =>
         product.name
           .toLowerCase()
@@ -63,7 +65,7 @@ export default function ShopPage({ allProducts }) {
 
   // Handle filtering products UI
   const filterdProductsUI = useMemo(() => {
-    console.log(selectedCategories);
+    // console.log(selectedCategories);
     // If one filter is selected,  we'll return products that matched with the filter
     if (selectedCategories.length !== 0) {
       return productsUI.filter((product) =>
@@ -74,6 +76,8 @@ export default function ShopPage({ allProducts }) {
     // If there are no filter selected, return the normal product array
     return productsUI;
   }, [productsUI, filterObject]);
+
+  console.log(filterdProductsUI);
 
   return (
     <main className="allProductsPageMain">
@@ -180,13 +184,60 @@ export default function ShopPage({ allProducts }) {
           {/* Sort by tab */}
           <div className="productsSortingTab">
             Sort by
-            <button className="btn-active">Relevance</button>
-            <button>Latest</button>
-            <button>Top Sales</button>
-            <select className="form-select">
-              <option>Price</option>
-              <option defaultValue="2">Price: Low to high</option>
-              <option defaultValue="3">Price: High to low</option>
+            <button
+              className={sortBy === "Relevance" ? "btn-active" : ""}
+              onClick={(e) => setSortBy(e.target.innerHTML)}
+            >
+              Relevance
+            </button>
+            <button
+              className={sortBy === "Latest" ? "btn-active" : ""}
+              onClick={(e) => {
+                setSortBy(e.target.innerHTML);
+                setProductsUI((prev) => prev.sort((a, b) => b.id - a.id));
+              }}
+            >
+              Latest
+            </button>
+            <button
+              className={sortBy === "Top Sales" ? "btn-active" : ""}
+              onClick={(e) => {
+                setSortBy(e.target.innerHTML);
+                setProductsUI((prev) =>
+                  prev.sort((a, b) => b.Order.length - a.Order.length)
+                );
+              }}
+            >
+              Top Sales
+            </button>
+            <select
+              className={
+                "form-select " +
+                (sortBy.includes("Price") ? "select-active" : "")
+              }
+              onChange={(e) => {
+                if (e.target.value === "2") {
+                  setSortBy("Price: Low to high");
+                  setProductsUI((prev) =>
+                    prev.sort(
+                      (a, b) =>
+                        parseInt(a.price[0].price) - parseInt(b.price[0].price)
+                    )
+                  );
+                } else {
+                  setSortBy("Price: High to low");
+                  setProductsUI((prev) =>
+                    prev.sort(
+                      (a, b) =>
+                        parseInt(b.price[0].price) - parseInt(a.price[0].price)
+                    )
+                  );
+                }
+              }}
+            >
+              <option value={1}>Price</option>
+              <option value={2}>Price: Low to high</option>
+              <option value={3}>Price: High to low</option>
             </select>
             <input
               type="text"
@@ -194,6 +245,7 @@ export default function ShopPage({ allProducts }) {
               placeholder="Search"
               ref={searchInput}
               onChange={handleSearchProduct}
+              onClick={() => console.log(sortBy)}
             />
           </div>
 
@@ -227,6 +279,12 @@ export async function getServerSideProps(context) {
   const allProducts = await prisma.product.findMany({
     include: {
       farm: true,
+      Order: {
+        select: {
+          date: true,
+          Review: true,
+        },
+      },
     },
   });
 
@@ -240,7 +298,7 @@ export async function getServerSideProps(context) {
     };
 
   return {
-    props: { allProducts },
+    props: { allProducts: JSON.stringify(allProducts) },
   };
 }
 

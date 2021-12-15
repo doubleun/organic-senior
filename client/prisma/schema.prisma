@@ -133,4 +133,5 @@ model Review {
   order_id Int
   rating   Int?
   comment  String?
+  pills    String[]
 }

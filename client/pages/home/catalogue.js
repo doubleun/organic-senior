@@ -1,5 +1,5 @@
 //React imports
-import { useState } from "react";
+import { useState, useMemo } from "react";
 // import Layout from "../../components/Layout";
 import Layout from "../layout/_layout";
 import CatalogueCarousel from "../../components/Carousel/CatalogueCarousel";
@@ -22,6 +22,19 @@ import prisma from "/prisma/client";
 
 export default function Catalogue({ listFeatured, user, featuredProducts }) {
   const [activeFeatured, setActiveFeatured] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [productsUI, setProductsUI] = useState(featuredProducts);
+
+  console.log(productsUI);
+
+  // Filter product based on selected category
+  const filteredProducts = useMemo(
+    () =>
+      selectedCategory === "All"
+        ? productsUI
+        : productsUI.filter((product) => product.category === selectedCategory),
+    [productsUI, selectedCategory]
+  );
   const router = useRouter();
 
   return (
@@ -36,35 +49,35 @@ export default function Catalogue({ listFeatured, user, featuredProducts }) {
               <BsList />
               All departments
             </ListGroup.Item>
-            <ListGroup.Item as="li" action href="">
-              Fresh Meat
+            <ListGroup.Item as="li" action>
+              Fruits
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
               Vegetable
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Fruits & Nut Gifts
+              Dairy
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Ocean Foods
+              Meat
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Butter & Eggs
+              Nuts
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Fastfood
+              Grains
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Fresh Onion
+              Orange
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Papaya & Crisps
+              Salmon
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Oatmeal
+              Onion
             </ListGroup.Item>
             <ListGroup.Item as="li" action href="">
-              Fresh Bananas
+              Strawberry
             </ListGroup.Item>
           </ListGroup>
 
@@ -112,8 +125,9 @@ export default function Catalogue({ listFeatured, user, featuredProducts }) {
                     className={
                       activeFeatured === index ? "active-featured" : ""
                     }
-                    onClick={() => {
+                    onClick={(e) => {
                       setActiveFeatured(index);
+                      setSelectedCategory(e.target.innerHTML);
                     }}
                   >
                     {itm}
@@ -124,7 +138,7 @@ export default function Catalogue({ listFeatured, user, featuredProducts }) {
 
             {/* Product cards */}
             <Row className="productCardsGrid">
-              {featuredProducts.map((product) => (
+              {filteredProducts.map((product) => (
                 <Col xs={12} lg={3} key={product.id}>
                   <div onClick={() => router.push(`/product/${product.id}`)}>
                     <ItemCard productObj={product} />

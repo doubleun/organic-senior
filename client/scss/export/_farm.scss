@@ -176,6 +176,25 @@
     display: flex;
     padding-block-end: 4rem;
 
+    // Search filter (left side content)
+    div.searchFilterContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 0 1rem 0 0;
+      width: 18%;
+
+      .list-group {
+        border-bottom: 1px solid #dfdfdf;
+        .list-group-item {
+          border: none;
+        }
+        p {
+          margin: 0;
+        }
+      }
+    }
+
     .farmBodyContentCategories {
       cursor: pointer;
       width: 20%;

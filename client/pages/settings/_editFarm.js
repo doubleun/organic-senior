@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 
 // React imports
 import { useState, useEffect } from "react";
+import { MdOutlineLock } from "react-icons/md";
 
 // Nextjs imports
 import { useRouter } from "next/router";
@@ -12,6 +13,8 @@ import Image from "next/image";
 export default function EditFarm({
   provinces,
   displayProfile,
+  editFarmLock,
+  setEditFarmLock,
   farmInfo,
   handleFarmCheck,
   f,
@@ -87,91 +90,103 @@ export default function EditFarm({
         ) : null}
       </div>
       <p id="subtitle">Farm informations</p>
-      <Form className="editFarmForm">
-        {/* Farm name */}
-        <div className="mb-3">
-          <Form.Group className="">
-            <Form.Label>Farm Name</Form.Label>
+
+      {/* Edit farm form */}
+      {editFarmLock ? (
+        <div className="editFarmLock">
+          <MdOutlineLock />
+          <Button variant="success" onClick={() => setEditFarmLock(false)}>
+            Unlock farm
+          </Button>
+        </div>
+      ) : (
+        <Form className="editFarmForm">
+          {/* Farm name */}
+          <div className="mb-3">
+            <Form.Group className="">
+              <Form.Label>Farm Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Farm name"
+                id="farmName"
+                ref={f.farmName}
+              />
+            </Form.Group>
+          </div>
+
+          <div className="customDivider">
+            <span className="dividerText">Address</span>
+          </div>
+
+          {/* Address */}
+          <Form.Group className="mb-3">
+            <Form.Label>Farm Address</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Farm name"
-              id="farmName"
-              ref={f.farmName}
+              as="textarea"
+              rows={2}
+              placeholder="Farm address"
+              id="farmAddress"
+              ref={f.farmAddress}
             />
           </Form.Group>
-        </div>
 
-        <div className="customDivider">
-          <span className="dividerText">Address</span>
-        </div>
-
-        {/* Address */}
-        <Form.Group className="mb-3">
-          <Form.Label>Farm Address</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={2}
-            placeholder="Farm address"
-            id="farmAddress"
-            ref={f.farmAddress}
-          />
-        </Form.Group>
-
-        {/* Select province and stuffs */}
-        <Form.Group className="mb-3 provinceSelector">
-          {/* Province */}
-          <div>
-            <Form.Label>Provice</Form.Label>
-            <Form.Select
-              id="farmProvince"
-              aria-label="Default select example"
-              onChange={(e) => {
-                setSelectedProvince(e.target.selectedOptions[0].id);
-              }}
-              ref={f.farmProvince}
-            >
-              {provinces.map((province, index) => (
-                <option id={index} key={province.name} value={province.name}>
-                  {province.name}
-                </option>
-              ))}
-            </Form.Select>
-          </div>
-          {/* District */}
-          <div>
-            <Form.Label>District</Form.Label>
-            <Form.Select
-              id="farmProvince"
-              aria-label="Default select example"
-              onChange={(e) => {
-                setSelectedAmphoe(e.target.selectedOptions[0].id);
-              }}
-              ref={f.farmDistrict}
-            >
-              {provinces[selectedProvince].amphoe.map((amphoe, index) => (
-                <option
-                  id={index}
-                  key={amphoe.name + index}
-                  value={amphoe.name}
-                >
-                  {amphoe.name}
-                </option>
-              ))}
-            </Form.Select>
-          </div>
-          {/* Sub-District */}
-          <div>
-            <Form.Label>Sub-District</Form.Label>
-            <Form.Select
-              id="farmSubDistrict"
-              aria-label="Default select example"
-              onChange={(e) => {
-                setPostalCode(e.target.selectedOptions[0].id);
-              }}
-              ref={f.farmSubDistrict}
-            >
-              {provinces[selectedProvince].amphoe[selectedAmphoe].districts.map(
-                (sub) => (
+          {/* Select province and stuffs */}
+          <Form.Group className="mb-3 provinceSelector">
+            {/* Province */}
+            <div>
+              <Form.Label>Provice</Form.Label>
+              <Form.Select
+                id="farmProvince"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setSelectedProvince(e.target.selectedOptions[0].id);
+                  setSelectedAmphoe(0);
+                }}
+                ref={f.farmProvince}
+              >
+                {provinces.map((province, index) => (
+                  <option id={index} key={province.name} value={province.name}>
+                    {province.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+            {/* District */}
+            <div>
+              <Form.Label>District</Form.Label>
+              <Form.Select
+                id="farmProvince"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setSelectedAmphoe(e.target.selectedOptions[0].id);
+                }}
+                ref={f.farmDistrict}
+              >
+                {provinces[selectedProvince].amphoe.map((amphoe, index) => (
+                  <option
+                    id={index}
+                    key={amphoe.name + index}
+                    value={amphoe.name}
+                  >
+                    {amphoe.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+            {/* Sub-District */}
+            <div>
+              <Form.Label>Sub-District</Form.Label>
+              <Form.Select
+                id="farmSubDistrict"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setPostalCode(e.target.selectedOptions[0].id);
+                }}
+                ref={f.farmSubDistrict}
+              >
+                {provinces[selectedProvince].amphoe[
+                  selectedAmphoe
+                ].districts.map((sub) => (
                   <option
                     id={sub.zipcode}
                     key={sub.district}
@@ -179,156 +194,156 @@ export default function EditFarm({
                   >
                     {sub.district}
                   </option>
-                )
-              )}
-            </Form.Select>
+                ))}
+              </Form.Select>
+            </div>
+            {/* Postal code */}
+            <div>
+              <Form.Label>Postal code</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Zip code"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+                id="farmPostalCode"
+                ref={f.farmPostalCode}
+              />
+            </div>
+          </Form.Group>
+
+          <div className="customDivider">
+            <span className="dividerText">About farm</span>
           </div>
-          {/* Postal code */}
-          <div>
-            <Form.Label>Postal code</Form.Label>
+
+          {/* About */}
+          <Form.Group className="mb-3">
+            <Form.Label>About farm</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="About farm"
+              id="farmAbout"
+              ref={f.farmAbout}
+            />
+          </Form.Group>
+
+          {/* Upload social security card and organic cert */}
+          <div className="uploadSocialAndCert">
+            <div className="mb-3">
+              <Form.Label>Social security card image</Form.Label>
+              {/* Display social security card image or upload buttons */}
+              {farmInfo?.socialImage ? (
+                <div>
+                  <Image
+                    src={farmInfo.socialImage}
+                    width="200px"
+                    height="200px"
+                  />
+                </div>
+              ) : (
+                <>
+                  <input
+                    className="form-control mb-2"
+                    accept=".jpg, .jpeg, .png"
+                    type="file"
+                    onChange={(e) => setSelectedSocialImage(e.target.files[0])}
+                  />
+                  <Button
+                    variant="success"
+                    disabled={!selectedSocialImage}
+                    onClick={() =>
+                      handleUploadImage("social-security", selectedSocialImage)
+                    }
+                  >
+                    Upload social security card image
+                  </Button>
+                </>
+              )}
+            </div>
+            <div className="mb-3">
+              <Form.Label>Organic certification image</Form.Label>
+              {/* Display organic certification image or upload buttons */}
+              {farmInfo?.organicCertImage ? (
+                <div>
+                  <Image
+                    src={farmInfo.organicCertImage}
+                    width="200px"
+                    height="200px"
+                  />
+                </div>
+              ) : (
+                <>
+                  <input
+                    className="form-control mb-2"
+                    accept=".jpg, .jpeg, .png"
+                    type="file"
+                    onChange={(e) => setSelectedOrganicImage(e.target.files[0])}
+                  />
+                  <Button
+                    variant="success"
+                    disabled={!selectedOrganicImage}
+                    onClick={() =>
+                      handleUploadImage("organic-cert", selectedOrganicImage)
+                    }
+                  >
+                    Upload organic certification image
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="customDivider">
+            <span className="dividerText">Contact</span>
+          </div>
+
+          {/* Phone number */}
+          <Form.Group className="mb-3">
+            <Form.Label>Phone</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Zip code"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              id="farmPostalCode"
-              ref={f.farmPostalCode}
+              placeholder="Phone number"
+              id="farmPhone"
+              ref={f.farmPhone}
             />
+          </Form.Group>
+
+          {/* Social link */}
+          <Form.Group className="mb-3">
+            <Form.Label>Social link</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Facebook or LINE"
+              id="farmSocialLink"
+              ref={f.farmSocialLink}
+            />
+          </Form.Group>
+
+          {/* Selling methods */}
+          <div className="customDivider">
+            <span className="dividerText">Selling methods</span>
           </div>
-        </Form.Group>
 
-        <div className="customDivider">
-          <span className="dividerText">About farm</span>
-        </div>
-
-        {/* About */}
-        <Form.Group className="mb-3">
-          <Form.Label>About farm</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="About farm"
-            id="farmAbout"
-            ref={f.farmAbout}
+          <Form.Check
+            inline
+            label="Store front"
+            type="checkbox"
+            id="storeFront"
+            value="Store Front"
+            onChange={handleFarmCheck}
+            ref={f.farmStoreFront}
           />
-        </Form.Group>
-
-        {/* Upload social security card and organic cert */}
-        <div className="uploadSocialAndCert">
-          <div className="mb-3">
-            <Form.Label>Social security card image</Form.Label>
-            {/* Display social security card image or upload buttons */}
-            {farmInfo?.socialImage ? (
-              <div>
-                <Image
-                  src={farmInfo.socialImage}
-                  width="200px"
-                  height="200px"
-                />
-              </div>
-            ) : (
-              <>
-                <input
-                  className="form-control mb-2"
-                  accept=".jpg, .jpeg, .png"
-                  type="file"
-                  onChange={(e) => setSelectedSocialImage(e.target.files[0])}
-                />
-                <Button
-                  variant="success"
-                  disabled={!selectedSocialImage}
-                  onClick={() =>
-                    handleUploadImage("social-security", selectedSocialImage)
-                  }
-                >
-                  Upload social security card image
-                </Button>
-              </>
-            )}
-          </div>
-          <div className="mb-3">
-            <Form.Label>Organic certification image</Form.Label>
-            {/* Display organic certification image or upload buttons */}
-            {farmInfo?.organicCertImage ? (
-              <div>
-                <Image
-                  src={farmInfo.organicCertImage}
-                  width="200px"
-                  height="200px"
-                />
-              </div>
-            ) : (
-              <>
-                <input
-                  className="form-control mb-2"
-                  accept=".jpg, .jpeg, .png"
-                  type="file"
-                  onChange={(e) => setSelectedOrganicImage(e.target.files[0])}
-                />
-                <Button
-                  variant="success"
-                  disabled={!selectedOrganicImage}
-                  onClick={() =>
-                    handleUploadImage("organic-cert", selectedOrganicImage)
-                  }
-                >
-                  Upload organic certification image
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="customDivider">
-          <span className="dividerText">Contact</span>
-        </div>
-
-        {/* Phone number */}
-        <Form.Group className="mb-3">
-          <Form.Label>Phone</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Phone number"
-            id="farmPhone"
-            ref={f.farmPhone}
+          <Form.Check
+            inline
+            label="Delivery"
+            type="checkbox"
+            id="delivery"
+            value="Delivery"
+            onChange={handleFarmCheck}
+            ref={f.farmDelivery}
           />
-        </Form.Group>
-
-        {/* Social link */}
-        <Form.Group className="mb-3">
-          <Form.Label>Social link</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Facebook or LINE"
-            id="farmSocialLink"
-            ref={f.farmSocialLink}
-          />
-        </Form.Group>
-
-        {/* Selling methods */}
-        <div className="customDivider">
-          <span className="dividerText">Selling methods</span>
-        </div>
-
-        <Form.Check
-          inline
-          label="Store front"
-          type="checkbox"
-          id="storeFront"
-          value="Store Front"
-          onChange={handleFarmCheck}
-          ref={f.farmStoreFront}
-        />
-        <Form.Check
-          inline
-          label="Delivery"
-          type="checkbox"
-          id="delivery"
-          value="Delivery"
-          onChange={handleFarmCheck}
-          ref={f.farmDelivery}
-        />
-      </Form>
+        </Form>
+      )}
     </section>
   );
 }

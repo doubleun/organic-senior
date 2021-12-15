@@ -145,6 +145,7 @@ export default function PersonalInfo({
               aria-label="Default select example"
               onChange={(e) => {
                 setSelectedProvince(e.target.selectedOptions[0].id);
+                setSelectedAmphoe(0);
               }}
               ref={u.userProvince}
             >

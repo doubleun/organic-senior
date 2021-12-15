@@ -49,6 +49,7 @@ export default async (req, res) => {
               create: {
                 rating: req.body.rating,
                 comment: req.body.comment,
+                pills: req.body.pills,
               },
             },
           },

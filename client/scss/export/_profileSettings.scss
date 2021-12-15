@@ -86,6 +86,22 @@
           margin-bottom: 0.5rem;
         }
       }
+
+      //Edit farm lock
+      .editFarmLock {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        padding: 4rem 5rem 0 5rem;
+        min-height: 460px;
+
+        svg {
+          font-size: 5rem;
+        }
+      }
+
+      // Edit farm form
       .editFarmForm {
         input {
           color: rgb(70, 70, 70);

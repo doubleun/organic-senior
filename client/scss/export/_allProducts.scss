@@ -52,6 +52,12 @@
         select {
           width: 12rem;
           border: none;
+
+          // Select active
+          &.select-active {
+            background-color: config.$custom-primary;
+            color: white;
+          }
         }
         input {
           margin-inline-start: auto;

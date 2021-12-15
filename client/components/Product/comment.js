@@ -18,16 +18,21 @@ const Comment = ({ review, user }) => {
       {/* Comment content */}
       <div className="reviewContentContainer">
         <h6>{user.name}</h6>
-        <ReviewStars ratings={review.rating} />
-        <p>{review.comment}</p>
+        <ReviewStars ratings={review?.rating || 0} />
+        <p>{review?.comment || ""}</p>
         <div className="reviewTagsContainer">
-          <span className="badge rounded-pill bg-success">Excellent Value</span>
+          {review?.pills.map((pill, index) => (
+            <span className="badge rounded-pill bg-success" key={index}>
+              {pill}
+            </span>
+          ))}
+          {/* <span className="badge rounded-pill bg-success">Excellent Value</span>
           <span className="badge rounded-pill bg-success">
             Excellent Delivery Speed
           </span>
           <span className="badge rounded-pill bg-success">
             Excellent Seller Service Quality
-          </span>
+          </span> */}
         </div>
       </div>
     </div>

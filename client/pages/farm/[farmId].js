@@ -13,7 +13,7 @@ import { getSession } from "next-auth/react";
 // Bootstrap imports
 import Alert from "react-bootstrap/Alert";
 import FormControl from "react-bootstrap/FormControl";
-import ListGroup from "react-bootstrap/ListGroup";
+// import ListGroup from "react-bootstrap/ListGroup";
 import {
   BsFillPencilFill,
   BsCheck2Circle,
@@ -24,7 +24,7 @@ import {
 // SQL Database
 import prisma from "../../prisma/client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 
 export default function Farm({ farmInfo, farmProducts, farmOwner }) {
   const router = useRouter();
@@ -40,6 +40,20 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
   const [alertSuccess, setAlertSuccess] = useState(false);
   // State for keeping track of the products in the front-end
   const [farmProductsUI, setFarmProductsUI] = useState(farmProducts);
+  // Filter categories
+  const [filterCategories, setFilterCategories] = useState({
+    Fruits: false,
+    Vegetables: false,
+    Meat: false,
+    ["Dairy products"]: false,
+    Nuts: false,
+    Grains: false,
+  });
+
+  // Update the products when user change from 1 farm page to another
+  useEffect(() => {
+    setFarmProductsUI(farmProducts);
+  }, [farmProducts]);
 
   // Handle search product
   function handleSearchProduct() {
@@ -51,6 +65,41 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
       )
     );
   }
+
+  // Handle filter
+  function handleFilterProducts(newFilter) {
+    if (newFilter.checked) {
+      setFilterCategories((prev) => ({
+        ...prev,
+        [newFilter.value]: true,
+      }));
+    } else {
+      setFilterCategories((prev) => ({
+        ...prev,
+        [newFilter.value]: false,
+      }));
+    }
+  }
+
+  // Produce selected filter categories array
+  const selectedCategories = useMemo(() => {
+    // console.log(filterCategories);
+    return Object.keys(filterCategories).filter((key) => filterCategories[key]);
+  }, [filterCategories]);
+
+  // Handle filtering products UI
+  const filterdProductsUI = useMemo(() => {
+    // console.log(selectedCategories);
+    // If one filter is selected,  we'll return products that matched with the filter
+    if (selectedCategories.length !== 0) {
+      return farmProductsUI.filter((product) =>
+        selectedCategories.includes(product.category)
+      );
+    }
+
+    // If there are no filter selected, return the normal product array
+    return farmProductsUI;
+  }, [farmProductsUI, filterCategories]);
 
   return (
     <main className="farmPageMain">
@@ -106,11 +155,11 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
               </div>
               <div>
                 <p>3,211 sales</p>
-                <ReviewStars ratings={4} />
+                {/* <ReviewStars ratings={4} /> */}
               </div>
             </div>
 
-            <div className="farmLocation">
+            <div className="me-5 farmLocation">
               <h5>Address</h5>
               <p className="text-secondary">Province: {farmInfo.province}</p>
               <p className="text-secondary">District: {farmInfo.district}</p>
@@ -120,6 +169,12 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
               <p className="text-secondary">
                 Postal-Code: {farmInfo.postalCode}
               </p>
+            </div>
+
+            <div className="ms-5 farmLocation">
+              <h5>Contact</h5>
+              <p className="text-secondary">Social: {farmInfo.socialLink}</p>
+              <p className="text-secondary">Phone: {farmInfo.phone}</p>
             </div>
           </div>
 
@@ -165,21 +220,66 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
           {/* Items display */}
           <div className="farmBodyContent">
             {/* Categories (left-side) */}
-            <div className="farmBodyContentCategories">
-              <ListGroup as="ul">
-                <ListGroup.Item as="li" active>
-                  All
-                </ListGroup.Item>
-                <ListGroup.Item as="li">Vegetable</ListGroup.Item>
-                <ListGroup.Item as="li">Fruits</ListGroup.Item>
-                <ListGroup.Item as="li">Oranges</ListGroup.Item>
-                <ListGroup.Item as="li">Strawberries</ListGroup.Item>
-                <ListGroup.Item as="li">Grapes</ListGroup.Item>
-                <ListGroup.Item as="li">Onions</ListGroup.Item>
-                <ListGroup.Item as="li">Garlic</ListGroup.Item>
-                <ListGroup.Item as="li">Lynchee</ListGroup.Item>
-              </ListGroup>
+            <div className="searchFilterContainer">
+              {/* Filter by category */}
+              <div className="list-group">
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Fruits"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Fruits
+                </label>
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Vegetables"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Vegetables
+                </label>
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Meat"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Meat
+                </label>
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Dairy products"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Dairy products
+                </label>
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Nuts"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Nuts
+                </label>
+                <label className="list-group-item">
+                  <input
+                    className="form-check-input me-1"
+                    type="checkbox"
+                    value="Grains"
+                    onChange={(e) => handleFilterProducts(e.target)}
+                  />
+                  Grains
+                </label>
+              </div>
             </div>
+
             {/* Items(Products) (right-side) */}
             <div className="farmBodyContentItems">
               {/* Edit items(Products) */}
@@ -220,8 +320,8 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
               {/* Grid items(Products) */}
               <div className="farmItemsGrid">
                 {/* Render all products */}
-                {farmProductsUI.length !== 0
-                  ? farmProductsUI.map((itm, index) => (
+                {filterdProductsUI.length !== 0
+                  ? filterdProductsUI.map((itm, index) => (
                       <div
                         onClick={(e) => {
                           if (editFarmProducts) {

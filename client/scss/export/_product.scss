@@ -8,6 +8,29 @@
     box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
   }
 
+  .productFlexContainer {
+    display: flex;
+    justify-content: space-between;
+
+    // Left side (main section)
+    .productLeftSection {
+      padding: 2rem 0 1rem 0;
+      width: 78%;
+    }
+
+    // Reccommended products from the same shop
+    .productReccommendSection {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-direction: column;
+      width: 20%;
+      height: 1000px;
+      overflow: auto;
+      // align-items: center;
+    }
+  }
+
   // Top section
   & section:first-child {
     padding-block-start: 3rem;
@@ -21,7 +44,7 @@
       .productDetailBannerImageGallery {
         display: flex;
         gap: 1rem;
-        width: 42%;
+        width: 50%;
 
         // Image slider
         .imageGallerySlider {
@@ -49,7 +72,7 @@
 
         // Product image preview
         .productImagePreview {
-          width: 74%;
+          width: 76%;
         }
       }
 
@@ -58,6 +81,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 0.6rem;
 
         h2 {
           font-size: 2.2rem;
@@ -153,10 +177,24 @@
     }
   }
 
-  // Product detail section
-  .productDetailBody {
-    .productDetailBodyCard {
-      margin-top: 1rem;
-    }
-  }
+  // Product comment section
+  // .productMainSide {
+  //   margin-top: 1rem;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   .productDetailComment {
+  //     width: 78%;
+  //   }
+
+  //   // Reccommended products from the same shop
+  //   .productReccommend {
+  //     display: flex;
+  //     gap: 1rem;
+  //     flex-direction: column;
+  //     width: 20%;
+  //     height: 700px;
+  //     overflow: auto;
+  //     align-items: center;
+  //   }
+  // }
 }

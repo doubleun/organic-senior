@@ -6,8 +6,14 @@ import { useState, useMemo, useRef } from "react";
 
 function orderReviewModal({ setShowReviewModal, handleRateOrder }) {
   const [rating, setRating] = useState(1);
+  // I use a fullname key here becuase when the request is sent
+  // I can just loop through the object and push in all true value keys
+  const [selectedPills, setSelectedPills] = useState({
+    ["Excellent Value"]: false,
+    ["Excellent Delivery Speed"]: false,
+    ["Excellent Seller Service Quality"]: false,
+  });
   const comment = useRef();
-  // const starsArr = new Array(ratings).fill(1);
 
   // Calculate ratings
   const finalArr = useMemo(() => {
@@ -18,7 +24,7 @@ function orderReviewModal({ setShowReviewModal, handleRateOrder }) {
   return (
     <div className="progressTrackingModal">
       <h3>ให้คะแนนรายการสั่ง</h3>
-      {/* Stars */}
+      {/* Review stars */}
       <div
         className="mt-3 mb-3 orderReviewStarsContainer"
         style={{ fontSize: "3.2rem" }}
@@ -36,6 +42,7 @@ function orderReviewModal({ setShowReviewModal, handleRateOrder }) {
         })}
       </div>
 
+      {/* Review comment */}
       <Form>
         <Form.Label>อธิบายประสบการของคุณ</Form.Label>
         <Form.Control
@@ -46,6 +53,60 @@ function orderReviewModal({ setShowReviewModal, handleRateOrder }) {
         />
       </Form>
 
+      {/* Review pills */}
+      <div className="orderReviewPillsContainer">
+        <span
+          className={
+            "badge rounded-pill " +
+            (selectedPills["Excellent Value"] ? "bg-success" : "bg-secondary")
+          }
+          // Toggle pill on and off
+          onClick={() =>
+            setSelectedPills((prev) => ({
+              ...prev,
+              ["Excellent Value"]: !prev["Excellent Value"],
+            }))
+          }
+        >
+          Excellent Value
+        </span>
+        <span
+          className={
+            "badge rounded-pill " +
+            (selectedPills["Excellent Delivery Speed"]
+              ? "bg-success"
+              : "bg-secondary")
+          }
+          // Toggle pill on and off
+          onClick={() =>
+            setSelectedPills((prev) => ({
+              ...prev,
+              ["Excellent Delivery Speed"]: !prev["Excellent Delivery Speed"],
+            }))
+          }
+        >
+          Excellent Delivery Speed
+        </span>
+        <span
+          className={
+            "badge rounded-pill " +
+            (selectedPills["Excellent Seller Service Quality"]
+              ? "bg-success"
+              : "bg-secondary")
+          }
+          // Toggle pill on and off
+          onClick={() =>
+            setSelectedPills((prev) => ({
+              ...prev,
+              ["Excellent Seller Service Quality"]:
+                !prev["Excellent Seller Service Quality"],
+            }))
+          }
+        >
+          Excellent Seller Service Quality
+        </span>
+      </div>
+
       {/* Buttons */}
       <div className="mt-3 progressTrackingModalBtn">
         <Button variant="secondary" onClick={() => setShowReviewModal(false)}>
@@ -53,7 +114,13 @@ function orderReviewModal({ setShowReviewModal, handleRateOrder }) {
         </Button>
         <Button
           variant="success"
-          onClick={() => handleRateOrder(rating, comment.current.value)}
+          onClick={() =>
+            handleRateOrder(
+              rating,
+              comment.current.value,
+              Object.keys(selectedPills).filter((k) => selectedPills[k])
+            )
+          }
         >
           Confirm
         </Button>

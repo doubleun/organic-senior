@@ -80,12 +80,14 @@ export default function OrderUser({ userOrders, currentUser }) {
         {/* Order cards */}
         {tabInProgress ? (
           <InProgressPage
-            orders={ordersUI.filter((order) => order.status === "In Progress")}
+            orders={ordersUI.filter(
+              (order) =>
+                order.status === "In Progress" || order.status === "New"
+            )}
             currentUser={currentUser}
             handleRespondOrder={handleRespondOrder}
           />
         ) : (
-          // TODO: Add finished orders
           <FinishedPage
             orders={ordersUI.filter((order) => order.status !== "In Progress")}
           />

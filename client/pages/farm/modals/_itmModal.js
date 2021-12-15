@@ -226,11 +226,8 @@ export default function NewItemModal({
               <option value="Vegetables">Vegetables</option>
               <option value="Meat">Meat</option>
               <option value="Dairy products">Dairy products</option>
-              <option value="Bakery">Bakery</option>
               <option value="Nuts">Nuts</option>
               <option value="Grains">Grains</option>
-              <option value="Sweets">Sweets</option>
-              <option value="Oils">Oils</option>
             </Form.Select>
           </div>
         </div>
