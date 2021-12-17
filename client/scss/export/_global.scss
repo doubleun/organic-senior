@@ -135,6 +135,10 @@
     justify-content: space-between;
     margin-bottom: 0.5rem;
 
+    a {
+      text-decoration: none;
+    }
+
     div:first-child {
       display: flex;
       gap: 0.5rem;
@@ -187,15 +191,23 @@
       align-items: center;
     }
   }
-  // Order date, Btn
-  .orderDateBtn {
+  // Remark order date, btn flex
+  .remarkOrderDateFlex {
     display: flex;
-    margin-top: 0.5rem;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    * {
+    margin-top: 0.5rem;
+    h6 {
       margin: 0;
+    }
+    .orderDateBtn {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      * {
+        margin: 0;
+      }
     }
   }
 }
@@ -328,7 +340,11 @@
   div.buttonsContainer {
     margin-top: 1rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    p {
+      margin: 0;
+    }
   }
 }
 

@@ -13,7 +13,7 @@ export default function ItemCard({
   // Delete item function
   const handleDeleteProduct = async () => {
     if (confirm("Are you sure you want to delete this product?")) {
-      const updateRes = await fetch(
+      const res = await fetch(
         "http://localhost:3000/api/farm/update-product-database",
         {
           method: "POST",
@@ -24,18 +24,20 @@ export default function ItemCard({
           }),
         }
       );
+      if (res.status === 200) {
+        // Update UI
+        setFarmProductsUI((prev) =>
+          prev.filter((product) => product.id !== productObj.id)
+        );
+
+        // Show success alert
+        setAlertSuccess(true);
+        setTimeout(() => setAlertSuccess(false), 6000);
+        console.log("Successfully delete a product");
+      }
     } else {
       return;
     }
-    // Update UI
-    setFarmProductsUI((prev) =>
-      prev.filter((product) => product.id !== productObj.id)
-    );
-
-    // Show success alert
-    setAlertSuccess(true);
-    setTimeout(() => setAlertSuccess(false), 6000);
-    console.log("Successfully delete a product");
   };
 
   return (

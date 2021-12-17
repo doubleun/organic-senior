@@ -11250,6 +11250,9 @@ textarea.form-control-lg {
   justify-content: space-between;
   margin-bottom: 0.5rem;
 }
+.orderCardContainer .farmShopFlex a {
+  text-decoration: none;
+}
 .orderCardContainer .farmShopFlex div:first-child {
   display: flex;
   gap: 0.5rem;
@@ -11296,14 +11299,22 @@ textarea.form-control-lg {
   gap: 0.5rem;
   align-items: center;
 }
-.orderCardContainer .orderDateBtn {
+.orderCardContainer .remarkOrderDateFlex {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 0.5rem;
+}
+.orderCardContainer .remarkOrderDateFlex h6 {
+  margin: 0;
+}
+.orderCardContainer .remarkOrderDateFlex .orderDateBtn {
+  display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
 }
-.orderCardContainer .orderDateBtn * {
+.orderCardContainer .remarkOrderDateFlex .orderDateBtn * {
   margin: 0;
 }
 
@@ -11435,7 +11446,11 @@ textarea.form-control-lg {
 .progressStepperCard div.buttonsContainer {
   margin-top: 1rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+.progressStepperCard div.buttonsContainer p {
+  margin: 0;
 }
 
 .progressTrackingModal {
@@ -12133,7 +12148,7 @@ textarea.form-control-lg {
   flex-direction: column;
   margin-inline-start: 2rem;
   justify-content: space-evenly;
-  margin-inline-end: 10rem;
+  margin-inline-end: 4rem;
 }
 .farmDetails .farmContainer .farmProfileRow .flexProfile * {
   margin: 0;
@@ -12163,11 +12178,17 @@ textarea.form-control-lg {
   font-size: 1.2rem;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement {
-  margin-inline-end: 10rem;
+  margin-inline-end: 1.4rem;
+  overflow: auto;
+  width: 26%;
   flex-shrink: 0;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement * {
   margin: 0;
+}
+.farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement svg {
+  margin-left: 0.5rem;
+  font-size: 14px;
 }
 .farmDetails .farmContainer .farmAboutRow .farmAboutAnnouncement p {
   font-size: 0.85rem;
@@ -12594,6 +12615,72 @@ main.mainOrderPage .inProgressTabContainer {
 }
 .orderProgressPage .progressOrderDetail {
   margin-top: 2rem;
+}
+
+.signUpContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.signUpContainer .userInfoModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  background-color: white;
+  border-radius: 10px;
+  height: 60%;
+  width: 50%;
+  inset: 0;
+  margin-inline: auto;
+  margin-block: auto;
+  padding: 2rem;
+}
+.signUpContainer .userInfoModal h3 {
+  padding-bottom: 0.8rem;
+  border-bottom: 2px dotted #7fad39;
+}
+.signUpContainer .userInfoModal button {
+  width: max(100px, 20%);
+}
+@media (min-width: 992px) {
+  .signUpContainer .userInfoModal button {
+    margin-top: 1.25rem;
+  }
+}
+
+main.contactPageMain section.contactPageContent {
+  padding-top: 5rem;
+}
+main.contactPageMain section.contactPageContent div.locationContactInfo {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2rem;
+  padding-inline: 2rem;
+}
+main.contactPageMain section.contactPageContent div.locationContactInfo div.locationContactInnerFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+main.contactPageMain section.contactPageContent div.locationContactInfo div.locationContactInnerFlex p {
+  margin: 0;
+}
+main.contactPageMain section.contactPageFooter {
+  margin-top: 2rem;
+  background-image: url("../public/images/farm4.jpg");
+  height: 27.1rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main.contactPageMain section.contactPageFooter h1 {
+  color: white;
 }
 
 /*# sourceMappingURL=main.css.map */

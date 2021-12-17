@@ -57,13 +57,13 @@ export default function PersonalInfo({
       className="profilePersonal"
       style={displayProfile ? { display: "unset" } : { display: "none" }}
     >
-      <h5>Personal</h5>
-      <p id="subtitle">General user informations</p>
+      <h5>แก้ไขข้อมูลส่วนตัว</h5>
+      <p id="subtitle">ข้อมูลทั่วไปที่จะแสดงผลให้กับร้านค้า</p>
       <Form className="profileInfoForm">
         {/* First and last name */}
         <div className="profileName">
           <Form.Group className="">
-            <Form.Label>First Name</Form.Label>
+            <Form.Label>ชื่อ</Form.Label>
             <Form.Control
               type="text"
               placeholder="First Name"
@@ -71,11 +71,11 @@ export default function PersonalInfo({
               ref={u.userFirstName}
             />
             <Form.Text className="text-muted">
-              Please use your real name.
+              ใช้ชื่อจริงเพื่อความสะดวกในการติดต่อ
             </Form.Text>
           </Form.Group>
           <Form.Group className="">
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label>นามสกุล</Form.Label>
             <Form.Control
               type="text"
               placeholder="Last Name"
@@ -87,12 +87,12 @@ export default function PersonalInfo({
 
         {/* Email, phone */}
         <div className="customDivider">
-          <span className="dividerText">Contact</span>
+          <span className="dividerText">ช่องทางติดต่อ</span>
         </div>
 
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">
-            Email
+            อีเมล
           </Form.Label>
           <Col sm="10">
             <Form.Control
@@ -107,7 +107,7 @@ export default function PersonalInfo({
 
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">
-            Phone
+            โทรศัพท์
           </Form.Label>
           <Col sm="10">
             <Form.Control
@@ -121,11 +121,11 @@ export default function PersonalInfo({
 
         {/* Address */}
         <div className="customDivider">
-          <span className="dividerText">Address</span>
+          <span className="dividerText">ที่อยู่</span>
         </div>
 
         <Form.Group className="mb-3">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>ที่อยู่</Form.Label>
           <Form.Control
             as="textarea"
             rows={2}
@@ -139,7 +139,7 @@ export default function PersonalInfo({
         <Form.Group className="mb-3 provinceSelector">
           {/* Province */}
           <div>
-            <Form.Label>Provice</Form.Label>
+            <Form.Label>จังหวัด</Form.Label>
             <Form.Select
               id="userProvince"
               aria-label="Default select example"
@@ -158,7 +158,7 @@ export default function PersonalInfo({
           </div>
           {/* District */}
           <div>
-            <Form.Label>District</Form.Label>
+            <Form.Label>อำเภอ</Form.Label>
             <Form.Select
               id="userDistrict"
               aria-label="Default select example"
@@ -180,7 +180,7 @@ export default function PersonalInfo({
           </div>
           {/* Sub-District */}
           <div>
-            <Form.Label>Sub-District</Form.Label>
+            <Form.Label>ตำบล</Form.Label>
             <Form.Select
               id="userSubDistrict"
               aria-label="Default select example"
@@ -204,7 +204,7 @@ export default function PersonalInfo({
           </div>
           {/* Postal code */}
           <div>
-            <Form.Label>Postal code</Form.Label>
+            <Form.Label>รหัสไปรษณีย์</Form.Label>
             <Form.Control
               type="number"
               placeholder="Zip code"
@@ -218,7 +218,7 @@ export default function PersonalInfo({
 
         {/* Social link */}
         <Form.Group className="mb-3">
-          <Form.Label>Social link</Form.Label>
+          <Form.Label>โซเชียลมีเดีย</Form.Label>
           <Form.Control
             type="text"
             placeholder="Facebook or LINE"

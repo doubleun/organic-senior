@@ -1,8 +1,8 @@
-// TODO: Loading animation while fetching, lock screen while updating profile, delete previous profile image (perferred)
 // TODO: Upload for farm pics
 
 // Bootstrap imports
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 
 // Nextjs imports
@@ -23,6 +23,8 @@ import EditFarm from "./_editFarm";
 import prisma from "../../prisma/client";
 
 export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
+  const [loading, setLoading] = useState(false);
+  const [userInfoUI, setUserInfoUI] = useState(userInfo);
   const [displayProfile, setDisplayProfile] = useState(true);
   const [editFarmLock, setEditFarmLock] = useState(farmInfo === null);
   const [displaySubmitted, setDisplaySubmitted] = useState(false);
@@ -58,6 +60,8 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
 
   // Submit function
   const handleSubmit = async () => {
+    // Sets loading to true
+    setLoading(true);
     // Handle submit user info
     const userRes = await fetch("http://localhost:3000/api/form/submit", {
       method: "POST",
@@ -100,6 +104,7 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
       setDisplaySubmitted(true);
       setTimeout(() => setDisplaySubmitted(false), 6000);
     }
+    setLoading(false);
   };
 
   // Handle farm selling methods check box
@@ -113,6 +118,8 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
 
   // Handle profile upload
   const handleUploadImage = async (action, image) => {
+    // Sets loading to true
+    setLoading(true);
     // If no image selected, stop the function
     if (!image) return;
     const formData = new FormData();
@@ -141,9 +148,16 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
       }
     );
     if (resUpdate.status === 200) {
+      const data = await resUpdate.json();
+      console.log(data);
+
       setDisplaySubmitted(true);
       setTimeout(() => setDisplaySubmitted(false), 6000);
+
+      // Update user info UI
+      setUserInfoUI(data.prismaRes);
     }
+    setLoading(false);
   };
 
   return (
@@ -157,21 +171,21 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
       <div className="container profileSettingsContainer">
         {/* Settings nav */}
         <section>
-          <h5>Settings</h5>
-          <p id="subtitle">Customize view and extra actions</p>
+          <h5>ตั้งค่า</h5>
+          <p id="subtitle">ตั้งค่าข้อมูลต่างๆ เพื่อง่ายสำหรับการติดต่อ</p>
           <nav className="profileSettingsNav">
             <ul>
               <li
                 className={displayProfile ? "active" : undefined}
                 onClick={() => setDisplayProfile(true)}
               >
-                Personal
+                ส่วนตัว
               </li>
               <li
                 className={!displayProfile ? "active" : undefined}
                 onClick={() => setDisplayProfile(false)}
               >
-                Edit Farm
+                ฟาร์ม
               </li>
             </ul>
           </nav>
@@ -203,6 +217,9 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
           setEditFarmLock={setEditFarmLock}
           farmInfo={farmInfo}
           handleFarmCheck={handleFarmCheck}
+          loading={loading}
+          setLoading={setLoading}
+          userInfoUI={userInfoUI}
           f={{
             farmName,
             farmAddress,
@@ -222,12 +239,12 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
 
         {/* Profile pic */}
         <section className="profilePicture">
-          <h5>My profile picture</h5>
+          <h5>ภาพโปรไฟล์</h5>
           <p id="subtitle">Add a photo of you to be easily recognized</p>
 
           {/* Display picture */}
           <div className="profileImg">
-            <Image src={user.image} width="160px" height="160px" />
+            <Image src={userInfoUI.image} width="160px" height="160px" />
           </div>
 
           {/* Add profile image button */}
@@ -236,12 +253,23 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
             accept=".jpg, .jpeg, .png"
             type="file"
             onChange={(e) => setSelectedImage(e.target.files[0])}
+            disabled={loading}
           />
           <Button
             variant="success"
             disabled={!selectedImage}
             onClick={() => handleUploadImage("profile", selectedImage)}
+            disabled={loading}
           >
+            {loading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                className="me-1"
+              />
+            ) : null}
             Upload profile image
           </Button>
         </section>
@@ -250,9 +278,22 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
       {/* Confirm buttons */}
       <div className="container confirmButtons">
         <Link href="/home/catalogue">
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="secondary" disabled={loading}>
+            Cancel
+          </Button>
         </Link>
-        <Button onClick={() => handleSubmit()}>Confirm</Button>
+        <Button onClick={() => handleSubmit()} disabled={loading}>
+          {loading ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              className="me-1"
+            />
+          ) : null}
+          Confirm
+        </Button>
       </div>
     </main>
   );
@@ -280,14 +321,17 @@ export async function getServerSideProps(context) {
     where: {
       email: user.email,
     },
-  });
-
-  // Fetch farm info
-  const farmInfo = await prisma.farmMain.findFirst({
-    where: {
-      user_id: userInfo.id,
+    include: {
+      FarmMain: true,
     },
   });
+
+  // // Fetch farm info
+  // const farmInfo = await prisma.farmMain.findFirst({
+  //   where: {
+  //     user_id: userInfo.id,
+  //   },
+  // });
   await prisma.$disconnect();
   // console.log(userInfo);
 
@@ -296,7 +340,7 @@ export async function getServerSideProps(context) {
       user,
       provinces: provinces_data,
       userInfo,
-      farmInfo,
+      farmInfo: userInfo?.FarmMain,
     },
   };
 }

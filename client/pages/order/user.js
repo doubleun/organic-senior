@@ -4,6 +4,7 @@ import Layout from "../layout/_layout";
 import AlertSnack from "/components/Global/alertSnack";
 import InProgressPage from "./_inProgress";
 import FinishedPage from "./_finished";
+import UserInfoModal from "/components/Order/userInfoModal";
 
 // Nextjs imports
 import { getSession } from "next-auth/react";
@@ -20,14 +21,30 @@ export default function OrderUser({ userOrders, currentUser }) {
   userOrders = JSON.parse(userOrders);
   const [tabInProgress, setTabInProgress] = useState(true);
   const [ordersUI, setOrdersUI] = useState(userOrders);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [userInfo, setUserInfo] = useState();
   const [alert, setAlert] = useState(false);
-  console.log(userOrders);
+  // console.log(userOrders);
 
   //* === Functions === *//
+  function showUserInfoModal(userInfo) {
+    console.log(userInfo);
+    setShowUserModal(true);
+    setUserInfo(userInfo);
+  }
+
   async function handleRespondOrder(orderId, status, progress) {
+    let cancelReamarks;
     if (!status || !orderId) return;
 
     if (confirm(`This order will be "${status}"`)) {
+      if (status === "Cancelled") {
+        // If canclling an order, the prompt will shows up to ask for the reason
+        cancelReamarks = prompt("กรุณาระบุสาเหตุการยอกเลิกออเดอร์นี้");
+        // If no remark the function will return
+        if (cancelReamarks === null || cancelReamarks === "") return;
+      }
+
       const res = await fetch("http://localhost:3000/api/order/product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,6 +53,7 @@ export default function OrderUser({ userOrders, currentUser }) {
           order_id: orderId,
           order_status: status,
           order_progress: progress,
+          order_remark: cancelReamarks || null,
         }),
       });
 
@@ -58,6 +76,13 @@ export default function OrderUser({ userOrders, currentUser }) {
   //* === Main === *//
   return (
     <main className="mainOrderPage">
+      {/* SignUp Modal */}
+      <UserInfoModal
+        showUserModal={showUserModal}
+        setShowUserModal={setShowUserModal}
+        userInfo={userInfo}
+      />
+      {/* Alert snack */}
       {alert ? <AlertSnack setAlert={setAlert} /> : null}
       <section className="container">
         {/* Tabs container flex */}
@@ -86,10 +111,16 @@ export default function OrderUser({ userOrders, currentUser }) {
             )}
             currentUser={currentUser}
             handleRespondOrder={handleRespondOrder}
+            showUserInfoModal={showUserInfoModal}
           />
         ) : (
           <FinishedPage
-            orders={ordersUI.filter((order) => order.status !== "In Progress")}
+            orders={ordersUI.filter(
+              (order) =>
+                order.status === "Completed" || order.status === "Cancelled"
+            )}
+            currentUser={currentUser}
+            showUserInfoModal={showUserInfoModal}
           />
         )}
       </section>
@@ -134,6 +165,9 @@ export async function getServerSideProps(context) {
           farm: true,
         },
       },
+    },
+    orderBy: {
+      id: "desc",
     },
   });
   // console.log(userOrders);

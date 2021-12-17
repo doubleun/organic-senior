@@ -4,6 +4,7 @@ export default function InProgress({
   orders,
   currentUser,
   handleRespondOrder,
+  showUserInfoModal,
 }) {
   return (
     <div className="inProgressTabContainer">
@@ -14,6 +15,7 @@ export default function InProgress({
           orderObj={order}
           incomingOrder={order.ownerEmail === currentUser.email}
           handleRespondOrder={handleRespondOrder}
+          showUserInfoModal={showUserInfoModal}
         />
       ))}
     </div>

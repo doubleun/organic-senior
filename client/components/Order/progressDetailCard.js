@@ -14,7 +14,11 @@ function ProgressDetail({ orderObj, incomingOrder }) {
   return (
     <div className="progressOrderDetail">
       <h5>Order detail</h5>
-      <OrderCard orderObj={orderObj} incomingOrder={incomingOrder} />
+      <OrderCard
+        orderObj={orderObj}
+        incomingOrder={incomingOrder}
+        directToProduct
+      />
     </div>
   );
 }

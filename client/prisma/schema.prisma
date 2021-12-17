@@ -85,6 +85,8 @@ model FarmMain {
   farmImages       String[]
   storeFront       Boolean?
   delivery         Boolean?
+  announcement     String?
+  announceDate     String?
   user             User      @relation(fields: [user_id], references: [id])
   user_id          String
   Product          Product[]
@@ -119,6 +121,7 @@ model Order {
   selectedVariation Json?
   deliveryMethod    String?
   total_price       Float?
+  remark            String?
   status            String? //New, In Progress, Complete, Cancelled
   progress          Int?    //1 (Placed), 2 (ReadyToShip), 3 (Shipped), 4 (Received), 5 (Rated)
   trackID           String?

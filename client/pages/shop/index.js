@@ -77,7 +77,7 @@ export default function ShopPage({ allProducts }) {
     return productsUI;
   }, [productsUI, filterObject]);
 
-  console.log(filterdProductsUI);
+  // console.log(filterdProductsUI);
 
   return (
     <main className="allProductsPageMain">

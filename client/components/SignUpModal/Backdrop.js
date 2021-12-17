@@ -1,7 +1,7 @@
 const BackDrop = ({ children, showSignUp, setShowSignUp }) => {
   return (
     <div
-      className={showSignUp && "signUpContainer"}
+      className={showSignUp ? "signUpContainer" : ""}
       onClick={() => setShowSignUp(false)}
     >
       {children}

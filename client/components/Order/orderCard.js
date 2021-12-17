@@ -8,10 +8,36 @@ import {
   FaCommentsDollar,
   FaStoreAlt,
   FaUserAlt,
+  FaUserCircle,
 } from "react-icons/fa";
 
-function orderCard({ incomingOrder, finished, orderObj, handleRespondOrder }) {
+function orderCard({
+  incomingOrder,
+  finished,
+  orderObj,
+  handleRespondOrder,
+  directToProduct,
+  showUserInfoModal,
+}) {
   const router = useRouter();
+  // console.log(orderObj);
+
+  //* === Functions === *//
+  function handleDirectRoute() {
+    // console.log(orderObj);
+    // If order is cancelled, user will not be able to get to the progress page
+    if (orderObj.status === "Cancelled") return;
+
+    // If directToProduct is true, then we'll direct user to product page
+    if (directToProduct) {
+      router.push(`/product/${orderObj.product.id}`);
+    } else {
+      // Else direct them to the progress page
+      router.push(`/order/progress/${orderObj.id}`);
+    }
+  }
+
+  //* === Main === *//
   return (
     <Card className="orderCardContainer">
       <Card.Body>
@@ -21,19 +47,34 @@ function orderCard({ incomingOrder, finished, orderObj, handleRespondOrder }) {
           {incomingOrder ? (
             <div>
               <FaUserAlt />
-              <h5>{orderObj.user.name}</h5>
+              <h5>
+                {orderObj.user.name} ({orderObj.user.email})
+              </h5>
+              {/* TODO: HERE */}
+              <Button
+                className="productShopeProfileButtons text-white"
+                variant="info"
+                onClick={() => showUserInfoModal(orderObj.user)}
+              >
+                <FaUserCircle />
+                <span>View user info</span>
+              </Button>
             </div>
           ) : (
             <div>
               <FaStoreAlt />
               <h5>{orderObj.product.farm.name}</h5>
-              <Button
-                className="productShopeProfileButtons text-white"
-                variant="info"
-              >
-                <FaCommentsDollar />
-                Contact
-              </Button>
+              {orderObj.product.farm.socialLink ? (
+                <a href={orderObj.product.farm.socialLink} target="_blank">
+                  <Button
+                    className="productShopeProfileButtons text-white"
+                    variant="info"
+                  >
+                    <FaCommentsDollar />
+                    <span>Contact</span>
+                  </Button>
+                </a>
+              ) : null}
               <Button
                 className="productShopeProfileButtons"
                 variant="outline-success"
@@ -54,19 +95,13 @@ function orderCard({ incomingOrder, finished, orderObj, handleRespondOrder }) {
                 orderObj.status === "Cancelled" ? "text-danger" : "text-success"
               }
             >
-              {orderObj.status}
+              Status: {orderObj.status}
             </h6>
           )}
         </div>
 
         {/* Product display flex */}
-        <div
-          className="productDisplayFlex"
-          onClick={() =>
-            orderObj.status !== "Cancelled" &&
-            router.push(`/order/progress/${orderObj.id}`)
-          }
-        >
+        <div className="productDisplayFlex" onClick={handleDirectRoute}>
           {/* Left side (ie. image, name, variation, amount) */}
           <div className="productDisplayFlexImage">
             <Image
@@ -91,38 +126,48 @@ function orderCard({ incomingOrder, finished, orderObj, handleRespondOrder }) {
           </div>
         </div>
 
-        {/* Order date, btn flex */}
-        <div className="orderDateBtn">
-          <p className="text-secondary">
-            Ordered date: (
-            {new Date(Date.parse(orderObj.date)).toISOString().slice(0, 10)})
-          </p>
-          {orderObj.status === "New" && incomingOrder ? (
-            <>
-              <Button
-                variant="danger"
-                onClick={() => handleRespondOrder(orderObj.id, "Cancelled", 0)}
-              >
-                DECLINE
-              </Button>
+        {/* Remark order date, btn flex */}
+        <div className="remarkOrderDateFlex">
+          {orderObj.remark ? (
+            <h6 className="text-danger">Remark: {orderObj.remark}</h6>
+          ) : (
+            <h6></h6>
+          )}
+          {/* Order date, btn flex */}
+          <div className="orderDateBtn">
+            <p className="text-secondary">
+              Ordered date: (
+              {new Date(Date.parse(orderObj.date)).toISOString().slice(0, 10)})
+            </p>
+            {orderObj.status === "New" && incomingOrder ? (
+              <>
+                <Button
+                  variant="danger"
+                  onClick={() =>
+                    handleRespondOrder(orderObj.id, "Cancelled", 0)
+                  }
+                >
+                  DECLINE
+                </Button>
+                <Button
+                  variant="success"
+                  onClick={() =>
+                    handleRespondOrder(orderObj.id, "In Progress", 1)
+                  }
+                >
+                  ACCEPT
+                </Button>
+              </>
+            ) : (
               <Button
                 variant="success"
-                onClick={() =>
-                  handleRespondOrder(orderObj.id, "In Progress", 1)
-                }
+                onClick={handleDirectRoute}
+                disabled={orderObj.status === "Cancelled"}
               >
-                ACCEPT
+                {directToProduct ? "VIEW PRODUCT" : "VIEW ORDER"}
               </Button>
-            </>
-          ) : (
-            <Button
-              variant="success"
-              onClick={() => router.push(`/order/progress/${orderObj.id}`)}
-              disabled={orderObj.status === "Cancelled"}
-            >
-              VIEW ORDER
-            </Button>
-          )}
+            )}
+          </div>
         </div>
       </Card.Body>
     </Card>

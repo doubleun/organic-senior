@@ -51,6 +51,7 @@ export default async (req, res) => {
           data: {
             status: req.body.order_status,
             progress: req.body.order_progress,
+            remark: req.body.order_remark,
           },
         });
         res.status(200).json({ message: "success", prismaRes });

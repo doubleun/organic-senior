@@ -5,15 +5,20 @@ export default async (req, res) => {
     case "profile":
       try {
         // Update profile image in database
-        await prisma.user.update({
+        const prismaRes = await prisma.user.update({
           data: {
             image: req.body.img_url,
           },
           where: {
             email: req.body.email,
           },
+          include: {
+            FarmMain: true,
+          },
         });
-        res.status(200).send({ message: "update profile image successfully" });
+        res
+          .status(200)
+          .send({ message: "update profile image successfully", prismaRes });
       } catch (e) {
         return res.status(422).send({ message: e.message, e: e });
       }
@@ -21,7 +26,7 @@ export default async (req, res) => {
     case "social-security":
       try {
         // Update social security card image in database
-        await prisma.user.update({
+        const prismaRes = await prisma.user.update({
           where: {
             email: req.body.email,
           },
@@ -37,10 +42,14 @@ export default async (req, res) => {
               },
             },
           },
+          include: {
+            FarmMain: true,
+          },
         });
-        res
-          .status(200)
-          .send({ message: "upload social secuirty card image successfully" });
+        res.status(200).send({
+          message: "upload social secuirty card image successfully",
+          prismaRes,
+        });
       } catch (e) {
         return res.status(422).send({ message: e.message, e: e });
       }
@@ -48,7 +57,7 @@ export default async (req, res) => {
     case "organic-cert":
       try {
         // Update social security card image in database
-        await prisma.user.update({
+        const prismaRes = await prisma.user.update({
           where: {
             email: req.body.email,
           },
@@ -64,10 +73,14 @@ export default async (req, res) => {
               },
             },
           },
+          include: {
+            FarmMain: true,
+          },
         });
-        res
-          .status(200)
-          .send({ message: "upload organic cert image successfully" });
+        res.status(200).send({
+          message: "upload organic cert image successfully",
+          prismaRes,
+        });
       } catch (e) {
         return res.status(422).send({ message: e.message, e: e });
       }
@@ -75,7 +88,7 @@ export default async (req, res) => {
     case "farm-images":
       try {
         // Update farm images in database
-        await prisma.user.update({
+        const prismaRes = await prisma.user.update({
           where: {
             email: req.body.email,
           },
@@ -86,10 +99,14 @@ export default async (req, res) => {
               },
             },
           },
+          include: {
+            FarmMain: true,
+          },
         });
-        res
-          .status(200)
-          .send({ message: "upload organic cert image successfully" });
+        res.status(200).send({
+          message: "upload organic cert image successfully",
+          prismaRes,
+        });
       } catch (e) {
         return res.status(422).send({ message: e.message, e: e });
       }

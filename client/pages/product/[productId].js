@@ -102,7 +102,7 @@ export default function ProductPage({ productDetail, currentUser }) {
 
   return (
     <main className="productPageMain">
-      {alert ? <AlertSnack setAlert={setAlert} /> : null}
+      {alert ? <AlertSnack setAlert={setAlert} text={"Order sent!"} /> : null}
       {/* Product image, name, price and shop profile (top section) */}
       <div className="productFlexContainer container">
         <section className="productLeftSection">
@@ -261,7 +261,10 @@ export default function ProductPage({ productDetail, currentUser }) {
                 <Button
                   variant="success"
                   onClick={handleOrder}
-                  disabled={productInStock <= 0}
+                  disabled={
+                    productInStock <= 0 ||
+                    productDetail.farm.user.email === currentUser.email
+                  }
                 >
                   Buy Now
                 </Button>

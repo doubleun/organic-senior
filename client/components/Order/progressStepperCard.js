@@ -175,6 +175,7 @@ function ProgressStepper({
 
         {/* Buttons */}
         <div className="buttonsContainer">
+          <p>Tracking ID: {orderObj.trackID}</p>
           <Button variant="success" onClick={handleProceed}>
             Proceed {">"}{" "}
           </Button>

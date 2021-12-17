@@ -90,7 +90,7 @@
         flex-direction: column;
         margin-inline-start: 2rem;
         justify-content: space-evenly;
-        margin-inline-end: 10rem;
+        margin-inline-end: 4rem;
         * {
           margin: 0;
         }
@@ -125,10 +125,16 @@
         font-size: 1.2rem;
       }
       .farmAboutAnnouncement {
-        margin-inline-end: 10rem;
+        margin-inline-end: 1.4rem;
+        overflow: auto;
+        width: 26%;
         flex-shrink: 0;
         * {
           margin: 0;
+        }
+        svg {
+          margin-left: 0.5rem;
+          font-size: 14px;
         }
         p {
           font-size: 0.85rem;

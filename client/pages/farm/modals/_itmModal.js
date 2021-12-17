@@ -1,5 +1,6 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
@@ -11,6 +12,8 @@ export default function NewItemModal({
   setAlertSuccess,
   farmProductsUI,
   setFarmProductsUI,
+  loading,
+  setLoading,
 }) {
   const productName = useRef();
   const productCategory = useRef();
@@ -78,6 +81,8 @@ export default function NewItemModal({
 
   // Function for handling add new product
   const handleUpdateProduct = async (action, images) => {
+    // Sets loading state to true
+    setLoading(true);
     //* Upload images *//
     // If no image selected, stop the function
     if (!images || images.length === 0) return;
@@ -182,6 +187,7 @@ export default function NewItemModal({
       // Close the modal
       setShowItemModal(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -342,6 +348,7 @@ export default function NewItemModal({
             variant="secondary"
             type="button"
             onClick={() => setShowItemModal(false)}
+            disabled={loading}
           >
             Cancel
           </Button>
@@ -352,7 +359,17 @@ export default function NewItemModal({
               variant="primary"
               type="button"
               onClick={() => handleUpdateProduct("update", uploadImages)}
+              disabled={loading}
             >
+              {loading ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  className="me-1"
+                />
+              ) : null}
               Update
             </Button>
           ) : (
@@ -360,7 +377,17 @@ export default function NewItemModal({
               variant="primary"
               type="button"
               onClick={() => handleUpdateProduct("add", uploadImages)}
+              disabled={loading}
             >
+              {loading ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  className="me-1"
+                />
+              ) : null}
               Submit
             </Button>
           )}

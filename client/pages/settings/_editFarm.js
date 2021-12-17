@@ -1,6 +1,7 @@
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 // React imports
 import { useState, useEffect } from "react";
@@ -19,8 +20,12 @@ export default function EditFarm({
   handleFarmCheck,
   f,
   handleUploadImage,
+  loading,
+  userInfoUI,
 }) {
   let provinceIndex, amphoeIndex;
+  console.log(farmInfo?.storeFront);
+  console.log(farmInfo?.delivery);
 
   if (farmInfo?.province && farmInfo?.district) {
     // Get province index
@@ -78,7 +83,7 @@ export default function EditFarm({
       style={!displayProfile ? { display: "unset" } : { display: "none" }}
     >
       <div className="editFarmFormTitle">
-        <h5>Edit Farm</h5>
+        <h5>แก้ไขฟาร์ม</h5>
         {/* If a user has a farm we want to show "view farm" button that will take them to thier farm page */}
         {farmInfo ? (
           <div
@@ -89,14 +94,14 @@ export default function EditFarm({
           </div>
         ) : null}
       </div>
-      <p id="subtitle">Farm informations</p>
+      <p id="subtitle">ข้อมุลเกี่ยวกับฟาร์ม</p>
 
       {/* Edit farm form */}
       {editFarmLock ? (
         <div className="editFarmLock">
           <MdOutlineLock />
           <Button variant="success" onClick={() => setEditFarmLock(false)}>
-            Unlock farm
+            ปลดล็อคฟาร์ม
           </Button>
         </div>
       ) : (
@@ -104,7 +109,7 @@ export default function EditFarm({
           {/* Farm name */}
           <div className="mb-3">
             <Form.Group className="">
-              <Form.Label>Farm Name</Form.Label>
+              <Form.Label>ชื่อฟาร์ม</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Farm name"
@@ -115,12 +120,12 @@ export default function EditFarm({
           </div>
 
           <div className="customDivider">
-            <span className="dividerText">Address</span>
+            <span className="dividerText">ที่อยู่</span>
           </div>
 
           {/* Address */}
           <Form.Group className="mb-3">
-            <Form.Label>Farm Address</Form.Label>
+            <Form.Label>ที่อยู่ฟาร์ม</Form.Label>
             <Form.Control
               as="textarea"
               rows={2}
@@ -134,7 +139,7 @@ export default function EditFarm({
           <Form.Group className="mb-3 provinceSelector">
             {/* Province */}
             <div>
-              <Form.Label>Provice</Form.Label>
+              <Form.Label>จังหวัด</Form.Label>
               <Form.Select
                 id="farmProvince"
                 aria-label="Default select example"
@@ -153,7 +158,7 @@ export default function EditFarm({
             </div>
             {/* District */}
             <div>
-              <Form.Label>District</Form.Label>
+              <Form.Label>อำเภอ</Form.Label>
               <Form.Select
                 id="farmProvince"
                 aria-label="Default select example"
@@ -175,7 +180,7 @@ export default function EditFarm({
             </div>
             {/* Sub-District */}
             <div>
-              <Form.Label>Sub-District</Form.Label>
+              <Form.Label>ตำบล</Form.Label>
               <Form.Select
                 id="farmSubDistrict"
                 aria-label="Default select example"
@@ -199,7 +204,7 @@ export default function EditFarm({
             </div>
             {/* Postal code */}
             <div>
-              <Form.Label>Postal code</Form.Label>
+              <Form.Label>รหัสไปรษณีย์</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Zip code"
@@ -212,12 +217,12 @@ export default function EditFarm({
           </Form.Group>
 
           <div className="customDivider">
-            <span className="dividerText">About farm</span>
+            <span className="dividerText">เกี่ยวกับฟาร์ม</span>
           </div>
 
           {/* About */}
           <Form.Group className="mb-3">
-            <Form.Label>About farm</Form.Label>
+            <Form.Label>อธิบายเกี่ยวกับฟาร์ม</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -230,12 +235,12 @@ export default function EditFarm({
           {/* Upload social security card and organic cert */}
           <div className="uploadSocialAndCert">
             <div className="mb-3">
-              <Form.Label>Social security card image</Form.Label>
+              <Form.Label>ภาพบัตรประชาชน</Form.Label>
               {/* Display social security card image or upload buttons */}
-              {farmInfo?.socialImage ? (
+              {userInfoUI.FarmMain?.socialImage ? (
                 <div>
                   <Image
-                    src={farmInfo.socialImage}
+                    src={userInfoUI.FarmMain.socialImage}
                     width="200px"
                     height="200px"
                   />
@@ -247,26 +252,36 @@ export default function EditFarm({
                     accept=".jpg, .jpeg, .png"
                     type="file"
                     onChange={(e) => setSelectedSocialImage(e.target.files[0])}
+                    disabled={loading}
                   />
                   <Button
                     variant="success"
-                    disabled={!selectedSocialImage}
+                    disabled={!selectedSocialImage || loading}
                     onClick={() =>
                       handleUploadImage("social-security", selectedSocialImage)
                     }
                   >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        className="me-1"
+                      />
+                    ) : null}
                     Upload social security card image
                   </Button>
                 </>
               )}
             </div>
             <div className="mb-3">
-              <Form.Label>Organic certification image</Form.Label>
+              <Form.Label>ภาพใบรับรองออร์แกนิค</Form.Label>
               {/* Display organic certification image or upload buttons */}
-              {farmInfo?.organicCertImage ? (
+              {userInfoUI.FarmMain?.organicCertImage ? (
                 <div>
                   <Image
-                    src={farmInfo.organicCertImage}
+                    src={userInfoUI.FarmMain.organicCertImage}
                     width="200px"
                     height="200px"
                   />
@@ -278,14 +293,24 @@ export default function EditFarm({
                     accept=".jpg, .jpeg, .png"
                     type="file"
                     onChange={(e) => setSelectedOrganicImage(e.target.files[0])}
+                    disabled={loading}
                   />
                   <Button
                     variant="success"
-                    disabled={!selectedOrganicImage}
+                    disabled={!selectedOrganicImage || loading}
                     onClick={() =>
                       handleUploadImage("organic-cert", selectedOrganicImage)
                     }
                   >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        className="me-1"
+                      />
+                    ) : null}
                     Upload organic certification image
                   </Button>
                 </>
@@ -299,7 +324,7 @@ export default function EditFarm({
 
           {/* Phone number */}
           <Form.Group className="mb-3">
-            <Form.Label>Phone</Form.Label>
+            <Form.Label>โทรศัพท์</Form.Label>
             <Form.Control
               type="number"
               placeholder="Phone number"
@@ -310,7 +335,7 @@ export default function EditFarm({
 
           {/* Social link */}
           <Form.Group className="mb-3">
-            <Form.Label>Social link</Form.Label>
+            <Form.Label>โซเชียลมีเดียของฟาร์ม</Form.Label>
             <Form.Control
               type="text"
               placeholder="Facebook or LINE"
@@ -321,12 +346,12 @@ export default function EditFarm({
 
           {/* Selling methods */}
           <div className="customDivider">
-            <span className="dividerText">Selling methods</span>
+            <span className="dividerText">วิธีการขาย</span>
           </div>
 
           <Form.Check
             inline
-            label="Store front"
+            label="หน้าร้าน"
             type="checkbox"
             id="storeFront"
             value="Store Front"
@@ -335,7 +360,7 @@ export default function EditFarm({
           />
           <Form.Check
             inline
-            label="Delivery"
+            label="ส่งเดลิเวอรี่"
             type="checkbox"
             id="delivery"
             value="Delivery"

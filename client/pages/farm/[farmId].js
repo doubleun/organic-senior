@@ -29,6 +29,11 @@ import { useState, useRef, useMemo, useEffect } from "react";
 export default function Farm({ farmInfo, farmProducts, farmOwner }) {
   const router = useRouter();
   const [readMore, setReadMore] = useState(false);
+  const [showEditAnnounce, setShowEditAnnounce] = useState(false);
+  const [announcement, setAnnouncement] = useState({
+    text: farmInfo?.announcement || "",
+    date: farmInfo?.announceDate || "",
+  });
   const [editFarmImages, setEditFarmImages] = useState(false);
   const searchInput = useRef();
   // State for setting edit mode
@@ -49,11 +54,41 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
     Nuts: false,
     Grains: false,
   });
+  // Item modal loading state
+  const [itmModalLoading, setItmModalLoading] = useState(false);
 
   // Update the products when user change from 1 farm page to another
   useEffect(() => {
     setFarmProductsUI(farmProducts);
   }, [farmProducts]);
+
+  // Handle new announcement
+  async function handleNewAnnouncement() {
+    const announceText = prompt("เพิ่มประกาศใหม่ (ความยาวไม่เกิน 42)").slice(
+      0,
+      42
+    );
+    if (announceText === null || announceText === "") return;
+
+    const newDate = new Date().toString().slice(0, 15);
+    const res = await fetch("http://localhost:3000/api/farm/announcement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        farmId: farmInfo.id,
+        announceText,
+        announceDate: newDate,
+      }),
+    });
+    if (res.status === 200) {
+      // Update UI
+      setAnnouncement({ text: announceText, date: newDate });
+
+      // Show success alert
+      setAlertSuccess(true);
+      setTimeout(() => setAlertSuccess(false), 2000);
+    }
+  }
 
   // Handle search product
   function handleSearchProduct() {
@@ -107,7 +142,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
       <div
         className="farmPageMain"
         id={showItemModal ? "modal" : ""}
-        onClick={() => setShowItemModal(false)}
+        onClick={() => !itmModalLoading && setShowItemModal(false)}
       ></div>
       {showItemModal ? (
         <ItemModal
@@ -117,6 +152,8 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
           setAlertSuccess={setAlertSuccess}
           farmProductsUI={farmProductsUI}
           setFarmProductsUI={setFarmProductsUI}
+          loading={itmModalLoading}
+          setLoading={setItmModalLoading}
         />
       ) : null}
 
@@ -143,7 +180,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
             <div className="flexProfile">
               <div>
                 <h3>{farmInfo.name}</h3>
-                <p>Organically made from hearts of local</p>
+                <p>{farmInfo.user.name}</p>
               </div>
               <div>
                 <div className="badgesContainer mb-2">
@@ -154,38 +191,48 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                 </div>
               </div>
               <div>
-                <p>3,211 sales</p>
+                {/* <p>3,211 sales</p> */}
                 {/* <ReviewStars ratings={4} /> */}
               </div>
             </div>
 
-            <div className="me-5 farmLocation">
-              <h5>Address</h5>
-              <p className="text-secondary">Province: {farmInfo.province}</p>
-              <p className="text-secondary">District: {farmInfo.district}</p>
+            <div className="me-3 farmLocation">
+              <h5>ที่อยู่</h5>
+              <p className="text-secondary">จังหวัด: {farmInfo.province}</p>
+              <p className="text-secondary">อำเภอ: {farmInfo.district}</p>
+              <p className="text-secondary">ตำบล: {farmInfo.subDistrict}</p>
               <p className="text-secondary">
-                Sub-District: {farmInfo.subDistrict}
-              </p>
-              <p className="text-secondary">
-                Postal-Code: {farmInfo.postalCode}
+                รหัสไปรษณีย์: {farmInfo.postalCode}
               </p>
             </div>
 
-            <div className="ms-5 farmLocation">
-              <h5>Contact</h5>
-              <p className="text-secondary">Social: {farmInfo.socialLink}</p>
-              <p className="text-secondary">Phone: {farmInfo.phone}</p>
+            <div className="ms-2 farmLocation">
+              <h5>ติดต่อ</h5>
+              <p className="text-secondary">โซเชียล: {farmInfo.socialLink}</p>
+              <p className="text-secondary">โทร: {farmInfo.phone}</p>
             </div>
           </div>
 
           {/* About farm */}
           <div className="farmAboutRow">
-            <div className="farmAboutAnnouncement">
-              <h5>Announcement</h5>
-              <p>Last updated on Sep 26, 2020</p>
+            <div
+              className="farmAboutAnnouncement"
+              onMouseEnter={() => {
+                if (farmOwner) setShowEditAnnounce(true);
+              }}
+              onMouseLeave={() => setShowEditAnnounce(false)}
+              style={farmOwner ? { cursor: "pointer" } : ""}
+              onClick={farmOwner ? handleNewAnnouncement : null}
+            >
+              <h5>
+                การประกาศ
+                {showEditAnnounce ? <BsFillPencilFill /> : null}
+              </h5>
+              <p>{announcement.text}</p>
+              <p>Last updated on: {announcement.date}</p>
             </div>
             <div className="farmAbout">
-              <h5>About</h5>
+              <h5>เกี่ยวกับ</h5>
               <p id={!readMore ? undefined : "more"}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque,
                 harum distinctio nobis, ut doloribus autem sed iure, corporis
@@ -373,7 +420,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
       {/* Alert for image uplaoded */}
       {alertSuccess ? (
         <Alert variant="success" className="alertSubmiited">
-          <BsCheck2Circle /> Update profile successfully!
+          <BsCheck2Circle /> Update farm successfully!
           <BsX onClick={() => setAlertSuccess(false)} />
         </Alert>
       ) : null}

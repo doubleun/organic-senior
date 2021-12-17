@@ -1,6 +1,7 @@
 //! BUG: Can't delete image, can only "replace" them
 
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -11,6 +12,8 @@ export default function FarmImageUpload({
   setShowImageUpload,
   setAlertSuccess,
 }) {
+  // Loading state
+  const [loading, setLoading] = useState(false);
   const [uploadImages, setUploadImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
 
@@ -43,6 +46,8 @@ export default function FarmImageUpload({
 
   // Handle upload to cloud and update the database
   const handleUploadImages = async (action, images) => {
+    // Sets loading state to true
+    setLoading(true);
     // If no image selected, stop the function
     if (!images) return;
 
@@ -94,6 +99,7 @@ export default function FarmImageUpload({
       setTimeout(() => setAlertSuccess(false), 6000);
       setShowImageUpload(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -134,16 +140,26 @@ export default function FarmImageUpload({
           variant="secondary"
           // disabled={!selectedImage}
           onClick={() => setShowImageUpload(false)}
+          disabled={loading}
         >
           Cancel
         </Button>
         <Button
           variant="success"
-          disabled={uploadImages.length < 1}
+          disabled={uploadImages.length < 1 || loading}
           onClick={() => {
             handleUploadImages("farm-images", uploadImages);
           }}
         >
+          {loading ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              className="me-1"
+            />
+          ) : null}
           Confirm
         </Button>
       </div>
