@@ -1,15 +1,15 @@
-import Card from "react-bootstrap/Card";
+// import Card from "react-bootstrap/Card";
 import OrderCard from "/components/Order/orderCard";
 // import { useRouter } from "next/router";
-import {
-  MdOutlineReceiptLong,
-  MdStarOutline,
-  MdOutlineLocalShipping,
-  MdSystemUpdateAlt,
-  MdCardTravel,
-} from "react-icons/md";
+// import {
+//   MdOutlineReceiptLong,
+//   MdStarOutline,
+//   MdOutlineLocalShipping,
+//   MdSystemUpdateAlt,
+//   MdCardTravel,
+// } from "react-icons/md";
 
-function ProgressDetail({ orderObj, incomingOrder }) {
+function ProgressDetail({ orderObj, incomingOrder, showUserInfoModal }) {
   // const router = useRouter();
   return (
     <div className="progressOrderDetail">
@@ -17,6 +17,7 @@ function ProgressDetail({ orderObj, incomingOrder }) {
       <OrderCard
         orderObj={orderObj}
         incomingOrder={incomingOrder}
+        showUserInfoModal={showUserInfoModal}
         directToProduct
       />
     </div>

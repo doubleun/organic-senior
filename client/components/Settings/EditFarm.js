@@ -326,7 +326,7 @@ export default function EditFarm({
           <Form.Group className="mb-3">
             <Form.Label>โทรศัพท์</Form.Label>
             <Form.Control
-              type="number"
+              type="text"
               placeholder="Phone number"
               id="farmPhone"
               ref={f.farmPhone}

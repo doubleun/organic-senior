@@ -1,9 +1,9 @@
 // Components imports
-import Layout from "../layout/_layout";
-import ItemCard from "./_itemCard";
-import FarmImages from "./_farmImages";
-import ItemModal from "./modals/_itmModal";
-import ReviewStars from "/components/Global/reviewStars";
+import Layout from "/components/Layout";
+import ItemCard from "/components/Farm/ItemCard";
+import FarmImages from "/components/Farm/FarmImages";
+import ItemModal from "/components/Farm/ItemModal";
+// import ReviewStars from "/components/Global/reviewStars";
 
 // Nextjs imports
 import { useRouter } from "next/router";
@@ -221,7 +221,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                 if (farmOwner) setShowEditAnnounce(true);
               }}
               onMouseLeave={() => setShowEditAnnounce(false)}
-              style={farmOwner ? { cursor: "pointer" } : ""}
+              style={farmOwner ? { cursor: "pointer" } : { cursor: "default" }}
               onClick={farmOwner ? handleNewAnnouncement : null}
             >
               <h5>
@@ -234,12 +234,8 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
             <div className="farmAbout">
               <h5>เกี่ยวกับ</h5>
               <p id={!readMore ? undefined : "more"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque,
-                harum distinctio nobis, ut doloribus autem sed iure, corporis
-                exercitationem rerum alias. Veritatis saepe inventore impedit
-                alias tempora veniam deserunt voluptate! Lorem, ipsum dolor sit
-                amet consectetur adipisicing elit. Ratione autem nostrum tempora
-                accusantium maiores voluptas, harum impedit eum. Quod, ullam.
+                {farmInfo?.about ||
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, harum distinctio nobis, ut doloribus autem sed iure, corporisexercitationem rerum alias. Veritatis saepe inventore impeditalias tempora veniam deserunt voluptate! Lorem, ipsum dolor sitamet consectetur adipisicing elit. Ratione autem nostrum temporaaccusantium maiores voluptas, harum impedit eum. Quod, ullam."}
               </p>
               <a onClick={() => setReadMore(!readMore)}>
                 {readMore ? "Read less" : "Read more"}

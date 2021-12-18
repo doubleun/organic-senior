@@ -1,6 +1,6 @@
 import OrderCard from "/components/Order/orderCard";
 
-export default function InProgress({ orders, currentUser, showUserInfoModal }) {
+export default function Finnished({ orders, currentUser, showUserInfoModal }) {
   return (
     <div className="inProgressTabContainer">
       {/* Order cards */}
@@ -16,6 +16,6 @@ export default function InProgress({ orders, currentUser, showUserInfoModal }) {
   );
 }
 
-InProgress.defaultProps = {
+Finnished.defaultProps = {
   orders: { Order: [] },
 };

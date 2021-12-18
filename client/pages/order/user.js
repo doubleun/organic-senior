@@ -1,9 +1,9 @@
 // Component imports
-import Layout from "../layout/_layout";
+import Layout from "/components/Layout";
 // import OrderCard from "/components/Order/orderCard";
 import AlertSnack from "/components/Global/alertSnack";
-import InProgressPage from "./_inProgress";
-import FinishedPage from "./_finished";
+import InProgressPage from "/components/Order/pages/InProgress";
+import FinishedPage from "/components/Order/pages/Finnished";
 import UserInfoModal from "/components/Order/userInfoModal";
 
 // Nextjs imports

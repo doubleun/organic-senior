@@ -1,10 +1,10 @@
 // Component imports
-import Layout from "../layout/_layout";
+import Layout from "/components/Layout";
 // import OrderCard from "/components/Order/orderCard";
-import NewPage from "./_newPage";
+import NewPage from "/components/Order/pages/NewPage";
 import AlertSnack from "/components/Global/alertSnack";
-import InProgressPage from "./_inProgress";
-import FinishedPage from "./_finished";
+import InProgressPage from "/components/Order/pages/InProgress";
+import FinishedPage from "/components/Order/pages/Finnished";
 
 // Nextjs imports
 import { getSession } from "next-auth/react";

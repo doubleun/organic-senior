@@ -1,11 +1,12 @@
 // Components imports
-import Layout from "../../layout/_layout";
+import Layout from "/components/Layout";
 import ProgressStepperCard from "/components/Order/progressStepperCard";
-import ProgressDetailCard from "../../../components/Order/progressDetailCard";
+import ProgressDetailCard from "/components/Order/progressDetailCard";
 import AlertSnack from "/components/Global/alertSnack";
-import ProgressTrackingModal from "../../../components/Order/progressTrackingModal";
-import OrderReviewModal from "../../../components/Order/orderReviewModal";
+import ProgressTrackingModal from "/components/Order/progressTrackingModal";
+import OrderReviewModal from "/components/Order/orderReviewModal";
 import Comment from "/components/Product/comment";
+import UserInfoModal from "/components/Order/userInfoModal";
 
 // Nextjs imports
 import { getSession } from "next-auth/react";
@@ -19,13 +20,20 @@ import prisma from "/prisma/client";
 export default function OrderProgress({ orderInfo, currentUser }) {
   orderInfo = JSON.parse(orderInfo);
   const [alert, setAlert] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [userInfo, setUserInfo] = useState();
   const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [orderUI, setOrderUI] = useState(orderInfo);
   const isOwner = orderInfo.ownerEmail === currentUser.email;
-  // console.log(orderInfo);
 
-  //* === Functions * === //
+  //* === Functions * === //\
+  function showUserInfoModal(userInfo) {
+    console.log(userInfo);
+    setShowUserModal(true);
+    setUserInfo(userInfo);
+  }
+
   // Handle update to the next progress
   async function handleUpdateProgress(trackID = "") {
     if (orderUI.progress === 1 && trackID === "") return;
@@ -89,6 +97,12 @@ export default function OrderProgress({ orderInfo, currentUser }) {
   //* === Main * === //
   return (
     <main className="orderProgressPage">
+      {/* SignUp Modal */}
+      <UserInfoModal
+        showUserModal={showUserModal}
+        setShowUserModal={setShowUserModal}
+        userInfo={userInfo}
+      />
       <div
         className="orderProgressPage"
         id={showTrackingModal || showReviewModal ? "modal" : ""}
@@ -125,7 +139,11 @@ export default function OrderProgress({ orderInfo, currentUser }) {
         />
 
         {/* Order detail card */}
-        <ProgressDetailCard orderObj={orderInfo} incomingOrder={isOwner} />
+        <ProgressDetailCard
+          orderObj={orderInfo}
+          incomingOrder={isOwner}
+          showUserInfoModal={showUserInfoModal}
+        />
       </section>
 
       {/* Comment (review) section */}

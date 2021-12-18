@@ -1,11 +1,11 @@
 import { BsFillPencilFill } from "react-icons/bs";
 import Image from "next/image";
-import farm1 from "../../public/images/farm1.jpg";
-import farm2 from "../../public/images/farm2.jpg";
-import farm3 from "../../public/images/farm3.jpg";
+import farm1 from "/public/images/farm1.jpg";
+import farm2 from "/public/images/farm2.jpg";
+import farm3 from "/public/images/farm3.jpg";
 
 import { useState } from "react";
-import FarmImageUpload from "./modals/_imageUpload";
+import FarmImageUpload from "/components/Farm/ImageUpload";
 
 export default function FarmImages({
   userInfo,

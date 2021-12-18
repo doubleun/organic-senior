@@ -1,8 +1,8 @@
 // Component imports
-import Layout from "../layout/_layout";
+import Layout from "/components/Layout";
 import Comment from "/components/Product/comment";
-import ReviewStars from "../../components/Global/reviewStars";
-import ItemCard from "/pages/farm/_itemCard";
+import ReviewStars from "/components/Global/reviewStars";
+import ItemCard from "/components/Farm/ItemCard";
 import {
   FaMinus,
   FaPlus,

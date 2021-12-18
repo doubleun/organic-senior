@@ -1,5 +1,5 @@
 // Component imports
-import Layout from "../layout/_layout";
+import Layout from "/components/Layout";
 
 export default function ContactPage() {
   return (

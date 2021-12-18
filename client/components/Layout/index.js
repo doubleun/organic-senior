@@ -1,4 +1,4 @@
-import Navbar from "./_navbar";
+import Navbar from "./Navbar";
 // import { getSession, useSession } from "next-auth/react";
 // import { useEffect, useState } from "react";
 

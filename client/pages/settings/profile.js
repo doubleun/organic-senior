@@ -15,9 +15,9 @@ import { useState, useRef } from "react";
 import { BsCheck2Circle, BsX } from "react-icons/bs";
 
 // Component imports
-import Layout from "../layout/_layout";
-import PersonalInfo from "./_personalInfo";
-import EditFarm from "./_editFarm";
+import Layout from "/components/Layout";
+import PersonalInfo from "/components/Settings/PersonalInfo";
+import EditFarm from "/components/Settings/EditFarm";
 
 // SQL Database
 import prisma from "../../prisma/client";

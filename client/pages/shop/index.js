@@ -1,7 +1,7 @@
 // Component imports
-import Layout from "../layout/_layout";
+import Layout from "/components/Layout";
 import { FaFilter } from "react-icons/fa";
-import ItemCard from "/pages/farm/_itemCard";
+import ItemCard from "/components/Farm/ItemCard";
 
 // Nextjs imports
 import { getSession } from "next-auth/react";

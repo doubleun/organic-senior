@@ -111,7 +111,7 @@ export default function PersonalInfo({
           </Form.Label>
           <Col sm="10">
             <Form.Control
-              type="number"
+              type="text"
               placeholder="Phone number"
               id="userPhone"
               ref={u.userPhone}

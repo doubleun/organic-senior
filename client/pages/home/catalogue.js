@@ -1,10 +1,10 @@
 //React imports
 import { useState, useMemo } from "react";
 // import Layout from "../../components/Layout";
-import Layout from "../layout/_layout";
-import CatalogueCarousel from "../../components/Carousel/CatalogueCarousel";
+import Layout from "/components/Layout";
+import CatalogueCarousel from "/components/Carousel/CatalogueCarousel";
 // import FeaturedProductCard from "../../components/Catalogue/FeaturedProductCard";
-import ItemCard from "/pages/farm/_itemCard";
+import ItemCard from "/components/Farm/ItemCard";
 
 // Bootstrap imports
 import { BsList } from "react-icons/bs";
