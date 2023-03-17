@@ -1,54 +1,54 @@
 // Component imports
-import Layout from "/components/Layout";
+import Layout from '/components/Layout'
 // import OrderCard from "/components/Order/orderCard";
-import NewPage from "/components/Order/pages/NewPage";
-import AlertSnack from "/components/Global/alertSnack";
-import InProgressPage from "/components/Order/pages/InProgress";
-import FinishedPage from "/components/Order/pages/Finnished";
+import NewPage from '/components/Order/pages/NewPage'
+import AlertSnack from '/components/Global/alertSnack'
+import InProgressPage from '/components/Order/pages/InProgress'
+import FinishedPage from '/components/Order/pages/Finnished'
 
 // Nextjs imports
-import { getSession } from "next-auth/react";
+import { getSession } from 'next-auth/react'
 
 // React imports
-import { useState } from "react";
+import { useState } from 'react'
 
 // Bootstrap imports
 
 // SQL Database
-import prisma from "../../prisma/client";
+import prisma from '../../prisma/client'
 
 export default function OrderFarm({ farmNewOrders }) {
-  farmNewOrders = JSON.parse(farmNewOrders);
-  const [farmNewOrdersUI, setfarmNewOrdersUI] = useState(farmNewOrders);
-  const [alert, setAlert] = useState(false);
+  farmNewOrders = JSON.parse(farmNewOrders)
+  const [farmNewOrdersUI, setfarmNewOrdersUI] = useState(farmNewOrders)
+  const [alert, setAlert] = useState(false)
 
   //* === Functions === *//
   async function handleRespondOrder(orderId, status, progress) {
-    if (!status || !orderId) return;
+    if (!status || !orderId) return
 
     if (confirm(`This order will be "${status}"`)) {
-      const res = await fetch("http://localhost:3000/api/order/product", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('http://localhost:3000/api/order/product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: "RES_ORDER",
+          action: 'RES_ORDER',
           order_id: orderId,
           order_status: status,
           order_progress: progress,
         }),
-      });
+      })
 
       if (res.status === 200) {
         // Show success alert
-        setAlert(true);
-        setTimeout(() => setAlert(false), 6000);
+        setAlert(true)
+        setTimeout(() => setAlert(false), 6000)
 
         // Update UI
         setfarmNewOrdersUI((prev) =>
           prev.filter((order) => order.id !== orderId)
-        );
+        )
       }
-      console.log(res);
+      console.log(res)
     }
   }
 
@@ -78,28 +78,28 @@ export default function OrderFarm({ farmNewOrders }) {
         </div>
       </section>
     </main>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  const user = session?.user;
+  const session = await getSession(context)
+  const user = session?.user
 
   // redirect if not logged in
   if (!session)
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
-    };
+    }
 
   // Fetch new orders coming into farm (exclude current user order)
   let farmNewOrders = await prisma.order.findMany({
     where: {
       ownerEmail: user.email,
       AND: {
-        status: "New",
+        status: 'New',
       },
     },
     include: {
@@ -111,11 +111,11 @@ export async function getServerSideProps(context) {
         },
       },
     },
-  });
+  })
 
-  return { props: { farmNewOrders: JSON.stringify(farmNewOrders) } };
+  return { props: { farmNewOrders: JSON.stringify(farmNewOrders) } }
 }
 
 OrderFarm.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

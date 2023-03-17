@@ -1,15 +1,16 @@
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import ReviewStars from "/components/Global/reviewStars";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import ReviewStars from '/components/Global/reviewStars'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import {
   FaStore,
   FaCommentsDollar,
   FaStoreAlt,
   FaUserAlt,
   FaUserCircle,
-} from "react-icons/fa";
+} from 'react-icons/fa'
+// import { handleRespondOrder } from '/pages/order/farm'
 
 function orderCard({
   incomingOrder,
@@ -19,21 +20,21 @@ function orderCard({
   directToProduct,
   showUserInfoModal,
 }) {
-  const router = useRouter();
+  const router = useRouter()
   // console.log(orderObj);
 
   //* === Functions === *//
   function handleDirectRoute() {
     // console.log(orderObj);
     // If order is cancelled, user will not be able to get to the progress page
-    if (orderObj.status === "Cancelled") return;
+    if (orderObj.status === 'Cancelled') return
 
     // If directToProduct is true, then we'll direct user to product page
     if (directToProduct) {
-      router.push(`/product/${orderObj.product.id}`);
+      router.push(`/product/${orderObj.product.id}`)
     } else {
       // Else direct them to the progress page
-      router.push(`/order/progress/${orderObj.id}`);
+      router.push(`/order/progress/${orderObj.id}`)
     }
   }
 
@@ -92,7 +93,7 @@ function orderCard({
           ) : (
             <h6
               className={
-                orderObj.status === "Cancelled" ? "text-danger" : "text-success"
+                orderObj.status === 'Cancelled' ? 'text-danger' : 'text-success'
               }
             >
               Status: {orderObj.status}
@@ -139,12 +140,12 @@ function orderCard({
               Ordered date: (
               {new Date(Date.parse(orderObj.date)).toISOString().slice(0, 10)})
             </p>
-            {orderObj.status === "New" && incomingOrder ? (
+            {orderObj.status === 'New' && incomingOrder ? (
               <>
                 <Button
                   variant="danger"
                   onClick={() =>
-                    handleRespondOrder(orderObj.id, "Cancelled", 0)
+                    handleRespondOrder(orderObj.id, 'Cancelled', 0)
                   }
                 >
                   DECLINE
@@ -152,7 +153,7 @@ function orderCard({
                 <Button
                   variant="success"
                   onClick={() =>
-                    handleRespondOrder(orderObj.id, "In Progress", 1)
+                    handleRespondOrder(orderObj.id, 'In Progress', 1)
                   }
                 >
                   ACCEPT
@@ -162,16 +163,16 @@ function orderCard({
               <Button
                 variant="success"
                 onClick={handleDirectRoute}
-                disabled={orderObj.status === "Cancelled"}
+                disabled={orderObj.status === 'Cancelled'}
               >
-                {directToProduct ? "VIEW PRODUCT" : "VIEW ORDER"}
+                {directToProduct ? 'VIEW PRODUCT' : 'VIEW ORDER'}
               </Button>
             )}
           </div>
         </div>
       </Card.Body>
     </Card>
-  );
+  )
 }
 
-export default orderCard;
+export default orderCard

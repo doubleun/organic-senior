@@ -88,7 +88,7 @@ model FarmMain {
   announcement     String?
   announceDate     String?
   user             User      @relation(fields: [user_id], references: [id])
-  user_id          String
+  user_id          String @unique
   Product          Product[]
 }
 
@@ -133,7 +133,7 @@ model Order {
 model Review {
   id       Int     @id @default(autoincrement())
   order    Order   @relation(fields: [order_id], references: [id])
-  order_id Int
+  order_id Int @unique
   rating   Int?
   comment  String?
   pills    String[]

@@ -1,5 +1,5 @@
 // import Card from "react-bootstrap/Card";
-import OrderCard from "/components/Order/orderCard";
+import OrderCard from '/components/Order/orderCard'
 // import { useRouter } from "next/router";
 // import {
 //   MdOutlineReceiptLong,
@@ -9,7 +9,12 @@ import OrderCard from "/components/Order/orderCard";
 //   MdCardTravel,
 // } from "react-icons/md";
 
-function ProgressDetail({ orderObj, incomingOrder, showUserInfoModal }) {
+function ProgressDetail({
+  orderObj,
+  incomingOrder,
+  showUserInfoModal,
+  handleRespondOrder,
+}) {
   // const router = useRouter();
   return (
     <div className="progressOrderDetail">
@@ -18,10 +23,11 @@ function ProgressDetail({ orderObj, incomingOrder, showUserInfoModal }) {
         orderObj={orderObj}
         incomingOrder={incomingOrder}
         showUserInfoModal={showUserInfoModal}
+        handleRespondOrder={handleRespondOrder}
         directToProduct
       />
     </div>
-  );
+  )
 }
 
-export default ProgressDetail;
+export default ProgressDetail
