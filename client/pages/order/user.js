@@ -1,73 +1,74 @@
 // Component imports
-import Layout from "/components/Layout";
+import Layout from '/components/Layout'
 // import OrderCard from "/components/Order/orderCard";
-import AlertSnack from "/components/Global/alertSnack";
-import InProgressPage from "/components/Order/pages/InProgress";
-import FinishedPage from "/components/Order/pages/Finnished";
-import UserInfoModal from "/components/Order/userInfoModal";
+import AlertSnack from '/components/Global/alertSnack'
+import InProgressPage from '/components/Order/pages/InProgress'
+import FinishedPage from '/components/Order/pages/Finnished'
+import UserInfoModal from '/components/Order/userInfoModal'
+import BASE_URL from '/constants'
 
 // Nextjs imports
-import { getSession } from "next-auth/react";
+import { getSession } from 'next-auth/react'
 
 // React imports
-import { useState } from "react";
+import { useState } from 'react'
 
 // Bootstrap imports
 
 // SQL Database
-import prisma from "../../prisma/client";
+import prisma from '../../prisma/client'
 
 export default function OrderUser({ userOrders, currentUser }) {
-  userOrders = JSON.parse(userOrders);
-  const [tabInProgress, setTabInProgress] = useState(true);
-  const [ordersUI, setOrdersUI] = useState(userOrders);
-  const [showUserModal, setShowUserModal] = useState(false);
-  const [userInfo, setUserInfo] = useState();
-  const [alert, setAlert] = useState(false);
+  userOrders = JSON.parse(userOrders)
+  const [tabInProgress, setTabInProgress] = useState(true)
+  const [ordersUI, setOrdersUI] = useState(userOrders)
+  const [showUserModal, setShowUserModal] = useState(false)
+  const [userInfo, setUserInfo] = useState()
+  const [alert, setAlert] = useState(false)
   // console.log(userOrders);
 
   //* === Functions === *//
   function showUserInfoModal(userInfo) {
-    console.log(userInfo);
-    setShowUserModal(true);
-    setUserInfo(userInfo);
+    console.log(userInfo)
+    setShowUserModal(true)
+    setUserInfo(userInfo)
   }
 
   async function handleRespondOrder(orderId, status, progress) {
-    let cancelReamarks;
-    if (!status || !orderId) return;
+    let cancelReamarks
+    if (!status || !orderId) return
 
     if (confirm(`This order will be "${status}"`)) {
-      if (status === "Cancelled") {
+      if (status === 'Cancelled') {
         // If canclling an order, the prompt will shows up to ask for the reason
-        cancelReamarks = prompt("กรุณาระบุสาเหตุการยอกเลิกออเดอร์นี้");
+        cancelReamarks = prompt('กรุณาระบุสาเหตุการยอกเลิกออเดอร์นี้')
         // If no remark the function will return
-        if (cancelReamarks === null || cancelReamarks === "") return;
+        if (cancelReamarks === null || cancelReamarks === '') return
       }
 
-      const res = await fetch("http://localhost:3000/api/order/product", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch(`${BASE_URL}/api/order/product`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: "RES_ORDER",
+          action: 'RES_ORDER',
           order_id: orderId,
           order_status: status,
           order_progress: progress,
           order_remark: cancelReamarks || null,
         }),
-      });
+      })
 
       if (res.status === 200) {
         // Show success alert
-        setAlert(true);
-        setTimeout(() => setAlert(false), 6000);
+        setAlert(true)
+        setTimeout(() => setAlert(false), 6000)
 
         // Update UI
         setOrdersUI((prev) =>
           prev.map((order) =>
             order.id === orderId ? { ...order, status } : order
           )
-        );
+        )
       }
       // console.log(res);
     }
@@ -88,13 +89,13 @@ export default function OrderUser({ userOrders, currentUser }) {
         {/* Tabs container flex */}
         <div className="orderPageTabFlex">
           <h5
-            className={tabInProgress ? "tabSelected" : ""}
+            className={tabInProgress ? 'tabSelected' : ''}
             onClick={() => setTabInProgress(true)}
           >
             In progress
           </h5>
           <h5
-            className={tabInProgress ? "" : "tabSelected"}
+            className={tabInProgress ? '' : 'tabSelected'}
             onClick={() => setTabInProgress(false)}
           >
             Completed
@@ -107,7 +108,7 @@ export default function OrderUser({ userOrders, currentUser }) {
           <InProgressPage
             orders={ordersUI.filter(
               (order) =>
-                order.status === "In Progress" || order.status === "New"
+                order.status === 'In Progress' || order.status === 'New'
             )}
             currentUser={currentUser}
             handleRespondOrder={handleRespondOrder}
@@ -117,7 +118,7 @@ export default function OrderUser({ userOrders, currentUser }) {
           <FinishedPage
             orders={ordersUI.filter(
               (order) =>
-                order.status === "Completed" || order.status === "Cancelled"
+                order.status === 'Completed' || order.status === 'Cancelled'
             )}
             currentUser={currentUser}
             showUserInfoModal={showUserInfoModal}
@@ -125,21 +126,21 @@ export default function OrderUser({ userOrders, currentUser }) {
         )}
       </section>
     </main>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  const user = session?.user;
+  const session = await getSession(context)
+  const user = session?.user
 
   // redirect if not logged in
   if (!session)
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
-    };
+    }
 
   // Fetch orders of the current user
   let userOrders = await prisma.order.findMany({
@@ -167,9 +168,9 @@ export async function getServerSideProps(context) {
       },
     },
     orderBy: {
-      id: "desc",
+      id: 'desc',
     },
-  });
+  })
   // console.log(userOrders);
   // let userOrders = await prisma.user.findFirst({
   //   where: {
@@ -196,9 +197,9 @@ export async function getServerSideProps(context) {
 
   return {
     props: { userOrders: JSON.stringify(userOrders), currentUser: user },
-  };
+  }
 }
 
 OrderUser.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

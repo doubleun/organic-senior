@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { getSession } from "next-auth/react";
+import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import { getSession } from 'next-auth/react'
 
-import SignUpModal from "../components/SignUpModal";
+import SignUpModal from '../components/SignUpModal'
+import BASE_URL from '/constants'
 
 export default function Landing() {
-  const [showSignUp, setShowSignUp] = useState();
+  const [showSignUp, setShowSignUp] = useState()
   const callbackRedirect = {
-    callbackUrl: "http://localhost:3000/home/catalogue",
-  };
+    callbackUrl: `${BASE_URL}/home/catalogue`,
+  }
 
   return (
     <main className="mainLandingPage">
@@ -38,14 +39,14 @@ export default function Landing() {
             <h5>Or</h5>
             <Button
               variant="primary"
-              onClick={() => signIn("facebook", callbackRedirect)}
+              onClick={() => signIn('facebook', callbackRedirect)}
             >
               <img src="svgs/facebook_ico.svg" alt="" />
               Continue with Facebook
             </Button>
             <Button
               variant="danger"
-              onClick={() => signIn("google", callbackRedirect)}
+              onClick={() => signIn('google', callbackRedirect)}
             >
               <img src="svgs/google_ico.svg" alt="" />
               Continue with Google
@@ -97,20 +98,20 @@ export default function Landing() {
         </div>
       </section>
     </main>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  const session = await getSession(context)
 
   // redirect if already logged in
   if (session)
     return {
       redirect: {
-        destination: "/home/catalogue",
+        destination: '/home/catalogue',
         permanent: false,
       },
-    };
+    }
 
-  return { props: {} };
+  return { props: {} }
 }

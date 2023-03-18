@@ -1,9 +1,10 @@
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 
-import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import Image from 'next/image'
+import BASE_URL from '/constants'
+import { useState, useEffect, useRef } from 'react'
 
 export default function NewItemModal({
   selectedProductIndex,
@@ -15,124 +16,120 @@ export default function NewItemModal({
   loading,
   setLoading,
 }) {
-  const productName = useRef();
-  const productCategory = useRef();
-  const productDesc = useRef();
-  const productStockAmount = useRef();
+  const productName = useRef()
+  const productCategory = useRef()
+  const productDesc = useRef()
+  const productStockAmount = useRef()
   // Array of all unit name field refs
-  const productUnitEls = useRef([]);
+  const productUnitEls = useRef([])
   // Array of all unit price field refs
-  const productPriceEls = useRef([]);
-  const [uploadImages, setUploadImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState();
-  const variationNumber = Array(3).fill(0);
+  const productPriceEls = useRef([])
+  const [uploadImages, setUploadImages] = useState([])
+  const [selectedImage, setSelectedImage] = useState()
+  const variationNumber = Array(3).fill(0)
 
   // If no product provide default value which is false, otherwise grab it from the array
   const [productInStock, setProductInStock] = useState(
     farmProductsUI[selectedProductIndex]?.inStock || false
-  );
+  )
 
   // Function that sets initial product value
   useEffect(() => {
     // If no index (ie. adding not updating), return
     if (selectedProductIndex === null) {
-      return;
+      return
     }
 
     // Give values to all field
-    productName.current.value = farmProductsUI[selectedProductIndex].name;
+    productName.current.value = farmProductsUI[selectedProductIndex].name
     productStockAmount.current.value =
-      farmProductsUI[selectedProductIndex].stockAmount;
-    productDesc.current.value =
-      farmProductsUI[selectedProductIndex].description;
+      farmProductsUI[selectedProductIndex].stockAmount
+    productDesc.current.value = farmProductsUI[selectedProductIndex].description
     productCategory.current.value =
-      farmProductsUI[selectedProductIndex].category;
-    console.log(farmProductsUI);
+      farmProductsUI[selectedProductIndex].category
+    console.log(farmProductsUI)
     farmProductsUI[selectedProductIndex].price.forEach((option, index) => {
-      productUnitEls.current[index].value = option.unit;
-      productPriceEls.current[index].value = option.price;
-    });
+      productUnitEls.current[index].value = option.unit
+      productPriceEls.current[index].value = option.price
+    })
     // productPrice.current.value = farmProductsUI[selectedProductIndex].price;
 
     // Set images if there are any
     // TODO: Make product images updatable
     for (let image of farmProductsUI[selectedProductIndex].productImages) {
-      setUploadImages((prev) => [...prev, { file: "none", preview: image }]);
+      setUploadImages((prev) => [...prev, { file: 'none', preview: image }])
     }
-  }, []);
+  }, [])
 
   // Function that run every time new image select
   useEffect(() => {
     // If no image selected this won't run
     if (!selectedImage || uploadImages.length === 3) {
-      return;
+      return
     }
 
     // create image preview
-    const objectUrl = URL.createObjectURL(selectedImage);
+    const objectUrl = URL.createObjectURL(selectedImage)
     setUploadImages((prev) => [
       ...prev,
       { file: selectedImage, preview: objectUrl },
-    ]);
+    ])
 
     // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedImage]);
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedImage])
 
   // Function for handling add new product
   const handleUpdateProduct = async (action, images) => {
     // Sets loading state to true
-    setLoading(true);
+    setLoading(true)
     //* Upload images *//
     // If no image selected, stop the function
-    if (!images || images.length === 0) return;
+    if (!images || images.length === 0) return
 
     // If form not filled up return
     if (
       !productName ||
-      productUnitEls.current[0].value === "" ||
-      productPriceEls.current[0].value === ""
+      productUnitEls.current[0].value === '' ||
+      productPriceEls.current[0].value === ''
     )
-      return;
+      return
 
     // Filter alreay uploaded images
-    const temp_arr = images.filter((img) => img.file !== "none");
+    const temp_arr = images.filter((img) => img.file !== 'none')
 
     // If there are new images, we are going to upload them and then push existed images url into the response array
-    let newImage = { image_urls: [] };
+    let newImage = { image_urls: [] }
     if (temp_arr.length > 0) {
       // Map and append all images
-      const formData = new FormData();
+      const formData = new FormData()
       temp_arr.map((img) => {
-        formData.append("image", img.file);
-      });
+        formData.append('image', img.file)
+      })
 
       // Upload to cloudinary
-      const res = await fetch(
-        "http://localhost:3000/api/settings/upload-multiple",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`${BASE_URL}/api/settings/upload-multiple`, {
+        method: 'POST',
+        body: formData,
+      })
       if (res.status === 200) {
         // Get image urls
-        newImage = await res.json();
+        newImage = await res.json()
         // console.log(newImage.image_urls);
       }
     }
 
     // Add existed images urls to newImage.image_urls array
     images.map((img) =>
-      img.file === "none" ? newImage.image_urls.push(img.preview) : null
-    );
+      img.file === 'none' ? newImage.image_urls.push(img.preview) : null
+    )
 
     // Wrap unit and price togther
     const productUnitPrice = productUnitEls.current.reduce(
       (arr, current, index) =>
         // If unit name is "" we return the previous object
         // (ie. skip an iteration and not put empty variation in the object)
-        current.value === ""
+        current.value === ''
           ? arr
           : [
               ...arr,
@@ -142,14 +139,14 @@ export default function NewItemModal({
               },
             ],
       []
-    );
+    )
 
     // Update database
     const updateRes = await fetch(
-      "http://localhost:3000/api/farm/update-product-database",
+      `${BASE_URL}/api/farm/update-product-database`,
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action,
           farmId,
@@ -165,30 +162,30 @@ export default function NewItemModal({
           productImages: newImage.image_urls,
         }),
       }
-    );
+    )
 
     // Get data out of response
-    const updateData = await updateRes.json();
+    const updateData = await updateRes.json()
     // console.log(updateData);
 
     if (updateRes.status === 200) {
       // Show success alert
-      setAlertSuccess(true);
-      setTimeout(() => setAlertSuccess(false), 6000);
-      console.log("Successfully added a new product");
+      setAlertSuccess(true)
+      setTimeout(() => setAlertSuccess(false), 6000)
+      console.log('Successfully added a new product')
 
       // Update UI
-      if (action === "add") {
-        setFarmProductsUI(updateData.prismaRes.Product);
+      if (action === 'add') {
+        setFarmProductsUI(updateData.prismaRes.Product)
       } else {
-        setFarmProductsUI(updateData.prismaRes.farm.Product);
+        setFarmProductsUI(updateData.prismaRes.farm.Product)
       }
 
       // Close the modal
-      setShowItemModal(false);
+      setShowItemModal(false)
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <div className="farmAddNewItemModal">
@@ -298,7 +295,7 @@ export default function NewItemModal({
               type="number"
               placeholder="Enter amount in stock"
               style={
-                productInStock ? { display: "unset" } : { display: "none" }
+                productInStock ? { display: 'unset' } : { display: 'none' }
               }
               ref={productStockAmount}
               defaultValue={1}
@@ -323,7 +320,7 @@ export default function NewItemModal({
               onClick={(e) => {
                 setUploadImages((prev) =>
                   prev.filter((prev_img) => prev_img.preview !== e.target.id)
-                );
+                )
               }}
               key={index + img.preview}
             />
@@ -337,8 +334,8 @@ export default function NewItemModal({
           type="file"
           disabled={uploadImages.length === 3}
           onChange={(e) => {
-            setSelectedImage(e.target.files[0]);
-            e.target.value = "";
+            setSelectedImage(e.target.files[0])
+            e.target.value = ''
           }}
         />
 
@@ -358,7 +355,7 @@ export default function NewItemModal({
             <Button
               variant="primary"
               type="button"
-              onClick={() => handleUpdateProduct("update", uploadImages)}
+              onClick={() => handleUpdateProduct('update', uploadImages)}
               disabled={loading}
             >
               {loading ? (
@@ -376,7 +373,7 @@ export default function NewItemModal({
             <Button
               variant="primary"
               type="button"
-              onClick={() => handleUpdateProduct("add", uploadImages)}
+              onClick={() => handleUpdateProduct('add', uploadImages)}
               disabled={loading}
             >
               {loading ? (
@@ -394,5 +391,5 @@ export default function NewItemModal({
         </div>
       </Form>
     </div>
-  );
+  )
 }

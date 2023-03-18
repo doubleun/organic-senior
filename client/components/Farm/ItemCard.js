@@ -1,6 +1,7 @@
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import { BsXLg } from "react-icons/bs";
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import { BsXLg } from 'react-icons/bs'
+import BASE_URL from '/constants'
 
 export default function ItemCard({
   editFarmProducts,
@@ -12,38 +13,35 @@ export default function ItemCard({
 }) {
   // Delete item function
   const handleDeleteProduct = async () => {
-    if (confirm("Are you sure you want to delete this product?")) {
-      const res = await fetch(
-        "http://localhost:3000/api/farm/update-product-database",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "delete",
-            productId: productObj.id,
-          }),
-        }
-      );
+    if (confirm('Are you sure you want to delete this product?')) {
+      const res = await fetch(`${BASE_URL}/api/farm/update-product-database`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete',
+          productId: productObj.id,
+        }),
+      })
       if (res.status === 200) {
         // Update UI
         setFarmProductsUI((prev) =>
           prev.filter((product) => product.id !== productObj.id)
-        );
+        )
 
         // Show success alert
-        setAlertSuccess(true);
-        setTimeout(() => setAlertSuccess(false), 6000);
-        console.log("Successfully delete a product");
+        setAlertSuccess(true)
+        setTimeout(() => setAlertSuccess(false), 6000)
+        console.log('Successfully delete a product')
       }
     } else {
-      return;
+      return
     }
-  };
+  }
 
   return (
     <>
       {addNewProduct ? (
-        <Card style={{ width: "15rem" }} className="farmItemCard">
+        <Card style={{ width: '15rem' }} className="farmItemCard">
           <Card.Img variant="top" src="/images/imagePlaceholder.jpg" />
           <Card.Body>
             <Card.Title>Add new product</Card.Title>
@@ -54,14 +52,14 @@ export default function ItemCard({
           </Card.Body>
         </Card>
       ) : (
-        <Card style={{ width: "15rem" }} className="farmItemCard">
+        <Card style={{ width: '15rem' }} className="farmItemCard">
           {editFarmProducts ? (
             <Button
               className="farmItmCardRemove"
               variant="alert"
               onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteProduct();
+                e.stopPropagation()
+                handleDeleteProduct()
               }}
             >
               <BsXLg />
@@ -98,5 +96,5 @@ export default function ItemCard({
         </Card>
       )}
     </>
-  );
+  )
 }
