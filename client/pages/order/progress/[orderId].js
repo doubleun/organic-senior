@@ -38,7 +38,7 @@ export default function OrderProgress({ orderInfo, currentUser }) {
     if (!status || !orderId) return
 
     if (confirm(`This order will be "${status}"`)) {
-      const res = await fetch('http://localhost:3000/api/order/product', {
+      const res = await fetch('/api/order/product', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -67,7 +67,7 @@ export default function OrderProgress({ orderInfo, currentUser }) {
   async function handleUpdateProgress(trackID = '') {
     if (orderUI.progress === 1 && trackID === '') return
     const newProgress = orderUI.progress + 1
-    const res = await fetch('http://localhost:3000/api/order/progress', {
+    const res = await fetch('/api/order/progress', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -94,7 +94,7 @@ export default function OrderProgress({ orderInfo, currentUser }) {
   // Handle rate order
   async function handleRateOrder(rating, comment, pillsArr) {
     const newProgress = orderUI.progress + 1
-    const res = await fetch('http://localhost:3000/api/order/progress', {
+    const res = await fetch('/api/order/progress', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

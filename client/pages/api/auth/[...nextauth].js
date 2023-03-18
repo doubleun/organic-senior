@@ -1,14 +1,15 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import NextAuth from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import FacebookProvider from 'next-auth/providers/facebook'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 // Seperate prisma so we only uses one instance
-import prisma from "../../../prisma/client";
+import prisma from '../../../prisma/client'
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   // Configure one or more authentication providers
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,4 +22,4 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
-});
+})
