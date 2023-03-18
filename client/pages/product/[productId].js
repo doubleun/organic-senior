@@ -11,6 +11,7 @@ import {
   FaCircleNotch,
 } from 'react-icons/fa'
 import AlertSnack from '/components/Global/alertSnack'
+import BASE_URL from '/constants'
 
 // Nextjs imports
 import { getSession } from 'next-auth/react'
@@ -69,7 +70,7 @@ export default function ProductPage({ productDetail, currentUser }) {
     // if no delivery method selected, return
     if (!productShipMethod) return
 
-    const res = await fetch('/api/order/product', {
+    const res = await fetch(`${BASE_URL}/api/order/product`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

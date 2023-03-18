@@ -4,6 +4,7 @@
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
+import BASE_URL from '/constants'
 
 // Nextjs imports
 import { getSession } from 'next-auth/react'
@@ -63,7 +64,7 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
     // Sets loading to true
     setLoading(true)
     // Handle submit user info
-    const userRes = await fetch('/api/form/submit', {
+    const userRes = await fetch(`${BASE_URL}/api/form/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,14 +127,14 @@ export default function EditProfile({ provinces, user, userInfo, farmInfo }) {
     formData.append('image', image)
 
     // Upload to cloudinary
-    const res = await fetch('/api/settings/upload', {
+    const res = await fetch(`${BASE_URL}/api/settings/upload`, {
       method: 'POST',
       body: formData,
     })
     const newImage = await res.json()
 
     // Update database to cloudinary
-    const resUpdate = await fetch('/api/settings/update-database', {
+    const resUpdate = await fetch(`${BASE_URL}/api/settings/update-database`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -310,7 +311,7 @@ export async function getServerSideProps(context) {
     }
 
   // Fetch provinces
-  const provinces = await fetch('/api/places/fetch')
+  const provinces = await fetch(`${BASE_URL}/api/places/fetch`)
   const provinces_data = await provinces.json()
 
   // Fetch user info

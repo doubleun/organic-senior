@@ -1,6 +1,7 @@
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import { BsXLg } from 'react-icons/bs'
+import BASE_URL from '/constants'
 
 export default function ItemCard({
   editFarmProducts,
@@ -13,7 +14,7 @@ export default function ItemCard({
   // Delete item function
   const handleDeleteProduct = async () => {
     if (confirm('Are you sure you want to delete this product?')) {
-      const res = await fetch('/api/farm/update-product-database', {
+      const res = await fetch(`${BASE_URL}/api/farm/update-product-database`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

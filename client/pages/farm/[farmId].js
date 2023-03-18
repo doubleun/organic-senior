@@ -14,6 +14,7 @@ import { getSession } from 'next-auth/react'
 import Alert from 'react-bootstrap/Alert'
 import FormControl from 'react-bootstrap/FormControl'
 // import ListGroup from "react-bootstrap/ListGroup";
+import BASE_URL from '/constants'
 import {
   BsFillPencilFill,
   BsCheck2Circle,
@@ -71,7 +72,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
     if (announceText === null || announceText === '') return
 
     const newDate = new Date().toString().slice(0, 15)
-    const res = await fetch('/api/farm/announcement', {
+    const res = await fetch(`${BASE_URL}/api/farm/announcement`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

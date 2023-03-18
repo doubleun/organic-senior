@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 
 import Image from 'next/image'
+import BASE_URL from '/constants'
 import { useState, useEffect, useRef } from 'react'
 
 export default function NewItemModal({
@@ -107,7 +108,7 @@ export default function NewItemModal({
       })
 
       // Upload to cloudinary
-      const res = await fetch('/api/settings/upload-multiple', {
+      const res = await fetch(`${BASE_URL}/api/settings/upload-multiple`, {
         method: 'POST',
         body: formData,
       })
@@ -141,24 +142,27 @@ export default function NewItemModal({
     )
 
     // Update database
-    const updateRes = await fetch('/api/farm/update-product-database', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action,
-        farmId,
-        productId: farmProductsUI[selectedProductIndex]?.id,
-        productName: productName.current.value,
-        productPrice: productUnitPrice,
-        productCategory: productCategory.current.value,
-        productDesc: productDesc.current.value,
-        productInStock,
-        productStockAmount: productInStock
-          ? parseInt(productStockAmount.current.value)
-          : 0,
-        productImages: newImage.image_urls,
-      }),
-    })
+    const updateRes = await fetch(
+      `${BASE_URL}/api/farm/update-product-database`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action,
+          farmId,
+          productId: farmProductsUI[selectedProductIndex]?.id,
+          productName: productName.current.value,
+          productPrice: productUnitPrice,
+          productCategory: productCategory.current.value,
+          productDesc: productDesc.current.value,
+          productInStock,
+          productStockAmount: productInStock
+            ? parseInt(productStockAmount.current.value)
+            : 0,
+          productImages: newImage.image_urls,
+        }),
+      }
+    )
 
     // Get data out of response
     const updateData = await updateRes.json()

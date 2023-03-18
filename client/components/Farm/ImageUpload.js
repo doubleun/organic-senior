@@ -2,6 +2,7 @@
 
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
+import BASE_URL from '/constants'
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
@@ -64,7 +65,7 @@ export default function FarmImageUpload({
     })
 
     // Upload to cloudinary
-    const res = await fetch('/api/settings/upload-multiple', {
+    const res = await fetch(`${BASE_URL}/api/settings/upload-multiple`, {
       method: 'POST',
       body: formData,
     })
@@ -77,7 +78,7 @@ export default function FarmImageUpload({
     )
 
     // Update database
-    const resUpdate = await fetch('/api/settings/update-database', {
+    const resUpdate = await fetch(`${BASE_URL}/api/settings/update-database`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

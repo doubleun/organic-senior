@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
 import Badge from 'react-bootstrap/Badge'
+import BASE_URL from '/constants'
 
 // Icon imports
 import { FaBell, FaReceipt } from 'react-icons/fa'
@@ -23,7 +24,7 @@ const MainNavbar = () => {
     if (status === 'loading') return // Do nothing while loading
     if (isUser) {
       async function fetchUserInfo() {
-        const res = await fetch('/api/user/basic-info', {
+        const res = await fetch(`${BASE_URL}/api/user/basic-info`, {
           headers: {
             'Content-Type': 'application/json',
           },
