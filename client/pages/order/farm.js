@@ -27,7 +27,7 @@ export default function OrderFarm({ farmNewOrders }) {
     if (!status || !orderId) return
 
     if (confirm(`This order will be "${status}"`)) {
-      const res = await fetch('http://localhost:3000/api/order/product', {
+      const res = await fetch('/api/order/product', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

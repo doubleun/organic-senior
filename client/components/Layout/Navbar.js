@@ -1,42 +1,42 @@
 // Component imports
-import Link from "next/link";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Container from "react-bootstrap/Container";
-import Badge from "react-bootstrap/Badge";
+import Link from 'next/link'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import Container from 'react-bootstrap/Container'
+import Badge from 'react-bootstrap/Badge'
 
 // Icon imports
-import { FaBell, FaReceipt } from "react-icons/fa";
+import { FaBell, FaReceipt } from 'react-icons/fa'
 
 // Auth and react imports
-import { signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from 'next-auth/react'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 const MainNavbar = () => {
-  const { data: session, status } = useSession();
-  const isUser = !!session?.user;
-  const [userInfo, setUserInfo] = useState();
+  const { data: session, status } = useSession()
+  const isUser = !!session?.user
+  const [userInfo, setUserInfo] = useState()
 
   useEffect(() => {
-    if (status === "loading") return; // Do nothing while loading
+    if (status === 'loading') return // Do nothing while loading
     if (isUser) {
       async function fetchUserInfo() {
-        const res = await fetch("http://localhost:3000/api/user/basic-info", {
+        const res = await fetch('/api/user/basic-info', {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({ email: session.user.email }),
-        });
-        const data = await res.json();
-        setUserInfo(data.prismaRes);
-        console.log(data);
+        })
+        const data = await res.json()
+        setUserInfo(data.prismaRes)
+        console.log(data)
       }
-      fetchUserInfo();
+      fetchUserInfo()
     }
-  }, [status]);
+  }, [status])
 
   return (
     <Navbar
@@ -82,7 +82,7 @@ const MainNavbar = () => {
             <p>logged in as: </p>
             <NavDropdown
               as="h6"
-              title={session ? session.user.name : "...."}
+              title={session ? session.user.name : '....'}
               className="loginStatus"
             >
               {userInfo?.FarmMain ? (
@@ -104,7 +104,7 @@ const MainNavbar = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  );
-};
+  )
+}
 
-export default MainNavbar;
+export default MainNavbar

@@ -1,92 +1,92 @@
 // Components imports
-import Layout from "/components/Layout";
-import ItemCard from "/components/Farm/ItemCard";
-import FarmImages from "/components/Farm/FarmImages";
-import ItemModal from "/components/Farm/ItemModal";
+import Layout from '/components/Layout'
+import ItemCard from '/components/Farm/ItemCard'
+import FarmImages from '/components/Farm/FarmImages'
+import ItemModal from '/components/Farm/ItemModal'
 // import ReviewStars from "/components/Global/reviewStars";
 
 // Nextjs imports
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { getSession } from "next-auth/react";
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import { getSession } from 'next-auth/react'
 
 // Bootstrap imports
-import Alert from "react-bootstrap/Alert";
-import FormControl from "react-bootstrap/FormControl";
+import Alert from 'react-bootstrap/Alert'
+import FormControl from 'react-bootstrap/FormControl'
 // import ListGroup from "react-bootstrap/ListGroup";
 import {
   BsFillPencilFill,
   BsCheck2Circle,
   BsX,
   BsPatchCheckFill,
-} from "react-icons/bs";
+} from 'react-icons/bs'
 
 // SQL Database
-import prisma from "../../prisma/client";
+import prisma from '../../prisma/client'
 
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useMemo, useEffect } from 'react'
 
 export default function Farm({ farmInfo, farmProducts, farmOwner }) {
-  const router = useRouter();
-  const [readMore, setReadMore] = useState(false);
-  const [showEditAnnounce, setShowEditAnnounce] = useState(false);
+  const router = useRouter()
+  const [readMore, setReadMore] = useState(false)
+  const [showEditAnnounce, setShowEditAnnounce] = useState(false)
   const [announcement, setAnnouncement] = useState({
-    text: farmInfo?.announcement || "",
-    date: farmInfo?.announceDate || "",
-  });
-  const [editFarmImages, setEditFarmImages] = useState(false);
-  const searchInput = useRef();
+    text: farmInfo?.announcement || '',
+    date: farmInfo?.announceDate || '',
+  })
+  const [editFarmImages, setEditFarmImages] = useState(false)
+  const searchInput = useRef()
   // State for setting edit mode
-  const [editFarmProducts, setEditFarmProducts] = useState(false);
+  const [editFarmProducts, setEditFarmProducts] = useState(false)
   // State for showing item modal and a state for keeping product index to render in update modal
-  const [showItemModal, setShowItemModal] = useState(false);
-  const [selectedProductIndex, setSelectedProductIndex] = useState(null);
+  const [showItemModal, setShowItemModal] = useState(false)
+  const [selectedProductIndex, setSelectedProductIndex] = useState(null)
   // State for showing alert message
-  const [alertSuccess, setAlertSuccess] = useState(false);
+  const [alertSuccess, setAlertSuccess] = useState(false)
   // State for keeping track of the products in the front-end
-  const [farmProductsUI, setFarmProductsUI] = useState(farmProducts);
+  const [farmProductsUI, setFarmProductsUI] = useState(farmProducts)
   // Filter categories
   const [filterCategories, setFilterCategories] = useState({
     Fruits: false,
     Vegetables: false,
     Meat: false,
-    ["Dairy products"]: false,
+    ['Dairy products']: false,
     Nuts: false,
     Grains: false,
-  });
+  })
   // Item modal loading state
-  const [itmModalLoading, setItmModalLoading] = useState(false);
+  const [itmModalLoading, setItmModalLoading] = useState(false)
 
   // Update the products when user change from 1 farm page to another
   useEffect(() => {
-    setFarmProductsUI(farmProducts);
-  }, [farmProducts]);
+    setFarmProductsUI(farmProducts)
+  }, [farmProducts])
 
   // Handle new announcement
   async function handleNewAnnouncement() {
-    const announceText = prompt("เพิ่มประกาศใหม่ (ความยาวไม่เกิน 42)").slice(
+    const announceText = prompt('เพิ่มประกาศใหม่ (ความยาวไม่เกิน 42)').slice(
       0,
       42
-    );
-    if (announceText === null || announceText === "") return;
+    )
+    if (announceText === null || announceText === '') return
 
-    const newDate = new Date().toString().slice(0, 15);
-    const res = await fetch("http://localhost:3000/api/farm/announcement", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const newDate = new Date().toString().slice(0, 15)
+    const res = await fetch('/api/farm/announcement', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         farmId: farmInfo.id,
         announceText,
         announceDate: newDate,
       }),
-    });
+    })
     if (res.status === 200) {
       // Update UI
-      setAnnouncement({ text: announceText, date: newDate });
+      setAnnouncement({ text: announceText, date: newDate })
 
       // Show success alert
-      setAlertSuccess(true);
-      setTimeout(() => setAlertSuccess(false), 2000);
+      setAlertSuccess(true)
+      setTimeout(() => setAlertSuccess(false), 2000)
     }
   }
 
@@ -98,7 +98,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
           .toLowerCase()
           .includes(searchInput.current.value.toLowerCase())
       )
-    );
+    )
   }
 
   // Handle filter
@@ -107,20 +107,20 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
       setFilterCategories((prev) => ({
         ...prev,
         [newFilter.value]: true,
-      }));
+      }))
     } else {
       setFilterCategories((prev) => ({
         ...prev,
         [newFilter.value]: false,
-      }));
+      }))
     }
   }
 
   // Produce selected filter categories array
   const selectedCategories = useMemo(() => {
     // console.log(filterCategories);
-    return Object.keys(filterCategories).filter((key) => filterCategories[key]);
-  }, [filterCategories]);
+    return Object.keys(filterCategories).filter((key) => filterCategories[key])
+  }, [filterCategories])
 
   // Handle filtering products UI
   const filterdProductsUI = useMemo(() => {
@@ -129,19 +129,19 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
     if (selectedCategories.length !== 0) {
       return farmProductsUI.filter((product) =>
         selectedCategories.includes(product.category)
-      );
+      )
     }
 
     // If there are no filter selected, return the normal product array
-    return farmProductsUI;
-  }, [farmProductsUI, filterCategories]);
+    return farmProductsUI
+  }, [farmProductsUI, filterCategories])
 
   return (
     <main className="farmPageMain">
       {/* Add new product modal */}
       <div
         className="farmPageMain"
-        id={showItemModal ? "modal" : ""}
+        id={showItemModal ? 'modal' : ''}
         onClick={() => !itmModalLoading && setShowItemModal(false)}
       ></div>
       {showItemModal ? (
@@ -162,7 +162,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
         {/* Hover farm images to edit */}
         <div
           onMouseEnter={() => {
-            if (farmOwner) setEditFarmImages(true);
+            if (farmOwner) setEditFarmImages(true)
           }}
           onMouseLeave={() => setEditFarmImages(false)}
         >
@@ -218,10 +218,10 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
             <div
               className="farmAboutAnnouncement"
               onMouseEnter={() => {
-                if (farmOwner) setShowEditAnnounce(true);
+                if (farmOwner) setShowEditAnnounce(true)
               }}
               onMouseLeave={() => setShowEditAnnounce(false)}
-              style={farmOwner ? { cursor: "pointer" } : { cursor: "default" }}
+              style={farmOwner ? { cursor: 'pointer' } : { cursor: 'default' }}
               onClick={farmOwner ? handleNewAnnouncement : null}
             >
               <h5>
@@ -233,12 +233,12 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
             </div>
             <div className="farmAbout">
               <h5>เกี่ยวกับ</h5>
-              <p id={!readMore ? undefined : "more"}>
+              <p id={!readMore ? undefined : 'more'}>
                 {farmInfo?.about ||
-                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, harum distinctio nobis, ut doloribus autem sed iure, corporisexercitationem rerum alias. Veritatis saepe inventore impeditalias tempora veniam deserunt voluptate! Lorem, ipsum dolor sitamet consectetur adipisicing elit. Ratione autem nostrum temporaaccusantium maiores voluptas, harum impedit eum. Quod, ullam."}
+                  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, harum distinctio nobis, ut doloribus autem sed iure, corporisexercitationem rerum alias. Veritatis saepe inventore impeditalias tempora veniam deserunt voluptate! Lorem, ipsum dolor sitamet consectetur adipisicing elit. Ratione autem nostrum temporaaccusantium maiores voluptas, harum impedit eum. Quod, ullam.'}
               </p>
               <a onClick={() => setReadMore(!readMore)}>
-                {readMore ? "Read less" : "Read more"}
+                {readMore ? 'Read less' : 'Read more'}
               </a>
             </div>
           </div>
@@ -336,9 +336,9 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                           className="farmEditItemsButton-done"
                           onClick={() => setEditFarmProducts(false)}
                           style={{
-                            marginInlineStart: "2rem",
-                            width: "5rem",
-                            textAlign: "center",
+                            marginInlineStart: '2rem',
+                            width: '5rem',
+                            textAlign: 'center',
                           }}
                         >
                           Done
@@ -351,7 +351,7 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                         onClick={() => setEditFarmProducts(true)}
                       >
                         <BsFillPencilFill
-                          style={{ fontSize: "14px", marginInline: "6px" }}
+                          style={{ fontSize: '14px', marginInline: '6px' }}
                         />
                         Edit items
                       </div>
@@ -368,11 +368,11 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                       <div
                         onClick={(e) => {
                           if (editFarmProducts) {
-                            setSelectedProductIndex(index);
-                            setShowItemModal(true);
-                            return;
+                            setSelectedProductIndex(index)
+                            setShowItemModal(true)
+                            return
                           } else {
-                            router.push(`/product/${itm.id}`);
+                            router.push(`/product/${itm.id}`)
                           }
                         }}
                         key={itm.id}
@@ -390,16 +390,16 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
                 <div
                   style={
                     editFarmProducts
-                      ? { display: "unset" }
-                      : { display: "none" }
+                      ? { display: 'unset' }
+                      : { display: 'none' }
                   }
                 >
                   {/* Add new product */}
                   <div
                     onClick={(e) => {
-                      setSelectedProductIndex(null);
-                      setShowItemModal(true);
-                      e.stopPropagation();
+                      setSelectedProductIndex(null)
+                      setShowItemModal(true)
+                      e.stopPropagation()
                     }}
                   >
                     <ItemCard addNewProduct />
@@ -421,24 +421,24 @@ export default function Farm({ farmInfo, farmProducts, farmOwner }) {
         </Alert>
       ) : null}
     </main>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  const user = session?.user;
+  const session = await getSession(context)
+  const user = session?.user
 
   // Get farm id from the params
-  const { farmId } = context.query;
+  const { farmId } = context.query
 
   // redirect if not logged in
   if (!session)
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
-    };
+    }
 
   // Fetch farm info
   const farmInfo = await prisma.farmMain.findFirst({
@@ -449,19 +449,19 @@ export async function getServerSideProps(context) {
     include: {
       user: true,
     },
-  });
+  })
 
   // Check if the current user is the farm owner or not
-  const farmOwner = farmInfo.user.email === session.user.email;
+  const farmOwner = farmInfo.user.email === session.user.email
 
   // no farm redirect
   if (!farmInfo)
     return {
       redirect: {
-        destination: "/home/catalogue",
+        destination: '/home/catalogue',
         permanent: false,
       },
-    };
+    }
 
   // Fetch farm products
   const farmProducts = await prisma.product.findMany({
@@ -469,11 +469,11 @@ export async function getServerSideProps(context) {
       farm_id: farmInfo.id,
     },
     orderBy: {
-      id: "asc",
+      id: 'asc',
     },
-  });
+  })
 
-  await prisma.$disconnect();
+  await prisma.$disconnect()
 
   // console.log(farmProducts);
 
@@ -484,9 +484,9 @@ export async function getServerSideProps(context) {
       farmProducts,
       farmOwner,
     },
-  };
+  }
 }
 
 Farm.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

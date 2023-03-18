@@ -1,10 +1,10 @@
 //! BUG: Can't delete image, can only "replace" them
 
-import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 export default function FarmImageUpload({
   userInfo,
@@ -13,94 +13,88 @@ export default function FarmImageUpload({
   setAlertSuccess,
 }) {
   // Loading state
-  const [loading, setLoading] = useState(false);
-  const [uploadImages, setUploadImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState();
+  const [loading, setLoading] = useState(false)
+  const [uploadImages, setUploadImages] = useState([])
+  const [selectedImage, setSelectedImage] = useState()
 
   // Fetch farm images first time loaded
   useEffect(() => {
     if (farmInfo?.farmImages) {
       for (let image of farmInfo.farmImages) {
-        setUploadImages((prev) => [...prev, { file: "none", preview: image }]);
+        setUploadImages((prev) => [...prev, { file: 'none', preview: image }])
       }
     }
-  }, []);
+  }, [])
 
   // Function that run every time new image select
   useEffect(() => {
     // If no image selected this won't run
     if (!selectedImage || uploadImages.length === 3) {
-      return;
+      return
     }
 
     // create image preview
-    const objectUrl = URL.createObjectURL(selectedImage);
+    const objectUrl = URL.createObjectURL(selectedImage)
     setUploadImages((prev) => [
       ...prev,
       { file: selectedImage, preview: objectUrl },
-    ]);
+    ])
 
     // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedImage]);
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedImage])
 
   // Handle upload to cloud and update the database
   const handleUploadImages = async (action, images) => {
     // Sets loading state to true
-    setLoading(true);
+    setLoading(true)
     // If no image selected, stop the function
-    if (!images) return;
+    if (!images) return
 
     // Filter alreay uploaded images
-    const temp_arr = images.filter((img) => img.file !== "none");
+    const temp_arr = images.filter((img) => img.file !== 'none')
     // console.log(temp_arr);
 
-    if (temp_arr.length === 0) return;
+    if (temp_arr.length === 0) return
 
     // Map and append all images
-    const formData = new FormData();
+    const formData = new FormData()
     temp_arr.map((img) => {
-      formData.append("image", img.file);
-    });
+      formData.append('image', img.file)
+    })
 
     // Upload to cloudinary
-    const res = await fetch(
-      "http://localhost:3000/api/settings/upload-multiple",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    const newImage = await res.json();
+    const res = await fetch('/api/settings/upload-multiple', {
+      method: 'POST',
+      body: formData,
+    })
+    const newImage = await res.json()
     // console.log(newImage);
 
     // Add existed images urls to newImage.image_urls array
     images.map((img) =>
-      img.file === "none" ? newImage.image_urls.push(img.preview) : null
-    );
+      img.file === 'none' ? newImage.image_urls.push(img.preview) : null
+    )
 
     // Update database
-    const resUpdate = await fetch(
-      "http://localhost:3000/api/settings/update-database",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action,
-          email: userInfo.email,
-          farmImages: newImage.image_urls,
-        }),
-      }
-    );
+    const resUpdate = await fetch('/api/settings/update-database', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action,
+        email: userInfo.email,
+        farmImages: newImage.image_urls,
+      }),
+    })
     if (resUpdate.status === 200) {
-      setAlertSuccess(true);
-      setTimeout(() => setAlertSuccess(false), 6000);
-      setShowImageUpload(false);
+      setAlertSuccess(true)
+      setTimeout(() => setAlertSuccess(false), 6000)
+      setShowImageUpload(false)
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <div className="farmImageUploadModal">
@@ -116,7 +110,7 @@ export default function FarmImageUpload({
             onClick={(e) => {
               setUploadImages((prev) =>
                 prev.filter((prev_img) => prev_img.preview !== e.target.id)
-              );
+              )
             }}
             key={index + img.preview}
           />
@@ -129,8 +123,8 @@ export default function FarmImageUpload({
         type="file"
         disabled={uploadImages.length === 3}
         onChange={(e) => {
-          setSelectedImage(e.target.files[0]);
-          e.target.value = "";
+          setSelectedImage(e.target.files[0])
+          e.target.value = ''
         }}
       />
 
@@ -148,7 +142,7 @@ export default function FarmImageUpload({
           variant="success"
           disabled={uploadImages.length < 1 || loading}
           onClick={() => {
-            handleUploadImages("farm-images", uploadImages);
+            handleUploadImages('farm-images', uploadImages)
           }}
         >
           {loading ? (
@@ -164,5 +158,5 @@ export default function FarmImageUpload({
         </Button>
       </div>
     </div>
-  );
+  )
 }
