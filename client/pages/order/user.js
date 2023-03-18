@@ -5,7 +5,7 @@ import AlertSnack from '/components/Global/alertSnack'
 import InProgressPage from '/components/Order/pages/InProgress'
 import FinishedPage from '/components/Order/pages/Finnished'
 import UserInfoModal from '/components/Order/userInfoModal'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 // Nextjs imports
 import { getSession } from 'next-auth/react'

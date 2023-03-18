@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
 import Badge from 'react-bootstrap/Badge'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 // Icon imports
 import { FaBell, FaReceipt } from 'react-icons/fa'

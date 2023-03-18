@@ -4,7 +4,7 @@
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 // Nextjs imports
 import { getSession } from 'next-auth/react'

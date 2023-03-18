@@ -2,7 +2,7 @@
 
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'

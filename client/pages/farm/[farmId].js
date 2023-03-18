@@ -14,7 +14,7 @@ import { getSession } from 'next-auth/react'
 import Alert from 'react-bootstrap/Alert'
 import FormControl from 'react-bootstrap/FormControl'
 // import ListGroup from "react-bootstrap/ListGroup";
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 import {
   BsFillPencilFill,
   BsCheck2Circle,

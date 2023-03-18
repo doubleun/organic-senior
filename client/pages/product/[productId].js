@@ -11,7 +11,7 @@ import {
   FaCircleNotch,
 } from 'react-icons/fa'
 import AlertSnack from '/components/Global/alertSnack'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 // Nextjs imports
 import { getSession } from 'next-auth/react'

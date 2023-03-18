@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import { BsXLg } from 'react-icons/bs'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 export default function ItemCard({
   editFarmProducts,

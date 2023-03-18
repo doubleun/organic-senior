@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import { getSession } from 'next-auth/react'
 
 import SignUpModal from '../components/SignUpModal'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 
 export default function Landing() {
   const [showSignUp, setShowSignUp] = useState()

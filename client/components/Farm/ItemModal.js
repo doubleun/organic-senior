@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 
 import Image from 'next/image'
-import BASE_URL from '/constants'
+import { BASE_URL } from '/constants'
 import { useState, useEffect, useRef } from 'react'
 
 export default function NewItemModal({
