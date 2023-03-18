@@ -1,13 +1,11 @@
-import Button from "react-bootstrap/Button";
-
-import BackDrop from "../SignUpModal/BackDrop";
+import BackDrop from '../SignUpModal/BackDrop'
 
 const userInfoModal = ({ showUserModal, setShowUserModal, userInfo }) => {
   return (
     <BackDrop showSignUp={showUserModal} setShowSignUp={setShowUserModal}>
       <div
         className="userInfoModal"
-        style={{ display: showUserModal ? "flex" : "none" }}
+        style={{ display: showUserModal ? 'flex' : 'none' }}
         onClick={(e) => e.stopPropagation()}
       >
         <h3>ข้อมูลผู้สั่ง</h3>
@@ -21,7 +19,7 @@ const userInfoModal = ({ showUserModal, setShowUserModal, userInfo }) => {
         <p>โซเชียลมีเดีย: {userInfo?.socialLink}</p>
       </div>
     </BackDrop>
-  );
-};
+  )
+}
 
-export default userInfoModal;
+export default userInfoModal
