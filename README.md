@@ -1,5 +1,7 @@
 # Solo Senior Project: Organic Shopping Platform
 
+### Web site: [Ogani](https://organic-senior.vercel.app/)
+
 ### Stack:
 - NextJS (hosted on Vercel)
 - Prisma - PSQL (hosted on Superbase)
